@@ -3,8 +3,8 @@ package config
 import (
 	_ "embed"
 
-	"github.com/openimsdk/tools/db/mongoutil"
-	"github.com/openimsdk/tools/db/redisutil"
+	"github.com/liony823/tools/db/mongoutil"
+	"github.com/liony823/tools/db/redisutil"
 )
 
 var (
@@ -23,6 +23,10 @@ type Share struct {
 		AdminUserID string `mapstructure:"adminUserID"`
 	} `mapstructure:"openIM"`
 	ChatAdmin   []string `mapstructure:"chatAdmin"`
+	BasicAuth   struct {
+		Username string `mapstructure:"username"`
+		Password string `mapstructure:"password"`
+	} `mapstructure:"basicAuth"`
 	ProxyHeader string   `mapstructure:"proxyHeader"`
 }
 

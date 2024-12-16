@@ -18,8 +18,8 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/liony823/tools/errs"
 	"github.com/openimsdk/chat/pkg/common/constant"
-	"github.com/openimsdk/tools/errs"
 )
 
 const (

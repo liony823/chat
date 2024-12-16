@@ -21,8 +21,8 @@ import (
 	"github.com/openimsdk/chat/pkg/common/config"
 	"github.com/openimsdk/chat/version/version"
 
-	"github.com/openimsdk/tools/errs"
-	"github.com/openimsdk/tools/log"
+	"github.com/liony823/tools/errs"
+	"github.com/liony823/tools/log"
 	"github.com/spf13/cobra"
 )
 

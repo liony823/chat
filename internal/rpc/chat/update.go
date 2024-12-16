@@ -15,11 +15,12 @@
 package chat
 
 import (
-	"github.com/openimsdk/chat/pkg/common/constant"
-	chatdb "github.com/openimsdk/chat/pkg/common/db/table/chat"
 	"time"
 
-	"github.com/openimsdk/tools/errs"
+	"github.com/openimsdk/chat/pkg/common/constant"
+	chatdb "github.com/openimsdk/chat/pkg/common/db/table/chat"
+
+	"github.com/liony823/tools/errs"
 
 	"github.com/openimsdk/chat/pkg/protocol/chat"
 )

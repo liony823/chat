@@ -15,3 +15,7 @@ chatAdmin:
    # Default username and password for the admin
   - "chatAdmin"
 
+basicAuth:
+  username: "admin"
+  password: "admin"
+

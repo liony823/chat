@@ -2,16 +2,17 @@ package chat
 
 import (
 	"context"
+	"strconv"
+	"strings"
+
+	"github.com/liony823/tools/errs"
+	"github.com/liony823/tools/utils/datautil"
+	"github.com/liony823/tools/utils/stringutil"
 	"github.com/openimsdk/chat/pkg/common/db/dbutil"
 	table "github.com/openimsdk/chat/pkg/common/db/table/chat"
 	"github.com/openimsdk/chat/pkg/eerrs"
 	"github.com/openimsdk/chat/pkg/protocol/chat"
 	"github.com/openimsdk/chat/pkg/protocol/common"
-	"github.com/openimsdk/tools/errs"
-	"github.com/openimsdk/tools/utils/datautil"
-	"github.com/openimsdk/tools/utils/stringutil"
-	"strconv"
-	"strings"
 )
 
 func DbToPbAttribute(attribute *table.Attribute) *common.UserPublicInfo {

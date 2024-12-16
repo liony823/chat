@@ -3,7 +3,11 @@ package admin
 import (
 	"context"
 	"fmt"
+
 	"github.com/gin-gonic/gin"
+	"github.com/liony823/tools/errs"
+	"github.com/liony823/tools/mw"
+	"github.com/liony823/tools/utils/datautil"
 	chatmw "github.com/openimsdk/chat/internal/api/mw"
 	"github.com/openimsdk/chat/internal/api/util"
 	"github.com/openimsdk/chat/pkg/common/config"
@@ -11,9 +15,6 @@ import (
 	"github.com/openimsdk/chat/pkg/common/kdisc"
 	adminclient "github.com/openimsdk/chat/pkg/protocol/admin"
 	chatclient "github.com/openimsdk/chat/pkg/protocol/chat"
-	"github.com/openimsdk/tools/errs"
-	"github.com/openimsdk/tools/mw"
-	"github.com/openimsdk/tools/utils/datautil"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -58,13 +59,12 @@ func Start(ctx context.Context, index int, config *Config) error {
 	mwApi := chatmw.New(adminClient)
 	gin.SetMode(gin.ReleaseMode)
 	engine := gin.New()
-	engine.Use(gin.Recovery(), mw.CorsHandler(), mw.GinParseOperationID())
+	engine.Use(gin.Recovery(), mw.CorsHandler(), mw.GinBasicAuth(config.Share.BasicAuth.Username, config.Share.BasicAuth.Password), mw.GinParseOperationID())
 	SetAdminRoute(engine, adminApi, mwApi)
 	return engine.Run(fmt.Sprintf(":%d", apiPort))
 }
 
 func SetAdminRoute(router gin.IRouter, admin *Api, mw *chatmw.MW) {
-
 	adminRouterGroup := router.Group("/account")
 	adminRouterGroup.POST("/login", admin.AdminLogin)                                   // Login
 	adminRouterGroup.POST("/update", mw.CheckAdmin, admin.AdminUpdateInfo)              // Modify information

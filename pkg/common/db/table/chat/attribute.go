@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/openimsdk/tools/db/pagination"
+	"github.com/liony823/tools/db/pagination"
 )
 
 type Attribute struct {

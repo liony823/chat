@@ -18,13 +18,13 @@ import (
 	"context"
 	"time"
 
-	"github.com/openimsdk/tools/db/mongoutil"
+	"github.com/liony823/tools/db/mongoutil"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
+	"github.com/liony823/tools/errs"
 	"github.com/openimsdk/chat/pkg/common/db/table/chat"
-	"github.com/openimsdk/tools/errs"
 )
 
 func NewRegister(db *mongo.Database) (chat.RegisterInterface, error) {

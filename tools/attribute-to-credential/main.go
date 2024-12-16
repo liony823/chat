@@ -4,6 +4,10 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"path/filepath"
+
+	"github.com/liony823/tools/db/mongoutil"
+	"github.com/liony823/tools/system/program"
 	"github.com/openimsdk/chat/internal/rpc/chat"
 	"github.com/openimsdk/chat/pkg/common/cmd"
 	"github.com/openimsdk/chat/pkg/common/config"
@@ -11,12 +15,9 @@ import (
 	table "github.com/openimsdk/chat/pkg/common/db/table/chat"
 	"github.com/openimsdk/chat/tools/dataversion"
 	"github.com/openimsdk/protocol/sdkws"
-	"github.com/openimsdk/tools/db/mongoutil"
-	"github.com/openimsdk/tools/system/program"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"path/filepath"
 )
 
 const (

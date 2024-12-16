@@ -18,9 +18,9 @@ import (
 	"regexp"
 	"strconv"
 
+	"github.com/liony823/tools/errs"
 	"github.com/openimsdk/chat/pkg/common/constant"
 	constantpb "github.com/openimsdk/protocol/constant"
-	"github.com/openimsdk/tools/errs"
 )
 
 func (x *UpdateUserInfoReq) Check() error {

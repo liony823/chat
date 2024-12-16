@@ -5,6 +5,9 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	"github.com/liony823/tools/errs"
+	"github.com/liony823/tools/mw"
+	"github.com/liony823/tools/utils/datautil"
 	chatmw "github.com/openimsdk/chat/internal/api/mw"
 	"github.com/openimsdk/chat/internal/api/util"
 	"github.com/openimsdk/chat/pkg/common/config"
@@ -12,9 +15,6 @@ import (
 	"github.com/openimsdk/chat/pkg/common/kdisc"
 	adminclient "github.com/openimsdk/chat/pkg/protocol/admin"
 	chatclient "github.com/openimsdk/chat/pkg/protocol/chat"
-	"github.com/openimsdk/tools/errs"
-	"github.com/openimsdk/tools/mw"
-	"github.com/openimsdk/tools/utils/datautil"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -64,6 +64,7 @@ func Start(ctx context.Context, index int, config *Config) error {
 }
 
 func SetChatRoute(router gin.IRouter, chat *Api, mw *chatmw.MW) {
+
 	account := router.Group("/account")
 	account.POST("/code/send", chat.SendVerifyCode)                      // Send verification code
 	account.POST("/code/verify", chat.VerifyCode)                        // Verify the verification code

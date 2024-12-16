@@ -19,7 +19,7 @@ import (
 	"encoding/hex"
 	"time"
 
-	"github.com/openimsdk/tools/errs"
+	"github.com/liony823/tools/errs"
 
 	"github.com/openimsdk/chat/pkg/protocol/admin"
 )

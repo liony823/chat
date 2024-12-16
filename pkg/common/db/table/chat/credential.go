@@ -2,7 +2,8 @@ package chat
 
 import (
 	"context"
-	"github.com/openimsdk/tools/db/pagination"
+
+	"github.com/liony823/tools/db/pagination"
 )
 
 type Credential struct {

@@ -17,24 +17,25 @@ package chat
 import (
 	"context"
 	"errors"
-	"github.com/openimsdk/chat/pkg/eerrs"
-	"github.com/openimsdk/protocol/wrapperspb"
-	"github.com/openimsdk/tools/utils/stringutil"
 	"strconv"
 	"strings"
 	"time"
 
+	"github.com/liony823/tools/utils/stringutil"
+	"github.com/openimsdk/chat/pkg/eerrs"
+	"github.com/openimsdk/protocol/wrapperspb"
+
+	"github.com/liony823/tools/log"
+	"github.com/liony823/tools/mcontext"
 	"github.com/openimsdk/chat/pkg/common/db/dbutil"
 	chatdb "github.com/openimsdk/chat/pkg/common/db/table/chat"
 	constantpb "github.com/openimsdk/protocol/constant"
-	"github.com/openimsdk/tools/log"
-	"github.com/openimsdk/tools/mcontext"
 	"go.mongodb.org/mongo-driver/mongo"
 
+	"github.com/liony823/tools/errs"
 	"github.com/openimsdk/chat/pkg/common/constant"
 	"github.com/openimsdk/chat/pkg/common/mctx"
 	"github.com/openimsdk/chat/pkg/protocol/chat"
-	"github.com/openimsdk/tools/errs"
 )
 
 func (o *chatSvr) checkUpdateInfo(ctx context.Context, req *chat.UpdateUserInfoReq) error {

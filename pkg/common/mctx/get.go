@@ -16,11 +16,12 @@ package mctx
 
 import (
 	"context"
-	"github.com/openimsdk/tools/utils/datautil"
 	"strconv"
 
+	"github.com/liony823/tools/utils/datautil"
+
+	"github.com/liony823/tools/errs"
 	constantpb "github.com/openimsdk/protocol/constant"
-	"github.com/openimsdk/tools/errs"
 
 	"github.com/openimsdk/chat/pkg/common/constant"
 	"github.com/openimsdk/chat/pkg/common/tokenverify"

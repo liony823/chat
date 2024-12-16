@@ -15,12 +15,13 @@
 package kdisc
 
 import (
-	"github.com/openimsdk/chat/pkg/common/config"
-	"github.com/openimsdk/tools/discovery"
-	"github.com/openimsdk/tools/discovery/etcd"
-	"github.com/openimsdk/tools/discovery/zookeeper"
-	"github.com/openimsdk/tools/errs"
 	"time"
+
+	"github.com/liony823/tools/discovery"
+	"github.com/liony823/tools/discovery/etcd"
+	"github.com/liony823/tools/discovery/zookeeper"
+	"github.com/liony823/tools/errs"
+	"github.com/openimsdk/chat/pkg/common/config"
 )
 
 const (
