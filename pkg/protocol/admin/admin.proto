@@ -91,13 +91,12 @@ message SearchAdminAccountResp {
 }
 
 message GetAdminInfoResp {
-  string account = 2;
-  string password = 3;
-  string faceURL = 4;
-  string nickname = 5;
-  string userID = 6;
-  int32 level = 7;
-  int64 createTime = 8;
+  string account = 1;
+  string faceURL = 2;
+  string nickname = 3;
+  string userID = 4;
+  int32 level = 5;
+  int64 createTime = 6;
 }
 
 // ################### Default Friend ###################
@@ -383,9 +382,11 @@ message CreateTokenReq {
   int32 userType = 32;
 }
 
+
 message CreateTokenResp {
   string token = 1;
 }
+
 
 message ParseTokenReq {
   string token = 1;
@@ -610,6 +611,7 @@ service admin {
   rpc CreateToken(CreateTokenReq) returns (CreateTokenResp);
   // parse token
   rpc ParseToken(ParseTokenReq) returns (ParseTokenResp);
+
 
   // app
   rpc AddApplet(AddAppletReq) returns (AddAppletResp);
