@@ -12,10 +12,10 @@ openIM:
   adminUserID: imAdmin
 
 chatAdmin:
-   # Default username and password for the admin
+  # Default username and password for the admin
   - "chatAdmin"
 
 basicAuth:
   username: "admin"
-  password: "admin"
-
+  password: "123456"
+  secret: "chat123"

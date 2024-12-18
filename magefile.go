@@ -41,3 +41,8 @@ func Stop() {
 func Check() {
 	mageutil.CheckAndReportBinariesStatus()
 }
+
+func Restart() {
+	Stop()
+	Start()
+}

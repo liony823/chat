@@ -14,6 +14,8 @@ type Api struct {
 	ImUserID        string
 	ProxyHeader     string
 	ChatAdminUserID string
+	BasicAuthUser   string
+	BasicAuthPass   string
 }
 
 func (o *Api) WithAdminUser(ctx context.Context) context.Context {

@@ -35,8 +35,9 @@ type claims struct {
 }
 
 type Token struct {
-	Expires time.Duration
-	Secret  string
+	Expires      time.Duration
+	GoogleExpire time.Duration
+	Secret       string
 }
 
 func (t *Token) secret() jwt.Keyfunc {
@@ -54,6 +55,19 @@ func (t *Token) buildClaims(userID string, userType int32) claims {
 			ExpiresAt: jwt.NewNumericDate(now.Add(t.Expires)),    // Expiration time
 			IssuedAt:  jwt.NewNumericDate(now),                   // Issuing time
 			NotBefore: jwt.NewNumericDate(now.Add(-time.Minute)), // Begin Effective time
+		},
+	}
+}
+
+func (t *Token) buildGoogleClaims(googleUser string, userType int32) claims {
+	now := time.Now()
+	return claims{
+		UserID:   googleUser,
+		UserType: userType,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(now.Add(t.GoogleExpire)),
+			IssuedAt:  jwt.NewNumericDate(now),
+			NotBefore: jwt.NewNumericDate(now.Add(-time.Minute)),
 		},
 	}
 }
@@ -91,6 +105,18 @@ func (t *Token) CreateToken(UserID string, userType int32) (string, time.Duratio
 		return "", 0, errs.ErrTokenUnknown.WrapMsg("token type unknown")
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, t.buildClaims(UserID, userType))
+	str, err := token.SignedString([]byte(t.Secret))
+	if err != nil {
+		return "", 0, errs.Wrap(err)
+	}
+	return str, t.Expires, nil
+}
+
+func (t *Token) CreateGoogleToken(googleUser string, userType int32) (string, time.Duration, error) {
+	if !(userType == TokenUser || userType == TokenAdmin) {
+		return "", 0, errs.ErrTokenUnknown.WrapMsg("token type unknown")
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, t.buildGoogleClaims(googleUser, userType))
 	str, err := token.SignedString([]byte(t.Secret))
 	if err != nil {
 		return "", 0, errs.Wrap(err)

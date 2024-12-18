@@ -22,12 +22,13 @@ type Share struct {
 		Secret      string `mapstructure:"secret"`
 		AdminUserID string `mapstructure:"adminUserID"`
 	} `mapstructure:"openIM"`
-	ChatAdmin   []string `mapstructure:"chatAdmin"`
-	BasicAuth   struct {
+	ChatAdmin []string `mapstructure:"chatAdmin"`
+	BasicAuth struct {
 		Username string `mapstructure:"username"`
 		Password string `mapstructure:"password"`
+		Secret   string `mapstructure:"secret"`
 	} `mapstructure:"basicAuth"`
-	ProxyHeader string   `mapstructure:"proxyHeader"`
+	ProxyHeader string `mapstructure:"proxyHeader"`
 }
 
 type RpcRegisterName struct {
@@ -103,6 +104,7 @@ type Discovery struct {
 	Enable    string    `mapstructure:"enable"`
 	Etcd      Etcd      `mapstructure:"etcd"`
 	ZooKeeper ZooKeeper `mapstructure:"zooKeeper"`
+	DialTimeout int `mapstructure:"dialTimeout"`
 }
 
 type Etcd struct {
@@ -159,7 +161,8 @@ type Admin struct {
 		Ports      []int  `mapstructure:"ports"`
 	} `mapstructure:"rpc"`
 	TokenPolicy struct {
-		Expire int `mapstructure:"expire"`
+		Expire       int `mapstructure:"expire"`
+		GoogleExpire int `mapstructure:"googleExpire"`
 	} `mapstructure:"tokenPolicy"`
 	Secret string `mapstructure:"secret"`
 }

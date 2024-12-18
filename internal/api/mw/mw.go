@@ -45,6 +45,7 @@ func (o *MW) parseToken(c *gin.Context) (string, int32, string, error) {
 	return resp.UserID, resp.UserType, token, nil
 }
 
+
 func (o *MW) parseTokenType(c *gin.Context, userType int32) (string, string, error) {
 	userID, t, token, err := o.parseToken(c)
 	if err != nil {
@@ -55,6 +56,7 @@ func (o *MW) parseTokenType(c *gin.Context, userType int32) (string, string, err
 	}
 	return userID, token, nil
 }
+
 
 func (o *MW) isValidToken(c *gin.Context, userID string, token string) error {
 	resp, err := o.client.GetUserToken(c, &admin.GetUserTokenReq{UserID: userID})

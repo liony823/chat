@@ -43,7 +43,6 @@ func (o *adminServer) GetAdminInfo(ctx context.Context, req *admin.GetAdminInfoR
 	}
 	return &admin.GetAdminInfoResp{
 		Account:    a.Account,
-		Password:   a.Password,
 		FaceURL:    a.FaceURL,
 		Nickname:   a.Nickname,
 		UserID:     a.UserID,

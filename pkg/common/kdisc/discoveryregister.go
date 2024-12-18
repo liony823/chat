@@ -40,13 +40,13 @@ func NewDiscoveryRegister(discovery *config.Discovery) (discovery.SvcDiscoveryRe
 			zookeeper.WithFreq(time.Hour),
 			zookeeper.WithUserNameAndPassword(discovery.ZooKeeper.Username, discovery.ZooKeeper.Password),
 			zookeeper.WithRoundRobin(),
-			zookeeper.WithTimeout(10),
+			zookeeper.WithTimeout(discovery.DialTimeout),
 		)
 	case "etcd":
 		return etcd.NewSvcDiscoveryRegistry(
 			discovery.Etcd.RootDirectory,
 			discovery.Etcd.Address,
-			etcd.WithDialTimeout(10*time.Second),
+			etcd.WithDialTimeout(time.Duration(discovery.DialTimeout)*time.Second),
 			etcd.WithMaxCallSendMsgSize(20*1024*1024),
 			etcd.WithUsernameAndPassword(discovery.Etcd.Username, discovery.Etcd.Password))
 	default:

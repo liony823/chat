@@ -16,6 +16,7 @@ package admin
 
 import (
 	"context"
+	"errors"
 
 	"github.com/redis/go-redis/v9"
 
@@ -45,7 +46,7 @@ func (o *adminServer) ParseToken(ctx context.Context, req *adminpb.ParseTokenReq
 		return nil, err
 	}
 	m, err := o.Database.GetTokens(ctx, userID)
-	if err != nil && err != redis.Nil {
+	if err != nil && !errors.Is(err, redis.Nil) {
 		return nil, err
 	}
 	if len(m) == 0 {

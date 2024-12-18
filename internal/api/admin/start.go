@@ -8,6 +8,7 @@ import (
 	"github.com/liony823/tools/errs"
 	"github.com/liony823/tools/mw"
 	"github.com/liony823/tools/utils/datautil"
+	_ "github.com/openimsdk/chat/cmd/api/admin-api/docs" // 导入swagger docs
 	chatmw "github.com/openimsdk/chat/internal/api/mw"
 	"github.com/openimsdk/chat/internal/api/util"
 	"github.com/openimsdk/chat/pkg/common/config"
@@ -15,13 +16,14 @@ import (
 	"github.com/openimsdk/chat/pkg/common/kdisc"
 	adminclient "github.com/openimsdk/chat/pkg/protocol/admin"
 	chatclient "github.com/openimsdk/chat/pkg/protocol/chat"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
 type Config struct {
 	ApiConfig config.API
-
 	Discovery config.Discovery
 	Share     config.Share
 }
@@ -54,17 +56,21 @@ func Start(ctx context.Context, index int, config *Config) error {
 		ImUserID:        config.Share.OpenIM.AdminUserID,
 		ProxyHeader:     config.Share.ProxyHeader,
 		ChatAdminUserID: config.Share.ChatAdmin[0],
+		BasicAuthUser:   config.Share.BasicAuth.Username,
+		BasicAuthPass:   config.Share.BasicAuth.Password,
 	}
 	adminApi := New(chatClient, adminClient, im, &base)
 	mwApi := chatmw.New(adminClient)
 	gin.SetMode(gin.ReleaseMode)
 	engine := gin.New()
-	engine.Use(gin.Recovery(), mw.CorsHandler(), mw.GinBasicAuth(config.Share.BasicAuth.Username, config.Share.BasicAuth.Password), mw.GinParseOperationID())
+	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	engine.Use(gin.Recovery(), mw.CorsHandler(), mw.GinParseOperationID(), mw.GinAdminBasicAuth(config.Share.BasicAuth.Username, config.Share.BasicAuth.Password, config.Share.BasicAuth.Secret))
 	SetAdminRoute(engine, adminApi, mwApi)
 	return engine.Run(fmt.Sprintf(":%d", apiPort))
 }
 
 func SetAdminRoute(router gin.IRouter, admin *Api, mw *chatmw.MW) {
+	router.GET("/ping", admin.AdminPing)
 	adminRouterGroup := router.Group("/account")
 	adminRouterGroup.POST("/login", admin.AdminLogin)                                   // Login
 	adminRouterGroup.POST("/update", mw.CheckAdmin, admin.AdminUpdateInfo)              // Modify information
