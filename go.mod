@@ -22,7 +22,7 @@ require (
 )
 
 require (
-	github.com/liony823/tools v0.0.1-alpha.4
+	github.com/liony823/tools v0.0.1-alpha.5
 	github.com/livekit/protocol v1.10.1
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/openimsdk/gomake v0.0.14-alpha.5

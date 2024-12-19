@@ -99,6 +99,7 @@ func (o *Api) AdminInfo(c *gin.Context) {
 // @Id	changePassword
 // @Accept			json
 // @Produce		json
+// @Param			data	body		admin.ChangeAdminPasswordReq	true	"管理员密码"
 // @Success		200	{object}	apiresp.ApiResponse
 // @Router			/account/change_password [post]
 func (o *Api) ChangeAdminPassword(c *gin.Context) {

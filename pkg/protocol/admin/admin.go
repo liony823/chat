@@ -17,6 +17,7 @@ package admin
 import (
 	"github.com/liony823/tools/errs"
 	"github.com/liony823/tools/utils/datautil"
+	"github.com/liony823/tools/utils/pwdutil"
 	"github.com/openimsdk/chat/pkg/common/constant"
 )
 
@@ -33,6 +34,9 @@ func (x *LoginReq) Check() error {
 func (x *ChangePasswordReq) Check() error {
 	if x.Password == "" {
 		return errs.ErrArgs.WrapMsg("password is empty")
+	}
+	if !pwdutil.CheckPassword(x.Password) {
+		return errs.ErrArgs.WrapMsg("password is 6-16 characters, not contain spaces or special characters")
 	}
 	return nil
 }
@@ -357,6 +361,9 @@ func (x *ChangeAdminPasswordReq) Check() error {
 	}
 	if x.CurrentPassword == x.NewPassword {
 		return errs.ErrArgs.WrapMsg("currentPassword is equal to newPassword")
+	}
+	if !pwdutil.CheckPassword(x.NewPassword) {
+		return errs.ErrArgs.WrapMsg("newPassword is 6-16 characters, not contain spaces or special characters")
 	}
 	return nil
 }
