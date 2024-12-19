@@ -72,9 +72,9 @@ func Start(ctx context.Context, index int, config *Config) error {
 func SetAdminRoute(router gin.IRouter, admin *Api, mw *chatmw.MW) {
 	router.GET("/ping", admin.AdminPing)
 	adminRouterGroup := router.Group("/account")
-	adminRouterGroup.POST("/google_auth", admin.GetGoogleAuth)
-	adminRouterGroup.POST("/verify_google_auth", admin.VerifyGoogleAuth)
-	adminRouterGroup.POST("/login", admin.AdminLogin)                                   // Login
+	adminRouterGroup.POST("/login", admin.AdminLogin)
+	adminRouterGroup.POST("/google_auth", mw.CheckAdmin, admin.GetGoogleAuth)
+	adminRouterGroup.POST("/verify_google_auth", mw.CheckAdmin, admin.VerifyGoogleAuth) // Login
 	adminRouterGroup.POST("/update", mw.CheckAdmin, admin.AdminUpdateInfo)              // Modify information
 	adminRouterGroup.POST("/info", mw.CheckAdmin, admin.AdminInfo)                      // Get information
 	adminRouterGroup.POST("/change_password", mw.CheckAdmin, admin.ChangeAdminPassword) // Change admin account's password

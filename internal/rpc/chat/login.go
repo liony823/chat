@@ -4,11 +4,13 @@ import (
 	"context"
 	"fmt"
 	"math/rand"
+	"net/http"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/liony823/tools/utils/datautil"
+	"github.com/liony823/tools/utils/network"
 	constantpb "github.com/openimsdk/protocol/constant"
 
 	"github.com/liony823/tools/errs"
@@ -406,7 +408,10 @@ func (o *chatSvr) Login(ctx context.Context, req *chat.LoginReq) (*chat.LoginRes
 		}
 		return nil, err
 	}
-	if err := o.Admin.CheckLogin(ctx, credential.UserID, req.Ip); err != nil {
+	// 获取 Request
+	request := ctx.Value("request").(*http.Request)
+	remoteIp := network.RemoteIP(request)
+	if err := o.Admin.CheckLogin(ctx, credential.UserID, remoteIp); err != nil {
 		return nil, err
 	}
 	var verifyCodeID *string
@@ -437,10 +442,11 @@ func (o *chatSvr) Login(ctx context.Context, req *chat.LoginReq) (*chat.LoginRes
 	if err != nil {
 		return nil, err
 	}
+
 	record := &chatdb.UserLoginRecord{
 		UserID:     credential.UserID,
 		LoginTime:  time.Now(),
-		IP:         req.Ip,
+		IP:         remoteIp,
 		DeviceID:   req.DeviceID,
 		DeviceName: req.DeviceName,
 		Platform:   constantpb.PlatformIDToName(int(req.Platform)),

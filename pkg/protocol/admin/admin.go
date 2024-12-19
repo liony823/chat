@@ -28,7 +28,7 @@ func (x *LoginReq) Check() error {
 	if x.Password == "" {
 		return errs.ErrArgs.WrapMsg("password is empty")
 	}
-	if x.Code != "" {
+	if x.Code == "" {
 		return errs.ErrArgs.WrapMsg("code is empty")
 	}
 	if len(x.Code) != 6 {

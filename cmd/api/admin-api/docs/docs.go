@@ -1614,6 +1614,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/statistic/login_record": {
+            "post": {
+                "description": "获取系统统计数据",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "statistic"
+                ],
+                "summary": "获取系统统计数据",
+                "operationId": "LoginRecord",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.GetUserLoginRecordResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/statistic/login_user_count": {
             "post": {
                 "description": "获取用户登录统计数据",
@@ -2452,6 +2488,17 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_openimsdk_chat_pkg_protocol_admin.GetUserLoginRecordResp": {
+            "type": "object",
+            "properties": {
+                "records": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.UserLoginRecord"
+                    }
+                }
+            }
+        },
         "github_com_openimsdk_chat_pkg_protocol_admin.IPForbidden": {
             "type": "object",
             "properties": {
@@ -2842,6 +2889,29 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "ip": {
+                    "type": "string"
+                },
+                "userID": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.UserLoginRecord": {
+            "type": "object",
+            "properties": {
+                "IP": {
+                    "type": "string"
+                },
+                "deviceID": {
+                    "type": "string"
+                },
+                "deviceName": {
+                    "type": "string"
+                },
+                "loginTime": {
+                    "type": "integer"
+                },
+                "platform": {
                     "type": "string"
                 },
                 "userID": {

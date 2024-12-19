@@ -322,6 +322,13 @@ definitions:
       secret:
         type: string
     type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.GetUserLoginRecordResp:
+    properties:
+      records:
+        items:
+          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.UserLoginRecord'
+        type: array
+    type: object
   github_com_openimsdk_chat_pkg_protocol_admin.IPForbidden:
     properties:
       createTime:
@@ -574,6 +581,21 @@ definitions:
   github_com_openimsdk_chat_pkg_protocol_admin.UserIPLimitLogin:
     properties:
       ip:
+        type: string
+      userID:
+        type: string
+    type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.UserLoginRecord:
+    properties:
+      IP:
+        type: string
+      deviceID:
+        type: string
+      deviceName:
+        type: string
+      loginTime:
+        type: integer
+      platform:
         type: string
       userID:
         type: string
@@ -1755,6 +1777,27 @@ paths:
       summary: 测试
       tags:
       - common
+  /statistic/login_record:
+    post:
+      consumes:
+      - application/json
+      description: 获取系统统计数据
+      operationId: LoginRecord
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/apiresp.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.GetUserLoginRecordResp'
+              type: object
+      summary: 获取系统统计数据
+      tags:
+      - statistic
   /statistic/login_user_count:
     post:
       consumes:
