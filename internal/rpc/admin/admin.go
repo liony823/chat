@@ -16,14 +16,16 @@ package admin
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/base32"
 	"fmt"
-	"math/rand"
 	"time"
 
 	"github.com/liony823/tools/errs"
 	"github.com/liony823/tools/mcontext"
 	"github.com/liony823/tools/utils/datautil"
 	"github.com/liony823/tools/utils/pwdutil"
+	"github.com/pquerna/otp/totp"
 
 	"github.com/openimsdk/chat/pkg/common/constant"
 	"github.com/openimsdk/chat/pkg/common/db/dbutil"
@@ -43,12 +45,13 @@ func (o *adminServer) GetAdminInfo(ctx context.Context, req *admin.GetAdminInfoR
 		return nil, err
 	}
 	return &admin.GetAdminInfoResp{
-		Account:    a.Account,
-		FaceURL:    a.FaceURL,
-		Nickname:   a.Nickname,
-		UserID:     a.UserID,
-		Level:      a.Level,
-		CreateTime: a.CreateTime.UnixMilli(),
+		Account:          a.Account,
+		FaceURL:          a.FaceURL,
+		Nickname:         a.Nickname,
+		UserID:           a.UserID,
+		EnableGoogleAuth: a.EnableGoogleAuth,
+		Level:            a.Level,
+		CreateTime:       a.CreateTime.UnixMilli(),
 	}, nil
 }
 
@@ -59,7 +62,7 @@ func (o *adminServer) ChangeAdminPassword(ctx context.Context, req *admin.Change
 	}
 
 	if !pwdutil.VerifyPassword(req.CurrentPassword, user.Password) {
-		return nil, errs.ErrInternalServer.WrapMsg("password error")
+		return nil, eerrs.ErrPassword.Wrap()
 	}
 	hashedPassword, err := pwdutil.EncryptPassword(req.NewPassword)
 	if err != nil {
@@ -191,6 +194,17 @@ func (o *adminServer) Login(ctx context.Context, req *admin.LoginReq) (*admin.Lo
 	if !pwdutil.VerifyPassword(req.Password, a.Password) {
 		return nil, eerrs.ErrPassword.Wrap()
 	}
+
+	if a.EnableGoogleAuth {
+		if !totp.Validate(req.Code, a.GoogleAuthSecret) {
+			return nil, eerrs.ErrGoogleAuthCode.Wrap()
+		}
+	} else {
+		if req.Code != "123456" {
+			return nil, eerrs.ErrGoogleAuthCode.Wrap()
+		}
+	}
+
 	adminToken, err := o.CreateToken(ctx, &admin.CreateTokenReq{UserID: a.UserID, UserType: constant.AdminUser})
 	if err != nil {
 		return nil, err
@@ -258,4 +272,75 @@ func (o *adminServer) CheckSuperAdmin(ctx context.Context) error {
 		return errs.ErrNoPermission.Wrap()
 	}
 	return nil
+}
+
+func (o *adminServer) GetGoogleAuth(ctx context.Context, req *admin.GetGoogleAuthReq) (*admin.GetGoogleAuthResp, error) {
+	userID, err := mctx.CheckAdmin(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	adminInfo, err := o.Database.GetAdminUserID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+
+	if adminInfo.GoogleAuthSecret == "" {
+		secret, err := generateGoogleAuthSecret()
+		if err != nil {
+			return nil, err
+		}
+		adminInfo.GoogleAuthSecret = secret
+		// admin => map[string]any
+		update := make(map[string]any)
+		update["google_auth_secret"] = secret
+		if err := o.Database.UpdateAdmin(ctx, adminInfo.UserID, update); err != nil {
+			return nil, err
+		}
+	}
+
+	qrCodeData := generateGoogleAuthQRCode(adminInfo.Account, adminInfo.GoogleAuthSecret)
+
+	return &admin.GetGoogleAuthResp{
+		Secret:    adminInfo.GoogleAuthSecret,
+		QrCodeUrl: qrCodeData,
+	}, nil
+}
+
+func (o *adminServer) VerifyGoogleAuth(ctx context.Context, req *admin.VerifyGoogleAuthReq) (*admin.VerifyGoogleAuthResp, error) {
+	userID, err := mctx.CheckAdmin(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	adminInfo, err := o.Database.GetAdminUserID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+
+	if !totp.Validate(req.Code, adminInfo.GoogleAuthSecret) {
+		return nil, eerrs.ErrGoogleAuthCode.Wrap()
+	}
+
+	adminInfo.EnableGoogleAuth = true
+	update := make(map[string]any)
+	update["enable_google_auth"] = true
+	if err := o.Database.UpdateAdmin(ctx, adminInfo.UserID, update); err != nil {
+		return nil, err
+	}
+
+	return &admin.VerifyGoogleAuthResp{}, nil
+}
+
+func generateGoogleAuthSecret() (string, error) {
+	secret := make([]byte, 10)
+	_, err := rand.Read(secret)
+	if err != nil {
+		return "", err
+	}
+	return base32.StdEncoding.EncodeToString(secret), nil
+}
+
+func generateGoogleAuthQRCode(account, secret string) string {
+	return fmt.Sprintf("otpauth://totp/%s?secret=%s", account, secret)
 }

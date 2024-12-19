@@ -69,6 +69,7 @@ func ToDBAdminUpdate(req *admin.AdminUpdateInfoReq) (map[string]any, error) {
 	return update, nil
 }
 
+
 func ToDBAdminUpdatePassword(password string) (map[string]any, error) {
 	if password == "" {
 		return nil, errs.ErrArgs.WrapMsg("password is empty")

@@ -25,6 +25,7 @@ option go_package = "github.com/openimsdk/chat/pkg/protocol/admin";
 message LoginReq {
   string account = 1;
   string password = 2;
+  string code = 3;
 }
 
 message LoginResp {
@@ -95,8 +96,9 @@ message GetAdminInfoResp {
   string faceURL = 2;
   string nickname = 3;
   string userID = 4;
-  int32 level = 5;
-  int64 createTime = 6;
+  bool enableGoogleAuth = 5;
+  int32 level = 6;
+  int64 createTime = 7;
 }
 
 // ################### Default Friend ###################
@@ -555,6 +557,38 @@ message PageApplicationVersionResp {
   repeated ApplicationVersion versions = 2;
 }
 
+message GetGoogleAuthReq {
+
+}
+
+message GetGoogleAuthResp {
+  string secret = 1;
+  string qrCodeUrl = 2;
+}
+
+message VerifyGoogleAuthReq {
+  string code = 1;
+}
+
+message VerifyGoogleAuthResp {
+}
+
+message GetUserLoginRecordReq {
+}
+
+message UserLoginRecord {
+  string userID = 1;
+  string IP = 2;
+  string deviceName = 3;
+  string deviceID = 4;
+  string platform = 5;
+  int64 loginTime = 6;
+}
+
+message GetUserLoginRecordResp {
+  repeated UserLoginRecord records = 1;
+}
+
 
 service admin {
   // Login
@@ -635,4 +669,9 @@ service admin {
   rpc UpdateApplicationVersion(UpdateApplicationVersionReq) returns (UpdateApplicationVersionResp);
   rpc DeleteApplicationVersion(DeleteApplicationVersionReq) returns (DeleteApplicationVersionResp);
   rpc PageApplicationVersion(PageApplicationVersionReq) returns (PageApplicationVersionResp);
+
+  rpc GetGoogleAuth(GetGoogleAuthReq) returns (GetGoogleAuthResp);
+  rpc VerifyGoogleAuth(VerifyGoogleAuthReq) returns (VerifyGoogleAuthResp);
+
+  rpc GetUserLoginRecord(GetUserLoginRecordReq) returns (GetUserLoginRecordResp);
 }

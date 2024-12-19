@@ -107,11 +107,58 @@ const docTemplate = `{
                 ],
                 "summary": "管理员密码",
                 "operationId": "changePassword",
+                "parameters": [
+                    {
+                        "description": "管理员密码",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ChangeAdminPasswordReq"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/apiresp.ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/account/google_auth": {
+            "post": {
+                "description": "获取管理员账户的Google Authenticator密钥和二维码数据",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "account"
+                ],
+                "summary": "获取Google Authenticator密钥和二维码数据",
+                "operationId": "getGoogleAuth",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.GetGoogleAuthResp"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -230,6 +277,53 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/apiresp.ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/account/verify_google_auth": {
+            "post": {
+                "description": "验证管理员账户的Google Authenticator动态令牌,开启两步验证",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "account"
+                ],
+                "summary": "验证Google Authenticator动态令牌",
+                "operationId": "verifyGoogleAuth",
+                "parameters": [
+                    {
+                        "description": "验证信息",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.VerifyGoogleAuthReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.VerifyGoogleAuthResp"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -2155,6 +2249,20 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_openimsdk_chat_pkg_protocol_admin.ChangeAdminPasswordReq": {
+            "type": "object",
+            "properties": {
+                "currentPassword": {
+                    "type": "string"
+                },
+                "newPassword": {
+                    "type": "string"
+                },
+                "userID": {
+                    "type": "string"
+                }
+            }
+        },
         "github_com_openimsdk_chat_pkg_protocol_admin.DefaultFriendAttribute": {
             "type": "object",
             "properties": {
@@ -2302,6 +2410,9 @@ const docTemplate = `{
                 "createTime": {
                     "type": "integer"
                 },
+                "enableGoogleAuth": {
+                    "type": "boolean"
+                },
                 "faceURL": {
                     "type": "string"
                 },
@@ -2309,9 +2420,6 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "nickname": {
-                    "type": "string"
-                },
-                "password": {
                     "type": "string"
                 },
                 "userID": {
@@ -2330,6 +2438,17 @@ const docTemplate = `{
                     "additionalProperties": {
                         "type": "string"
                     }
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.GetGoogleAuthResp": {
+            "type": "object",
+            "properties": {
+                "qrCodeUrl": {
+                    "type": "string"
+                },
+                "secret": {
+                    "type": "string"
                 }
             }
         },
@@ -2421,6 +2540,9 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "account": {
+                    "type": "string"
+                },
+                "code": {
                     "type": "string"
                 },
                 "password": {
@@ -2726,6 +2848,17 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.VerifyGoogleAuthReq": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.VerifyGoogleAuthResp": {
+            "type": "object"
         },
         "github_com_openimsdk_chat_pkg_protocol_chat.AddUserAccountReq": {
             "type": "object",

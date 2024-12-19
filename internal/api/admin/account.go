@@ -118,3 +118,28 @@ func (o *Api) ChangeAdminPassword(c *gin.Context) {
 func (o *Api) AddAdminAccount(c *gin.Context) {
 	a2r.Call(admin.AdminClient.AddAdminAccount, o.adminClient, c)
 }
+
+// @Summary		获取Google Authenticator密钥和二维码数据
+// @Description	获取管理员账户的Google Authenticator密钥和二维码数据
+// @Tags			account
+// @Id	getGoogleAuth
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	apiresp.ApiResponse{data=admin.GetGoogleAuthResp}
+// @Router			/account/google_auth [post]
+func (o *Api) GetGoogleAuth(c *gin.Context) {
+	a2r.Call(admin.AdminClient.GetGoogleAuth, o.adminClient, c)
+}
+
+// @Summary		验证Google Authenticator动态令牌
+// @Description	验证管理员账户的Google Authenticator动态令牌,开启两步验证
+// @Tags			account
+// @Id	verifyGoogleAuth
+// @Accept			json
+// @Produce		json
+// @Param			data	body		admin.VerifyGoogleAuthReq	true	"验证信息"
+// @Success		200	{object}	apiresp.ApiResponse{data=admin.VerifyGoogleAuthResp}
+// @Router			/account/verify_google_auth [post]
+func (o *Api) VerifyGoogleAuth(c *gin.Context) {
+	a2r.Call(admin.AdminClient.VerifyGoogleAuth, o.adminClient, c)
+}

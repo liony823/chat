@@ -23,13 +23,15 @@ import (
 
 // Admin user
 type Admin struct {
-	Account    string    `bson:"account"`
-	Password   string    `bson:"password"`
-	FaceURL    string    `bson:"face_url"`
-	Nickname   string    `bson:"nickname"`
-	UserID     string    `bson:"user_id"`
-	Level      int32     `bson:"level"`
-	CreateTime time.Time `bson:"create_time"`
+	Account          string    `bson:"account"`
+	Password         string    `bson:"password"`
+	FaceURL          string    `bson:"face_url"`
+	Nickname         string    `bson:"nickname"`
+	UserID           string    `bson:"user_id"`
+	GoogleAuthSecret string    `bson:"google_auth_secret"`
+	EnableGoogleAuth bool      `bson:"enable_google_auth"`
+	Level            int32     `bson:"level"`
+	CreateTime       time.Time `bson:"create_time"`
 }
 
 func (Admin) TableName() string {

@@ -192,6 +192,15 @@ definitions:
       userID:
         type: string
     type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.ChangeAdminPasswordReq:
+    properties:
+      currentPassword:
+        type: string
+      newPassword:
+        type: string
+      userID:
+        type: string
+    type: object
   github_com_openimsdk_chat_pkg_protocol_admin.DefaultFriendAttribute:
     properties:
       createTime:
@@ -286,13 +295,13 @@ definitions:
         type: string
       createTime:
         type: integer
+      enableGoogleAuth:
+        type: boolean
       faceURL:
         type: string
       level:
         type: integer
       nickname:
-        type: string
-      password:
         type: string
       userID:
         type: string
@@ -305,6 +314,13 @@ definitions:
         additionalProperties:
           type: string
         type: object
+    type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.GetGoogleAuthResp:
+    properties:
+      qrCodeUrl:
+        type: string
+      secret:
+        type: string
     type: object
   github_com_openimsdk_chat_pkg_protocol_admin.IPForbidden:
     properties:
@@ -363,6 +379,8 @@ definitions:
   github_com_openimsdk_chat_pkg_protocol_admin.LoginReq:
     properties:
       account:
+        type: string
+      code:
         type: string
       password:
         type: string
@@ -559,6 +577,13 @@ definitions:
         type: string
       userID:
         type: string
+    type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.VerifyGoogleAuthReq:
+    properties:
+      code:
+        type: string
+    type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.VerifyGoogleAuthResp:
     type: object
   github_com_openimsdk_chat_pkg_protocol_chat.AddUserAccountReq:
     properties:
@@ -784,6 +809,13 @@ paths:
       - application/json
       description: 修改管理员密码
       operationId: changePassword
+      parameters:
+      - description: 管理员密码
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ChangeAdminPasswordReq'
       produces:
       - application/json
       responses:
@@ -792,6 +824,27 @@ paths:
           schema:
             $ref: '#/definitions/apiresp.ApiResponse'
       summary: 管理员密码
+      tags:
+      - account
+  /account/google_auth:
+    post:
+      consumes:
+      - application/json
+      description: 获取管理员账户的Google Authenticator密钥和二维码数据
+      operationId: getGoogleAuth
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/apiresp.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.GetGoogleAuthResp'
+              type: object
+      summary: 获取Google Authenticator密钥和二维码数据
       tags:
       - account
   /account/info:
@@ -864,6 +917,34 @@ paths:
           schema:
             $ref: '#/definitions/apiresp.ApiResponse'
       summary: 更新管理员信息
+      tags:
+      - account
+  /account/verify_google_auth:
+    post:
+      consumes:
+      - application/json
+      description: 验证管理员账户的Google Authenticator动态令牌,开启两步验证
+      operationId: verifyGoogleAuth
+      parameters:
+      - description: 验证信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.VerifyGoogleAuthReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/apiresp.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.VerifyGoogleAuthResp'
+              type: object
+      summary: 验证Google Authenticator动态令牌
       tags:
       - account
   /applet/add:

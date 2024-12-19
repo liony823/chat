@@ -438,11 +438,12 @@ func (o *chatSvr) Login(ctx context.Context, req *chat.LoginReq) (*chat.LoginRes
 		return nil, err
 	}
 	record := &chatdb.UserLoginRecord{
-		UserID:    credential.UserID,
-		LoginTime: time.Now(),
-		IP:        req.Ip,
-		DeviceID:  req.DeviceID,
-		Platform:  constantpb.PlatformIDToName(int(req.Platform)),
+		UserID:     credential.UserID,
+		LoginTime:  time.Now(),
+		IP:         req.Ip,
+		DeviceID:   req.DeviceID,
+		DeviceName: req.DeviceName,
+		Platform:   constantpb.PlatformIDToName(int(req.Platform)),
 	}
 	if err := o.Database.LoginRecord(ctx, record, verifyCodeID); err != nil {
 		return nil, err

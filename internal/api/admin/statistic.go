@@ -6,9 +6,22 @@ import (
 	"github.com/liony823/tools/apiresp"
 	"github.com/openimsdk/chat/pkg/common/apistruct"
 	"github.com/openimsdk/chat/pkg/common/mctx"
+	"github.com/openimsdk/chat/pkg/protocol/admin"
 	"github.com/openimsdk/chat/pkg/protocol/chat"
 	"github.com/openimsdk/protocol/user"
 )
+
+// @Summary 获取系统统计数据
+// @Description 获取系统统计数据
+// @Tags			statistic
+// @Id	LoginRecord
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	apiresp.ApiResponse{data=admin.GetUserLoginRecordResp}
+// @Router			/statistic/login_record [post]
+func (o *Api) LoginRecord(c *gin.Context) {
+	a2r.Call(admin.AdminClient.GetUserLoginRecord, o.adminClient, c)
+}
 
 // @Summary		统计用户登录数
 // @Description	获取用户登录统计数据

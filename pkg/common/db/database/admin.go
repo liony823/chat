@@ -28,7 +28,9 @@ import (
 	"github.com/redis/go-redis/v9"
 
 	"github.com/openimsdk/chat/pkg/common/db/model/admin"
+	"github.com/openimsdk/chat/pkg/common/db/model/chat"
 	admindb "github.com/openimsdk/chat/pkg/common/db/table/admin"
+	chatdb "github.com/openimsdk/chat/pkg/common/db/table/chat"
 )
 
 type AdminDatabaseInterface interface {
@@ -85,6 +87,8 @@ type AdminDatabaseInterface interface {
 	UpdateVersion(ctx context.Context, id primitive.ObjectID, update map[string]any) error
 	DeleteVersion(ctx context.Context, id []primitive.ObjectID) error
 	PageVersion(ctx context.Context, platforms []string, page pagination.Pagination) (int64, []*admindb.Application, error)
+
+	GetUserLoginRecord(ctx context.Context) ([]*chatdb.UserLoginRecord, error)
 }
 
 func NewAdminDatabase(cli *mongoutil.Client, rdb redis.UniversalClient) (AdminDatabaseInterface, error) {
@@ -128,6 +132,12 @@ func NewAdminDatabase(cli *mongoutil.Client, rdb redis.UniversalClient) (AdminDa
 	if err != nil {
 		return nil, err
 	}
+
+	loginRecord, err := chat.NewUserLoginRecord(cli.GetDB())
+	if err != nil {
+		return nil, err
+	}
+
 	return &AdminDatabase{
 		tx:                 cli.GetTx(),
 		admin:              a,
@@ -141,6 +151,7 @@ func NewAdminDatabase(cli *mongoutil.Client, rdb redis.UniversalClient) (AdminDa
 		clientConfig:       clientConfig,
 		application:        application,
 		cache:              cache.NewTokenInterface(rdb),
+		loginRecord:        loginRecord,
 	}, nil
 }
 
@@ -157,6 +168,8 @@ type AdminDatabase struct {
 	clientConfig       admindb.ClientConfigInterface
 	application        admindb.ApplicationInterface
 	cache              cache.TokenInterface
+	chatRegister       chatdb.RegisterInterface
+	loginRecord        chatdb.UserLoginRecordInterface
 }
 
 func (o *AdminDatabase) GetAdmin(ctx context.Context, account string) (*admindb.Admin, error) {
@@ -379,4 +392,8 @@ func (o *AdminDatabase) DeleteVersion(ctx context.Context, id []primitive.Object
 
 func (o *AdminDatabase) PageVersion(ctx context.Context, platforms []string, page pagination.Pagination) (int64, []*admindb.Application, error) {
 	return o.application.PageVersion(ctx, platforms, page)
+}
+
+func (o *AdminDatabase) GetUserLoginRecord(ctx context.Context) ([]*chatdb.UserLoginRecord, error) {
+	return o.loginRecord.List(ctx)
 }

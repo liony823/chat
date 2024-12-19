@@ -50,6 +50,11 @@ func (o *UserLoginRecord) Create(ctx context.Context, records ...*chat.UserLogin
 	return mongoutil.InsertMany(ctx, o.coll, records)
 }
 
+func (o *UserLoginRecord) List(ctx context.Context) ([]*chat.UserLoginRecord, error) {
+	//根据时间排序，最新登录的排在前面
+	return mongoutil.Find[*chat.UserLoginRecord](ctx, o.coll, bson.M{"login_time": -1})
+}
+
 func (o *UserLoginRecord) CountTotal(ctx context.Context, before *time.Time) (count int64, err error) {
 	filter := bson.M{}
 	if before != nil {
