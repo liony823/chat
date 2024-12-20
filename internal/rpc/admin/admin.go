@@ -299,7 +299,7 @@ func (o *adminServer) GetGoogleAuth(ctx context.Context, req *admin.GetGoogleAut
 		}
 	}
 
-	qrCodeData := generateGoogleAuthQRCode(adminInfo.Account, adminInfo.GoogleAuthSecret)
+	qrCodeData := generateGoogleAuthQRCode(adminInfo.Nickname, adminInfo.GoogleAuthSecret)
 
 	return &admin.GetGoogleAuthResp{
 		Secret:    adminInfo.GoogleAuthSecret,
@@ -341,6 +341,9 @@ func generateGoogleAuthSecret() (string, error) {
 	return base32.StdEncoding.EncodeToString(secret), nil
 }
 
-func generateGoogleAuthQRCode(account, secret string) string {
-	return fmt.Sprintf("otpauth://totp/%s?secret=%s", account, secret)
+func generateGoogleAuthQRCode(nickName, secret string) string {
+	return fmt.Sprintf("otpauth://totp/%s:%s?secret=%s&issuer=https://43.154.73.22:58602",
+		"飞宏IM", // 改为你的应用名称
+		nickName,
+		secret)
 }
