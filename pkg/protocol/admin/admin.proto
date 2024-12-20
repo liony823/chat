@@ -84,6 +84,8 @@ message DelAdminAccountResp {}
 
 message SearchAdminAccountReq {
   openim.sdkws.RequestPagination pagination = 2;
+  string account = 3;
+  string nickname = 4;
 }
 
 message SearchAdminAccountResp {

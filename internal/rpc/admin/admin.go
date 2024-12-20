@@ -26,6 +26,7 @@ import (
 	"github.com/liony823/tools/utils/datautil"
 	"github.com/liony823/tools/utils/pwdutil"
 	"github.com/pquerna/otp/totp"
+	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/openimsdk/chat/pkg/common/constant"
 	"github.com/openimsdk/chat/pkg/common/db/dbutil"
@@ -90,13 +91,15 @@ func (o *adminServer) AddAdminAccount(ctx context.Context, req *admin.AddAdminAc
 	}
 
 	adm := &admindb.Admin{
-		Account:    req.Account,
-		Password:   hashedPassword,
-		FaceURL:    req.FaceURL,
-		Nickname:   req.Nickname,
-		UserID:     o.genUserID(),
-		Level:      80,
-		CreateTime: time.Now(),
+		Account:          req.Account,
+		Password:         hashedPassword,
+		FaceURL:          req.FaceURL,
+		Nickname:         req.Nickname,
+		UserID:           o.genUserID(),
+		Level:            constant.NormalAdmin,
+		CreateTime:       time.Now(),
+		EnableGoogleAuth: false,
+		GoogleAuthSecret: "",
 	}
 	if err = o.Database.AddAdminAccount(ctx, []*admindb.Admin{adm}); err != nil {
 		return nil, err
@@ -134,7 +137,15 @@ func (o *adminServer) SearchAdminAccount(ctx context.Context, req *admin.SearchA
 		return nil, err
 	}
 
-	total, adminAccounts, err := o.Database.SearchAdminAccount(ctx, req.Pagination)
+	filter := bson.M{}
+	if req.Account != "" {
+		filter["account"] = req.Account
+	}
+	if req.Nickname != "" {
+		filter["nickname"] = req.Nickname
+	}
+
+	total, adminAccounts, err := o.Database.SearchAdminAccount(ctx, req.Pagination, filter)
 	if err != nil {
 		return nil, err
 	}

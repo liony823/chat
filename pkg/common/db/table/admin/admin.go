@@ -19,6 +19,7 @@ import (
 	"time"
 
 	"github.com/liony823/tools/db/pagination"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 // Admin user
@@ -45,5 +46,5 @@ type AdminInterface interface {
 	Update(ctx context.Context, account string, update map[string]any) error
 	ChangePassword(ctx context.Context, userID string, newPassword string) error
 	Delete(ctx context.Context, userIDs []string) error
-	Search(ctx context.Context, pagination pagination.Pagination) (int64, []*Admin, error)
+	Search(ctx context.Context, pagination pagination.Pagination, filter bson.M) (int64, []*Admin, error)
 }

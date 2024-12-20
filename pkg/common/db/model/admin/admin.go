@@ -77,8 +77,11 @@ func (o *Admin) Delete(ctx context.Context, userIDs []string) error {
 	return mongoutil.DeleteMany(ctx, o.coll, bson.M{"user_id": bson.M{"$in": userIDs}})
 }
 
-func (o *Admin) Search(ctx context.Context, pagination pagination.Pagination) (int64, []*admindb.Admin, error) {
+func (o *Admin) Search(ctx context.Context, pagination pagination.Pagination, filter bson.M) (int64, []*admindb.Admin, error) {
 	opt := options.Find().SetSort(bson.D{{Key: "create_time", Value: -1}})
-	filter := bson.M{"level": constant.NormalAdmin}
+	if filter == nil {
+		filter = bson.M{}
+	}
+	filter["level"] = constant.NormalAdmin
 	return mongoutil.FindPage[*admindb.Admin](ctx, o.coll, filter, pagination, opt)
 }

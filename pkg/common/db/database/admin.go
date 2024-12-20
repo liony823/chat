@@ -18,6 +18,7 @@ import (
 	"context"
 	"time"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/liony823/tools/db/mongoutil"
@@ -40,7 +41,7 @@ type AdminDatabaseInterface interface {
 	ChangePassword(ctx context.Context, userID string, newPassword string) error
 	AddAdminAccount(ctx context.Context, admin []*admindb.Admin) error
 	DelAdminAccount(ctx context.Context, userIDs []string) error
-	SearchAdminAccount(ctx context.Context, pagination pagination.Pagination) (int64, []*admindb.Admin, error)
+	SearchAdminAccount(ctx context.Context, pagination pagination.Pagination, filter bson.M) (int64, []*admindb.Admin, error)
 	CreateApplet(ctx context.Context, applets []*admindb.Applet) error
 	DelApplet(ctx context.Context, appletIDs []string) error
 	GetApplet(ctx context.Context, appletID string) (*admindb.Applet, error)
@@ -196,8 +197,8 @@ func (o *AdminDatabase) DelAdminAccount(ctx context.Context, userIDs []string) e
 	return o.admin.Delete(ctx, userIDs)
 }
 
-func (o *AdminDatabase) SearchAdminAccount(ctx context.Context, pagination pagination.Pagination) (int64, []*admindb.Admin, error) {
-	return o.admin.Search(ctx, pagination)
+func (o *AdminDatabase) SearchAdminAccount(ctx context.Context, pagination pagination.Pagination, filter bson.M) (int64, []*admindb.Admin, error) {
+	return o.admin.Search(ctx, pagination, filter)
 }
 
 func (o *AdminDatabase) CreateApplet(ctx context.Context, applets []*admindb.Applet) error {

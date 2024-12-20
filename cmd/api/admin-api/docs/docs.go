@@ -39,7 +39,7 @@ const docTemplate = `{
                 "operationId": "addAdminAccount",
                 "parameters": [
                     {
-                        "description": "管理员账户信息",
+                        "description": "添加管理员账户信息",
                         "name": "data",
                         "in": "body",
                         "required": true,
@@ -238,6 +238,53 @@ const docTemplate = `{
                                     "properties": {
                                         "data": {
                                             "$ref": "#/definitions/github_com_openimsdk_chat_pkg_common_apistruct.AdminLoginResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/account/search_admin": {
+            "post": {
+                "description": "搜索管理员账户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "搜索管理员账户",
+                "operationId": "searchAdminAccount",
+                "parameters": [
+                    {
+                        "description": "管理员账户搜索",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SearchAdminAccountReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SearchAdminAccountResp"
                                         }
                                     }
                                 }
@@ -1829,6 +1876,17 @@ const docTemplate = `{
                 ],
                 "summary": "删除管理员账户",
                 "operationId": "delAdminAccount",
+                "parameters": [
+                    {
+                        "description": "删除管理员账户",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.DelAdminAccountReq"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1954,30 +2012,6 @@ const docTemplate = `{
                         }
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/apiresp.ApiResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/user/search_admin": {
-            "post": {
-                "description": "搜索管理员账户",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "summary": "搜索管理员账户",
-                "operationId": "searchAdminAccount",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -2313,6 +2347,17 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_openimsdk_chat_pkg_protocol_admin.DelAdminAccountReq": {
+            "type": "object",
+            "properties": {
+                "userIDs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "github_com_openimsdk_chat_pkg_protocol_admin.DelAppletReq": {
             "type": "object",
             "properties": {
@@ -2622,6 +2667,34 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ApplicationVersion"
                     }
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.SearchAdminAccountReq": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "type": "string"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "pagination": {
+                    "$ref": "#/definitions/sdkws.RequestPagination"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.SearchAdminAccountResp": {
+            "type": "object",
+            "properties": {
+                "adminAccounts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.GetAdminInfoResp"
+                    }
+                },
+                "total": {
+                    "type": "integer"
                 }
             }
         },

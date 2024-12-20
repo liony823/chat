@@ -210,6 +210,13 @@ definitions:
       userID:
         type: string
     type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.DelAdminAccountReq:
+    properties:
+      userIDs:
+        items:
+          type: string
+        type: array
+    type: object
   github_com_openimsdk_chat_pkg_protocol_admin.DelAppletReq:
     properties:
       appletIds:
@@ -409,6 +416,24 @@ definitions:
         items:
           $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ApplicationVersion'
         type: array
+    type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.SearchAdminAccountReq:
+    properties:
+      account:
+        type: string
+      nickname:
+        type: string
+      pagination:
+        $ref: '#/definitions/sdkws.RequestPagination'
+    type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.SearchAdminAccountResp:
+    properties:
+      adminAccounts:
+        items:
+          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.GetAdminInfoResp'
+        type: array
+      total:
+        type: integer
     type: object
   github_com_openimsdk_chat_pkg_protocol_admin.SearchAppletReq:
     properties:
@@ -786,7 +811,7 @@ paths:
       description: 创建新的管理员账户
       operationId: addAdminAccount
       parameters:
-      - description: 管理员账户信息
+      - description: 添加管理员账户信息
         in: body
         name: data
         required: true
@@ -918,6 +943,34 @@ paths:
       summary: 管理员登录
       tags:
       - account
+  /account/search_admin:
+    post:
+      consumes:
+      - application/json
+      description: 搜索管理员账户
+      operationId: searchAdminAccount
+      parameters:
+      - description: 管理员账户搜索
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SearchAdminAccountReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/apiresp.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SearchAdminAccountResp'
+              type: object
+      summary: 搜索管理员账户
+      tags:
+      - user
   /account/update:
     post:
       consumes:
@@ -1904,6 +1957,13 @@ paths:
       - application/json
       description: 删除指定管理员账户
       operationId: delAdminAccount
+      parameters:
+      - description: 删除管理员账户
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.DelAdminAccountReq'
       produces:
       - application/json
       responses:
@@ -1995,22 +2055,6 @@ paths:
           schema:
             $ref: '#/definitions/apiresp.ApiResponse'
       summary: 重置用户密码
-      tags:
-      - user
-  /user/search_admin:
-    post:
-      consumes:
-      - application/json
-      description: 搜索管理员账户
-      operationId: searchAdminAccount
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/apiresp.ApiResponse'
-      summary: 搜索管理员账户
       tags:
       - user
 securityDefinitions:

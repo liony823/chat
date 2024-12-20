@@ -92,8 +92,9 @@ func (o *Api) ResetUserPassword(c *gin.Context) {
 // @Id	delAdminAccount
 // @Accept			json
 // @Produce		json
+// @Param			data	body		admin.DelAdminAccountReq	true	"删除管理员账户"
 // @Success		200	{object}	apiresp.ApiResponse
-// @Router			/user/del_admin [post]
+// @Router			/account/del_admin [post]
 func (o *Api) DelAdminAccount(c *gin.Context) {
 	a2r.Call(admin.AdminClient.DelAdminAccount, o.adminClient, c)
 }
@@ -104,8 +105,9 @@ func (o *Api) DelAdminAccount(c *gin.Context) {
 // @Id	searchAdminAccount
 // @Accept			json
 // @Produce		json
-// @Success		200	{object}	apiresp.ApiResponse
-// @Router			/user/search_admin [post]
+// @Param			data	body		admin.SearchAdminAccountReq	true	"管理员账户搜索"
+// @Success		200	{object}	apiresp.ApiResponse{data=admin.SearchAdminAccountResp}
+// @Router			/account/search_admin [post]
 func (o *Api) SearchAdminAccount(c *gin.Context) {
 	a2r.Call(admin.AdminClient.SearchAdminAccount, o.adminClient, c)
 }

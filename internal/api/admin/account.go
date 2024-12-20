@@ -112,7 +112,7 @@ func (o *Api) ChangeAdminPassword(c *gin.Context) {
 // @Id	addAdminAccount
 // @Accept			json
 // @Produce		json
-// @Param			data	body		admin.AddAdminAccountReq	true	"管理员账户信息"
+// @Param			data	body		admin.AddAdminAccountReq	true	"添加管理员账户信息"
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/account/add_admin [post]
 func (o *Api) AddAdminAccount(c *gin.Context) {
