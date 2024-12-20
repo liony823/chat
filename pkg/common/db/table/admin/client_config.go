@@ -20,6 +20,7 @@ import "context"
 type ClientConfig struct {
 	Key   string `bson:"key"`
 	Value string `bson:"value"`
+	Desc  string `bson:"desc"`
 }
 
 func (ClientConfig) TableName() string {

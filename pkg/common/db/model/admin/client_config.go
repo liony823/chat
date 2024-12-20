@@ -46,6 +46,7 @@ type ClientConfig struct {
 	coll *mongo.Collection
 }
 
+
 func (o *ClientConfig) Set(ctx context.Context, config map[string]string) error {
 	for key, value := range config {
 		filter := bson.M{"key": key}

@@ -1,0 +1,172 @@
+[
+  {
+    "key": "ip_white_list",
+    "value": "127.0.0.1,localhost",
+    "desc": "后台IP白名单"
+  },
+  {
+    "key": "app_login_type",
+    "value": "1",
+    "desc": "app登录类型: 1 用户名+密码、2 手机号+密码、3 用户名+密码@手机号+密码"
+  },
+  {
+    "key": "app_sensitive_words",
+    "value": "",
+    "desc": "敏感词，多个敏感词用英文的 | 符号分割"
+  },
+  {
+    "key": "app_mobile_msg_withdraw",
+    "value": "1",
+    "desc": "手机消息撤回: 1 允许、0 不允许"
+  },
+  {
+    "key": "app_disable_change_device",
+    "value": "0",
+    "desc": "是否禁止更换设备: 1 禁止、0 不禁止"
+  },
+  {
+    "key": "app_signup_device_limit",
+    "value": "0",
+    "desc": "设备限制注册限制数， 0为不限制"
+  },
+  {
+    "key": "app_sigle_ip_register_limit_in_12hour",
+    "value": "0",
+    "desc": "单IP12小时注册限制数， 0为不限制"
+  },
+  {
+    "key": "app_auto_clear_history_msg",
+    "value": "0",
+    "desc": "自动清除几天前历史消息， 0 不自动清除"
+  },
+  {
+    "key": "app_signin",
+    "value": "30",
+    "desc": "自动清除几天前历史消息， 0 不自动清除"
+  },
+  {
+    "key": "app_mini_program_visible",
+    "value": "1",
+    "desc": "小程序页是否可见: 1 可见、0 不可见"
+  },
+  {
+    "key": "app_discovery_visible",
+    "value": "1",
+    "desc": "发现页是否可见: 1 可见、0 不可见"
+  },
+  {
+    "key": "app_charge_and_payout_visible",
+    "value": "1",
+    "desc": "充值和提现是否可见: 1 可见、0 不可见"
+  },
+  {
+    "key": "app_voice_call_visible",
+    "value": "1",
+    "desc": "语音通话是否可见: 1 可见、0 不可见"
+  },
+  {
+    "key": "app_video_call_visible",
+    "value": "1",
+    "desc": "视频通话是否可见: 1 可见、0 不可见"
+  },
+  {
+    "key": "app_signup_invite_code_visible",
+    "value": "1",
+    "desc": "注册邀请码是否可见: 1 可见、0 不可见"
+  },
+  {
+    "key": "app_signin_auth_code_visible",
+    "value": "1",
+    "desc": "登录授权码是否可见: 1 可见、0 不可见"
+  },
+  {
+    "key": "app_friend_online_status_visible",
+    "value": "1",
+    "desc": "好友在线状态是否可见: 1 可见、0 不可见"
+  },
+  {
+    "key": "app_mobile_msg_read_status_visible",
+    "value": "1",
+    "desc": "手机消息已读状态是否可见: 1 可见、0 不可见"
+  },
+  {
+    "key": "app_sign_red_envelope_visible",
+    "value": "1",
+    "desc": "签到红包模块是否开启: 1 开启、0 不开启"
+  },
+  {
+    "key": "app_mine_wallet_visible",
+    "value": "1",
+    "desc": "我的钱包是否开启: 1 可见、0 不可见"
+  },
+  {
+    "key": "app_wallet_payout_min",
+    "value": "0",
+    "desc": "钱包提现最小金额，单位为分，0为不限制"
+  },
+  {
+    "key": "app_red_envelope_visible",
+    "value": "1",
+    "desc": "红包模块是否开启: 1 开启、0 不开启"
+  },
+  {
+    "key": "app_transfer_visible",
+    "value": "1",
+    "desc": "转账模块是否开启: 1 开启、0 不开启"
+  },
+  {
+    "key": "app_transfer_min_amount",
+    "value": "0",
+    "desc": "转账最小金额，单位为分，0为不限制"
+  },
+  {
+    "key": "app_mobile_edit_msg",
+    "value": "1",
+    "desc": "手机端是否可以编辑消息: 1 可以、0 不可以"
+  },
+  {
+    "key": "app_group_member_see_member",
+    "value": "1",
+    "desc": "普通群成员是否可以查看其他群成员: 1 可以、0 不可以"
+  },
+  {
+    "key": "app_msg_time_visible",
+    "value": "1",
+    "desc": "消息时间是否可见: 1 可见、0 不可见"
+  },
+  {
+    "key": "app_pinned_conversation_sync",
+    "value": "1",
+    "desc": "置顶会话是否同步: 1 同步、0 不同步"
+  },
+  {
+    "key": "app_only_internal_friend_add",
+    "value": "0",
+    "desc": "仅内部号可被加好友及加非内部号好友: 1 开启 0 关闭"
+  },
+  {
+    "key": "app_only_internal_friend_create_group",
+    "value": "0",
+    "desc": "仅内部号可建群: 1 开启 0 关闭"
+  },
+  {
+    "key": "app_only_internal_friend_send_group_red_envelope",
+    "value": "0",
+    "desc": "仅内部号可发群红包: 1 开启 0 关闭"
+  },
+  {
+    "key": "app_only_internal_friend_send_group_card",
+    "value": "0",
+    "desc": "仅内部号可群内推送名片: 1 开启 0 关闭"
+  },
+  {
+    "key": "app_only_internal_friend_group_robot_free_msg",
+    "value": "0",
+    "desc": "群机器人免消息: 1 开启 0 关闭"
+  },
+  {
+    "key": "app_group_member_limit",
+    "value": "0",
+    "desc": "群人数限制: 0 不限制 "
+  }
+]
