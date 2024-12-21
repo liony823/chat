@@ -91,6 +91,11 @@ type AdminDatabaseInterface interface {
 	PageVersion(ctx context.Context, platforms []string, page pagination.Pagination) (int64, []*admindb.Application, error)
 
 	GetUserLoginRecord(ctx context.Context) ([]*chatdb.UserLoginRecord, error)
+	GetSmsConfig(ctx context.Context) (map[string]interface{}, error)
+	SetSmsConfig(ctx context.Context, config map[string]interface{}) error
+
+	GetBucketConfig(ctx context.Context) (map[string]interface{}, error)
+	SetBucketConfig(ctx context.Context, config map[string]interface{}) error
 }
 
 func NewAdminDatabase(cli *mongoutil.Client, rdb redis.UniversalClient) (AdminDatabaseInterface, error) {
@@ -140,6 +145,16 @@ func NewAdminDatabase(cli *mongoutil.Client, rdb redis.UniversalClient) (AdminDa
 		return nil, err
 	}
 
+	smsConfig, err := admin.NewSmsConfig(cli.GetDB())
+	if err != nil {
+		return nil, err
+	}
+
+	bucketConfig, err := admin.NewBucketConfig(cli.GetDB())
+	if err != nil {
+		return nil, err
+	}
+
 	return &AdminDatabase{
 		tx:                 cli.GetTx(),
 		admin:              a,
@@ -154,6 +169,8 @@ func NewAdminDatabase(cli *mongoutil.Client, rdb redis.UniversalClient) (AdminDa
 		application:        application,
 		cache:              cache.NewTokenInterface(rdb),
 		loginRecord:        loginRecord,
+		smsConfig:          smsConfig,
+		bucketConfig:       bucketConfig,
 	}, nil
 }
 
@@ -172,6 +189,8 @@ type AdminDatabase struct {
 	cache              cache.TokenInterface
 	chatRegister       chatdb.RegisterInterface
 	loginRecord        chatdb.UserLoginRecordInterface
+	smsConfig          admindb.SmsConfigInterface
+	bucketConfig       admindb.BucketConfigInterface
 }
 
 func (o *AdminDatabase) GetAdmin(ctx context.Context, account string) (*admindb.Admin, error) {
@@ -402,4 +421,52 @@ func (o *AdminDatabase) PageVersion(ctx context.Context, platforms []string, pag
 
 func (o *AdminDatabase) GetUserLoginRecord(ctx context.Context) ([]*chatdb.UserLoginRecord, error) {
 	return o.loginRecord.List(ctx)
+}
+
+func (o *AdminDatabase) GetSmsConfig(ctx context.Context) (map[string]interface{}, error) {
+	return o.smsConfig.Get(ctx)
+}
+
+func (o *AdminDatabase) SetSmsConfig(ctx context.Context, config map[string]interface{}) error {
+	return o.smsConfig.Set(ctx, config)
+}
+
+func (o *AdminDatabase) GetActiveSmsConfig(ctx context.Context) (map[string]interface{}, error) {
+	config, err := o.smsConfig.Get(ctx)
+	if err != nil {
+		return nil, err
+	}
+	activeConfig := make(map[string]interface{})
+	for key, value := range config {
+		if v, ok := value.(map[string]interface{}); ok {
+			if enable, ok := v["enable"].(bool); ok && enable {
+				activeConfig[key] = value
+			}
+		}
+	}
+	return activeConfig, nil
+}
+
+func (o *AdminDatabase) GetBucketConfig(ctx context.Context) (map[string]interface{}, error) {
+	return o.bucketConfig.Get(ctx)
+}
+
+func (o *AdminDatabase) SetBucketConfig(ctx context.Context, config map[string]interface{}) error {
+	return o.bucketConfig.Set(ctx, config)
+}
+
+func (o *AdminDatabase) GetActiveBucketConfig(ctx context.Context) (map[string]interface{}, error) {
+	config, err := o.bucketConfig.Get(ctx)
+	if err != nil {
+		return nil, err
+	}
+	activeConfig := make(map[string]interface{})
+	for key, value := range config {
+		if v, ok := value.(map[string]interface{}); ok {
+			if enable, ok := v["enable"].(bool); ok && enable {
+				activeConfig[key] = value
+			}
+		}
+	}
+	return activeConfig, nil
 }

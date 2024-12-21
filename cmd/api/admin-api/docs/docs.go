@@ -879,6 +879,77 @@ const docTemplate = `{
                 }
             }
         },
+        "/bucket_config/get": {
+            "post": {
+                "description": "获取桶配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "bucket_config"
+                ],
+                "summary": "获取桶配置",
+                "operationId": "getBucketConfig",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.GetBucketConfigResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/bucket_config/set": {
+            "post": {
+                "description": "设置桶配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "bucket_config"
+                ],
+                "summary": "设置桶配置",
+                "operationId": "setBucketConfig",
+                "parameters": [
+                    {
+                        "description": "桶配置信息",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SetBucketConfigReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/apiresp.ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/client_config/del": {
             "post": {
                 "description": "删除指定的客户端配置",
@@ -1716,6 +1787,77 @@ const docTemplate = `{
                                     }
                                 }
                             ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sms_config/get": {
+            "post": {
+                "description": "获取短信配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sms_config"
+                ],
+                "summary": "获取短信配置",
+                "operationId": "getSmsConfig",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.GetSmsConfigResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sms_config/set": {
+            "post": {
+                "description": "设置短信配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sms_config"
+                ],
+                "summary": "设置短信配置",
+                "operationId": "setSmsConfig",
+                "parameters": [
+                    {
+                        "description": "短信配置信息",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SetSmsConfigReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/apiresp.ApiResponse"
                         }
                     }
                 }
@@ -2570,6 +2712,17 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_openimsdk_chat_pkg_protocol_admin.GetBucketConfigResp": {
+            "type": "object",
+            "properties": {
+                "config": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "github_com_openimsdk_chat_pkg_protocol_admin.GetClientConfigResp": {
             "type": "object",
             "properties": {
@@ -2599,6 +2752,17 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ClientConfig"
+                    }
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.GetSmsConfigResp": {
+            "type": "object",
+            "properties": {
+                "config": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
                     }
                 }
             }
@@ -2939,7 +3103,29 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_openimsdk_chat_pkg_protocol_admin.SetBucketConfigReq": {
+            "type": "object",
+            "properties": {
+                "config": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "github_com_openimsdk_chat_pkg_protocol_admin.SetClientConfigReq": {
+            "type": "object",
+            "properties": {
+                "config": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.SetSmsConfigReq": {
             "type": "object",
             "properties": {
                 "config": {

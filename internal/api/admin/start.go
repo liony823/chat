@@ -81,7 +81,7 @@ func SetAdminRoute(router gin.IRouter, admin *Api, mw *chatmw.MW) {
 	adminRouterGroup.POST("/add_admin", mw.CheckAdmin, admin.AddAdminAccount)           // Add admin account
 	adminRouterGroup.POST("/add_user", mw.CheckAdmin, admin.AddUserAccount)             // Add user account
 	adminRouterGroup.POST("/del_admin", mw.CheckAdmin, admin.DelAdminAccount)           // Delete admin
-	adminRouterGroup.POST("/search_admin", mw.CheckAdmin, admin.SearchAdminAccount)          // Get admin list
+	adminRouterGroup.POST("/search_admin", mw.CheckAdmin, admin.SearchAdminAccount)     // Get admin list
 	//account.POST("/add_notification_account")
 
 	importGroup := router.Group("/user/import")
@@ -136,10 +136,18 @@ func SetAdminRoute(router gin.IRouter, admin *Api, mw *chatmw.MW) {
 	userRouter.POST("/password/reset", admin.ResetUserPassword) // Reset user password
 
 	initGroup := router.Group("/client_config", mw.CheckAdmin)
-	initGroup.POST("/get", admin.GetClientConfig) // Get client initialization configuration
-	initGroup.POST("/set", admin.SetClientConfig) // Set client initialization configuration
-	initGroup.POST("/del", admin.DelClientConfig) // Delete client initialization configuration
+	initGroup.POST("/get", admin.GetClientConfig)      // Get client initialization configuration
+	initGroup.POST("/set", admin.SetClientConfig)      // Set client initialization configuration
+	initGroup.POST("/del", admin.DelClientConfig)      // Delete client initialization configuration
 	initGroup.POST("/list", admin.GetListClientConfig) // Get client initialization configuration
+
+	smsConfigGroup := router.Group("/sms_config", mw.CheckAdmin)
+	smsConfigGroup.POST("/set", admin.SetSmsConfig) // Set sms config
+	smsConfigGroup.POST("/get", admin.GetSmsConfig) // Get sms config
+
+	bucketConfigGroup := router.Group("/bucket_config", mw.CheckAdmin)
+	bucketConfigGroup.POST("/set", admin.SetBucketConfig) // Set bucket config
+	bucketConfigGroup.POST("/get", admin.GetBucketConfig) // Get bucket config
 
 	statistic := router.Group("/statistic", mw.CheckAdmin)
 	statistic.POST("/login_record", admin.LoginRecord)
