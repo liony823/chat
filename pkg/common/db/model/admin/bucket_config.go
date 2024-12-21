@@ -12,7 +12,7 @@ import (
 )
 
 func NewBucketConfig(db *mongo.Database) (admin.BucketConfigInterface, error) {
-	coll := db.Collection("buket_config")
+	coll := db.Collection("bucket_config")
 	_, err := coll.Indexes().CreateOne(context.Background(), mongo.IndexModel{
 		Keys: bson.D{
 			{Key: "key", Value: 1},
