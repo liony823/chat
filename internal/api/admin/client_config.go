@@ -38,9 +38,20 @@ func (o *Api) DelClientConfig(c *gin.Context) {
 // @Id	getClientConfig
 // @Accept			json
 // @Produce		json
-// @Param			data	body		admin.GetClientConfigReq	true	"查询条件"
 // @Success		200		{object}	apiresp.ApiResponse{data=admin.GetClientConfigResp}
 // @Router			/client_config/get [post]
 func (o *Api) GetClientConfig(c *gin.Context) {
 	a2r.Call(admin.AdminClient.GetClientConfig, o.adminClient, c)
+}
+
+// @Summary		获取客户端配置列表
+// @Description	获取客户端初始化配置信息列表
+// @Tags			client_config
+// @Id	getListClientConfig
+// @Accept			json
+// @Produce		json
+// @Success		200		{object}	apiresp.ApiResponse{data=admin.GetListClientConfigResp}
+// @Router			/client_config/list [post]
+func (o *Api) GetListClientConfig(c *gin.Context) {
+	a2r.Call(admin.AdminClient.GetListClientConfig, o.adminClient, c)
 }

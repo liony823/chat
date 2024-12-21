@@ -5281,6 +5281,233 @@ func (*GetClientConfigReq) Descriptor() ([]byte, []int) {
 	return file_admin_admin_proto_rawDescGZIP(), []int{99}
 }
 
+type GetListClientConfigReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *GetListClientConfigReq) Reset() {
+	*x = GetListClientConfigReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_admin_admin_proto_msgTypes[100]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetListClientConfigReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetListClientConfigReq) ProtoMessage() {}
+
+func (x *GetListClientConfigReq) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_admin_proto_msgTypes[100]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetListClientConfigReq.ProtoReflect.Descriptor instead.
+func (*GetListClientConfigReq) Descriptor() ([]byte, []int) {
+	return file_admin_admin_proto_rawDescGZIP(), []int{100}
+}
+
+type ClientConfigOption struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Label string `protobuf:"bytes,1,opt,name=label,proto3" json:"label"`
+	Value string `protobuf:"bytes,2,opt,name=value,proto3" json:"value"`
+}
+
+func (x *ClientConfigOption) Reset() {
+	*x = ClientConfigOption{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_admin_admin_proto_msgTypes[101]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ClientConfigOption) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClientConfigOption) ProtoMessage() {}
+
+func (x *ClientConfigOption) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_admin_proto_msgTypes[101]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClientConfigOption.ProtoReflect.Descriptor instead.
+func (*ClientConfigOption) Descriptor() ([]byte, []int) {
+	return file_admin_admin_proto_rawDescGZIP(), []int{101}
+}
+
+func (x *ClientConfigOption) GetLabel() string {
+	if x != nil {
+		return x.Label
+	}
+	return ""
+}
+
+func (x *ClientConfigOption) GetValue() string {
+	if x != nil {
+		return x.Value
+	}
+	return ""
+}
+
+type ClientConfig struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Key     string                `protobuf:"bytes,1,opt,name=key,proto3" json:"key"`
+	Value   string                `protobuf:"bytes,2,opt,name=value,proto3" json:"value"`
+	Label   string                `protobuf:"bytes,3,opt,name=label,proto3" json:"label"`
+	Type    string                `protobuf:"bytes,4,opt,name=type,proto3" json:"type"`
+	Options []*ClientConfigOption `protobuf:"bytes,5,rep,name=options,proto3" json:"options"`
+	Desc    string                `protobuf:"bytes,6,opt,name=desc,proto3" json:"desc"`
+}
+
+func (x *ClientConfig) Reset() {
+	*x = ClientConfig{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_admin_admin_proto_msgTypes[102]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ClientConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClientConfig) ProtoMessage() {}
+
+func (x *ClientConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_admin_proto_msgTypes[102]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClientConfig.ProtoReflect.Descriptor instead.
+func (*ClientConfig) Descriptor() ([]byte, []int) {
+	return file_admin_admin_proto_rawDescGZIP(), []int{102}
+}
+
+func (x *ClientConfig) GetKey() string {
+	if x != nil {
+		return x.Key
+	}
+	return ""
+}
+
+func (x *ClientConfig) GetValue() string {
+	if x != nil {
+		return x.Value
+	}
+	return ""
+}
+
+func (x *ClientConfig) GetLabel() string {
+	if x != nil {
+		return x.Label
+	}
+	return ""
+}
+
+func (x *ClientConfig) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *ClientConfig) GetOptions() []*ClientConfigOption {
+	if x != nil {
+		return x.Options
+	}
+	return nil
+}
+
+func (x *ClientConfig) GetDesc() string {
+	if x != nil {
+		return x.Desc
+	}
+	return ""
+}
+
+type GetListClientConfigResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Configs []*ClientConfig `protobuf:"bytes,1,rep,name=configs,proto3" json:"configs"`
+}
+
+func (x *GetListClientConfigResp) Reset() {
+	*x = GetListClientConfigResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_admin_admin_proto_msgTypes[103]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetListClientConfigResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetListClientConfigResp) ProtoMessage() {}
+
+func (x *GetListClientConfigResp) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_admin_proto_msgTypes[103]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetListClientConfigResp.ProtoReflect.Descriptor instead.
+func (*GetListClientConfigResp) Descriptor() ([]byte, []int) {
+	return file_admin_admin_proto_rawDescGZIP(), []int{103}
+}
+
+func (x *GetListClientConfigResp) GetConfigs() []*ClientConfig {
+	if x != nil {
+		return x.Configs
+	}
+	return nil
+}
+
 type GetClientConfigResp struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -5292,7 +5519,7 @@ type GetClientConfigResp struct {
 func (x *GetClientConfigResp) Reset() {
 	*x = GetClientConfigResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[100]
+		mi := &file_admin_admin_proto_msgTypes[104]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5305,7 +5532,7 @@ func (x *GetClientConfigResp) String() string {
 func (*GetClientConfigResp) ProtoMessage() {}
 
 func (x *GetClientConfigResp) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[100]
+	mi := &file_admin_admin_proto_msgTypes[104]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5318,7 +5545,7 @@ func (x *GetClientConfigResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetClientConfigResp.ProtoReflect.Descriptor instead.
 func (*GetClientConfigResp) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{100}
+	return file_admin_admin_proto_rawDescGZIP(), []int{104}
 }
 
 func (x *GetClientConfigResp) GetConfig() map[string]string {
@@ -5339,7 +5566,7 @@ type GetUserTokenReq struct {
 func (x *GetUserTokenReq) Reset() {
 	*x = GetUserTokenReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[101]
+		mi := &file_admin_admin_proto_msgTypes[105]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5352,7 +5579,7 @@ func (x *GetUserTokenReq) String() string {
 func (*GetUserTokenReq) ProtoMessage() {}
 
 func (x *GetUserTokenReq) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[101]
+	mi := &file_admin_admin_proto_msgTypes[105]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5365,7 +5592,7 @@ func (x *GetUserTokenReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetUserTokenReq.ProtoReflect.Descriptor instead.
 func (*GetUserTokenReq) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{101}
+	return file_admin_admin_proto_rawDescGZIP(), []int{105}
 }
 
 func (x *GetUserTokenReq) GetUserID() string {
@@ -5386,7 +5613,7 @@ type GetUserTokenResp struct {
 func (x *GetUserTokenResp) Reset() {
 	*x = GetUserTokenResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[102]
+		mi := &file_admin_admin_proto_msgTypes[106]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5399,7 +5626,7 @@ func (x *GetUserTokenResp) String() string {
 func (*GetUserTokenResp) ProtoMessage() {}
 
 func (x *GetUserTokenResp) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[102]
+	mi := &file_admin_admin_proto_msgTypes[106]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5412,7 +5639,7 @@ func (x *GetUserTokenResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetUserTokenResp.ProtoReflect.Descriptor instead.
 func (*GetUserTokenResp) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{102}
+	return file_admin_admin_proto_rawDescGZIP(), []int{106}
 }
 
 func (x *GetUserTokenResp) GetTokensMap() map[string]int32 {
@@ -5441,7 +5668,7 @@ type ApplicationVersion struct {
 func (x *ApplicationVersion) Reset() {
 	*x = ApplicationVersion{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[103]
+		mi := &file_admin_admin_proto_msgTypes[107]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5454,7 +5681,7 @@ func (x *ApplicationVersion) String() string {
 func (*ApplicationVersion) ProtoMessage() {}
 
 func (x *ApplicationVersion) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[103]
+	mi := &file_admin_admin_proto_msgTypes[107]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5467,7 +5694,7 @@ func (x *ApplicationVersion) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApplicationVersion.ProtoReflect.Descriptor instead.
 func (*ApplicationVersion) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{103}
+	return file_admin_admin_proto_rawDescGZIP(), []int{107}
 }
 
 func (x *ApplicationVersion) GetId() string {
@@ -5545,7 +5772,7 @@ type LatestApplicationVersionReq struct {
 func (x *LatestApplicationVersionReq) Reset() {
 	*x = LatestApplicationVersionReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[104]
+		mi := &file_admin_admin_proto_msgTypes[108]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5558,7 +5785,7 @@ func (x *LatestApplicationVersionReq) String() string {
 func (*LatestApplicationVersionReq) ProtoMessage() {}
 
 func (x *LatestApplicationVersionReq) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[104]
+	mi := &file_admin_admin_proto_msgTypes[108]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5571,7 +5798,7 @@ func (x *LatestApplicationVersionReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LatestApplicationVersionReq.ProtoReflect.Descriptor instead.
 func (*LatestApplicationVersionReq) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{104}
+	return file_admin_admin_proto_rawDescGZIP(), []int{108}
 }
 
 func (x *LatestApplicationVersionReq) GetPlatform() string {
@@ -5599,7 +5826,7 @@ type LatestApplicationVersionResp struct {
 func (x *LatestApplicationVersionResp) Reset() {
 	*x = LatestApplicationVersionResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[105]
+		mi := &file_admin_admin_proto_msgTypes[109]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5612,7 +5839,7 @@ func (x *LatestApplicationVersionResp) String() string {
 func (*LatestApplicationVersionResp) ProtoMessage() {}
 
 func (x *LatestApplicationVersionResp) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[105]
+	mi := &file_admin_admin_proto_msgTypes[109]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5625,7 +5852,7 @@ func (x *LatestApplicationVersionResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LatestApplicationVersionResp.ProtoReflect.Descriptor instead.
 func (*LatestApplicationVersionResp) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{105}
+	return file_admin_admin_proto_rawDescGZIP(), []int{109}
 }
 
 func (x *LatestApplicationVersionResp) GetVersion() *ApplicationVersion {
@@ -5652,7 +5879,7 @@ type AddApplicationVersionReq struct {
 func (x *AddApplicationVersionReq) Reset() {
 	*x = AddApplicationVersionReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[106]
+		mi := &file_admin_admin_proto_msgTypes[110]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5665,7 +5892,7 @@ func (x *AddApplicationVersionReq) String() string {
 func (*AddApplicationVersionReq) ProtoMessage() {}
 
 func (x *AddApplicationVersionReq) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[106]
+	mi := &file_admin_admin_proto_msgTypes[110]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5678,7 +5905,7 @@ func (x *AddApplicationVersionReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddApplicationVersionReq.ProtoReflect.Descriptor instead.
 func (*AddApplicationVersionReq) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{106}
+	return file_admin_admin_proto_rawDescGZIP(), []int{110}
 }
 
 func (x *AddApplicationVersionReq) GetPlatform() string {
@@ -5739,7 +5966,7 @@ type AddApplicationVersionResp struct {
 func (x *AddApplicationVersionResp) Reset() {
 	*x = AddApplicationVersionResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[107]
+		mi := &file_admin_admin_proto_msgTypes[111]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5752,7 +5979,7 @@ func (x *AddApplicationVersionResp) String() string {
 func (*AddApplicationVersionResp) ProtoMessage() {}
 
 func (x *AddApplicationVersionResp) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[107]
+	mi := &file_admin_admin_proto_msgTypes[111]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5765,7 +5992,7 @@ func (x *AddApplicationVersionResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddApplicationVersionResp.ProtoReflect.Descriptor instead.
 func (*AddApplicationVersionResp) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{107}
+	return file_admin_admin_proto_rawDescGZIP(), []int{111}
 }
 
 type UpdateApplicationVersionReq struct {
@@ -5786,7 +6013,7 @@ type UpdateApplicationVersionReq struct {
 func (x *UpdateApplicationVersionReq) Reset() {
 	*x = UpdateApplicationVersionReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[108]
+		mi := &file_admin_admin_proto_msgTypes[112]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5799,7 +6026,7 @@ func (x *UpdateApplicationVersionReq) String() string {
 func (*UpdateApplicationVersionReq) ProtoMessage() {}
 
 func (x *UpdateApplicationVersionReq) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[108]
+	mi := &file_admin_admin_proto_msgTypes[112]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5812,7 +6039,7 @@ func (x *UpdateApplicationVersionReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateApplicationVersionReq.ProtoReflect.Descriptor instead.
 func (*UpdateApplicationVersionReq) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{108}
+	return file_admin_admin_proto_rawDescGZIP(), []int{112}
 }
 
 func (x *UpdateApplicationVersionReq) GetId() string {
@@ -5880,7 +6107,7 @@ type UpdateApplicationVersionResp struct {
 func (x *UpdateApplicationVersionResp) Reset() {
 	*x = UpdateApplicationVersionResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[109]
+		mi := &file_admin_admin_proto_msgTypes[113]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5893,7 +6120,7 @@ func (x *UpdateApplicationVersionResp) String() string {
 func (*UpdateApplicationVersionResp) ProtoMessage() {}
 
 func (x *UpdateApplicationVersionResp) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[109]
+	mi := &file_admin_admin_proto_msgTypes[113]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5906,7 +6133,7 @@ func (x *UpdateApplicationVersionResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateApplicationVersionResp.ProtoReflect.Descriptor instead.
 func (*UpdateApplicationVersionResp) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{109}
+	return file_admin_admin_proto_rawDescGZIP(), []int{113}
 }
 
 type DeleteApplicationVersionReq struct {
@@ -5920,7 +6147,7 @@ type DeleteApplicationVersionReq struct {
 func (x *DeleteApplicationVersionReq) Reset() {
 	*x = DeleteApplicationVersionReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[110]
+		mi := &file_admin_admin_proto_msgTypes[114]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5933,7 +6160,7 @@ func (x *DeleteApplicationVersionReq) String() string {
 func (*DeleteApplicationVersionReq) ProtoMessage() {}
 
 func (x *DeleteApplicationVersionReq) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[110]
+	mi := &file_admin_admin_proto_msgTypes[114]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5946,7 +6173,7 @@ func (x *DeleteApplicationVersionReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteApplicationVersionReq.ProtoReflect.Descriptor instead.
 func (*DeleteApplicationVersionReq) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{110}
+	return file_admin_admin_proto_rawDescGZIP(), []int{114}
 }
 
 func (x *DeleteApplicationVersionReq) GetId() []string {
@@ -5965,7 +6192,7 @@ type DeleteApplicationVersionResp struct {
 func (x *DeleteApplicationVersionResp) Reset() {
 	*x = DeleteApplicationVersionResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[111]
+		mi := &file_admin_admin_proto_msgTypes[115]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5978,7 +6205,7 @@ func (x *DeleteApplicationVersionResp) String() string {
 func (*DeleteApplicationVersionResp) ProtoMessage() {}
 
 func (x *DeleteApplicationVersionResp) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[111]
+	mi := &file_admin_admin_proto_msgTypes[115]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5991,7 +6218,7 @@ func (x *DeleteApplicationVersionResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteApplicationVersionResp.ProtoReflect.Descriptor instead.
 func (*DeleteApplicationVersionResp) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{111}
+	return file_admin_admin_proto_rawDescGZIP(), []int{115}
 }
 
 type PageApplicationVersionReq struct {
@@ -6006,7 +6233,7 @@ type PageApplicationVersionReq struct {
 func (x *PageApplicationVersionReq) Reset() {
 	*x = PageApplicationVersionReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[112]
+		mi := &file_admin_admin_proto_msgTypes[116]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6019,7 +6246,7 @@ func (x *PageApplicationVersionReq) String() string {
 func (*PageApplicationVersionReq) ProtoMessage() {}
 
 func (x *PageApplicationVersionReq) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[112]
+	mi := &file_admin_admin_proto_msgTypes[116]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6032,7 +6259,7 @@ func (x *PageApplicationVersionReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PageApplicationVersionReq.ProtoReflect.Descriptor instead.
 func (*PageApplicationVersionReq) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{112}
+	return file_admin_admin_proto_rawDescGZIP(), []int{116}
 }
 
 func (x *PageApplicationVersionReq) GetPlatform() []string {
@@ -6061,7 +6288,7 @@ type PageApplicationVersionResp struct {
 func (x *PageApplicationVersionResp) Reset() {
 	*x = PageApplicationVersionResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[113]
+		mi := &file_admin_admin_proto_msgTypes[117]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6074,7 +6301,7 @@ func (x *PageApplicationVersionResp) String() string {
 func (*PageApplicationVersionResp) ProtoMessage() {}
 
 func (x *PageApplicationVersionResp) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[113]
+	mi := &file_admin_admin_proto_msgTypes[117]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6087,7 +6314,7 @@ func (x *PageApplicationVersionResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PageApplicationVersionResp.ProtoReflect.Descriptor instead.
 func (*PageApplicationVersionResp) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{113}
+	return file_admin_admin_proto_rawDescGZIP(), []int{117}
 }
 
 func (x *PageApplicationVersionResp) GetTotal() int64 {
@@ -6113,7 +6340,7 @@ type GetGoogleAuthReq struct {
 func (x *GetGoogleAuthReq) Reset() {
 	*x = GetGoogleAuthReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[114]
+		mi := &file_admin_admin_proto_msgTypes[118]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6126,7 +6353,7 @@ func (x *GetGoogleAuthReq) String() string {
 func (*GetGoogleAuthReq) ProtoMessage() {}
 
 func (x *GetGoogleAuthReq) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[114]
+	mi := &file_admin_admin_proto_msgTypes[118]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6139,7 +6366,7 @@ func (x *GetGoogleAuthReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetGoogleAuthReq.ProtoReflect.Descriptor instead.
 func (*GetGoogleAuthReq) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{114}
+	return file_admin_admin_proto_rawDescGZIP(), []int{118}
 }
 
 type GetGoogleAuthResp struct {
@@ -6154,7 +6381,7 @@ type GetGoogleAuthResp struct {
 func (x *GetGoogleAuthResp) Reset() {
 	*x = GetGoogleAuthResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[115]
+		mi := &file_admin_admin_proto_msgTypes[119]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6167,7 +6394,7 @@ func (x *GetGoogleAuthResp) String() string {
 func (*GetGoogleAuthResp) ProtoMessage() {}
 
 func (x *GetGoogleAuthResp) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[115]
+	mi := &file_admin_admin_proto_msgTypes[119]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6180,7 +6407,7 @@ func (x *GetGoogleAuthResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetGoogleAuthResp.ProtoReflect.Descriptor instead.
 func (*GetGoogleAuthResp) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{115}
+	return file_admin_admin_proto_rawDescGZIP(), []int{119}
 }
 
 func (x *GetGoogleAuthResp) GetSecret() string {
@@ -6208,7 +6435,7 @@ type VerifyGoogleAuthReq struct {
 func (x *VerifyGoogleAuthReq) Reset() {
 	*x = VerifyGoogleAuthReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[116]
+		mi := &file_admin_admin_proto_msgTypes[120]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6221,7 +6448,7 @@ func (x *VerifyGoogleAuthReq) String() string {
 func (*VerifyGoogleAuthReq) ProtoMessage() {}
 
 func (x *VerifyGoogleAuthReq) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[116]
+	mi := &file_admin_admin_proto_msgTypes[120]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6234,7 +6461,7 @@ func (x *VerifyGoogleAuthReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VerifyGoogleAuthReq.ProtoReflect.Descriptor instead.
 func (*VerifyGoogleAuthReq) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{116}
+	return file_admin_admin_proto_rawDescGZIP(), []int{120}
 }
 
 func (x *VerifyGoogleAuthReq) GetCode() string {
@@ -6253,7 +6480,7 @@ type VerifyGoogleAuthResp struct {
 func (x *VerifyGoogleAuthResp) Reset() {
 	*x = VerifyGoogleAuthResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[117]
+		mi := &file_admin_admin_proto_msgTypes[121]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6266,7 +6493,7 @@ func (x *VerifyGoogleAuthResp) String() string {
 func (*VerifyGoogleAuthResp) ProtoMessage() {}
 
 func (x *VerifyGoogleAuthResp) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[117]
+	mi := &file_admin_admin_proto_msgTypes[121]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6279,7 +6506,7 @@ func (x *VerifyGoogleAuthResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VerifyGoogleAuthResp.ProtoReflect.Descriptor instead.
 func (*VerifyGoogleAuthResp) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{117}
+	return file_admin_admin_proto_rawDescGZIP(), []int{121}
 }
 
 type GetUserLoginRecordReq struct {
@@ -6291,7 +6518,7 @@ type GetUserLoginRecordReq struct {
 func (x *GetUserLoginRecordReq) Reset() {
 	*x = GetUserLoginRecordReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[118]
+		mi := &file_admin_admin_proto_msgTypes[122]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6304,7 +6531,7 @@ func (x *GetUserLoginRecordReq) String() string {
 func (*GetUserLoginRecordReq) ProtoMessage() {}
 
 func (x *GetUserLoginRecordReq) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[118]
+	mi := &file_admin_admin_proto_msgTypes[122]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6317,7 +6544,7 @@ func (x *GetUserLoginRecordReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetUserLoginRecordReq.ProtoReflect.Descriptor instead.
 func (*GetUserLoginRecordReq) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{118}
+	return file_admin_admin_proto_rawDescGZIP(), []int{122}
 }
 
 type UserLoginRecord struct {
@@ -6336,7 +6563,7 @@ type UserLoginRecord struct {
 func (x *UserLoginRecord) Reset() {
 	*x = UserLoginRecord{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[119]
+		mi := &file_admin_admin_proto_msgTypes[123]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6349,7 +6576,7 @@ func (x *UserLoginRecord) String() string {
 func (*UserLoginRecord) ProtoMessage() {}
 
 func (x *UserLoginRecord) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[119]
+	mi := &file_admin_admin_proto_msgTypes[123]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6362,7 +6589,7 @@ func (x *UserLoginRecord) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserLoginRecord.ProtoReflect.Descriptor instead.
 func (*UserLoginRecord) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{119}
+	return file_admin_admin_proto_rawDescGZIP(), []int{123}
 }
 
 func (x *UserLoginRecord) GetUserID() string {
@@ -6418,7 +6645,7 @@ type GetUserLoginRecordResp struct {
 func (x *GetUserLoginRecordResp) Reset() {
 	*x = GetUserLoginRecordResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_admin_admin_proto_msgTypes[120]
+		mi := &file_admin_admin_proto_msgTypes[124]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6431,7 +6658,7 @@ func (x *GetUserLoginRecordResp) String() string {
 func (*GetUserLoginRecordResp) ProtoMessage() {}
 
 func (x *GetUserLoginRecordResp) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_admin_proto_msgTypes[120]
+	mi := &file_admin_admin_proto_msgTypes[124]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6444,7 +6671,7 @@ func (x *GetUserLoginRecordResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetUserLoginRecordResp.ProtoReflect.Descriptor instead.
 func (*GetUserLoginRecordResp) Descriptor() ([]byte, []int) {
-	return file_admin_admin_proto_rawDescGZIP(), []int{120}
+	return file_admin_admin_proto_rawDescGZIP(), []int{124}
 }
 
 func (x *GetUserLoginRecordResp) GetRecords() []*UserLoginRecord {
@@ -6964,7 +7191,29 @@ var file_admin_admin_proto_rawDesc = []byte{
 	0x20, 0x03, 0x28, 0x09, 0x52, 0x04, 0x6b, 0x65, 0x79, 0x73, 0x22, 0x15, 0x0a, 0x13, 0x44, 0x65,
 	0x6c, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x73,
 	0x70, 0x22, 0x14, 0x0a, 0x12, 0x47, 0x65, 0x74, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f,
-	0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x71, 0x22, 0x97, 0x01, 0x0a, 0x13, 0x47, 0x65, 0x74, 0x43,
+	0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x71, 0x22, 0x18, 0x0a, 0x16, 0x47, 0x65, 0x74, 0x4c, 0x69,
+	0x73, 0x74, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65,
+	0x71, 0x22, 0x40, 0x0a, 0x12, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69,
+	0x67, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x14, 0x0a, 0x05, 0x6c, 0x61, 0x62, 0x65, 0x6c,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6c, 0x61, 0x62, 0x65, 0x6c, 0x12, 0x14, 0x0a,
+	0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61,
+	0x6c, 0x75, 0x65, 0x22, 0xb0, 0x01, 0x0a, 0x0c, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f,
+	0x6e, 0x66, 0x69, 0x67, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x12, 0x14, 0x0a, 0x05,
+	0x6c, 0x61, 0x62, 0x65, 0x6c, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6c, 0x61, 0x62,
+	0x65, 0x6c, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x12, 0x3a, 0x0a, 0x07, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e,
+	0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x20, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d,
+	0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e,
+	0x66, 0x69, 0x67, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x6f, 0x70, 0x74, 0x69, 0x6f,
+	0x6e, 0x73, 0x12, 0x12, 0x0a, 0x04, 0x64, 0x65, 0x73, 0x63, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x04, 0x64, 0x65, 0x73, 0x63, 0x22, 0x4f, 0x0a, 0x17, 0x47, 0x65, 0x74, 0x4c, 0x69, 0x73,
+	0x74, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x73,
+	0x70, 0x12, 0x34, 0x0a, 0x07, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x73, 0x18, 0x01, 0x20, 0x03,
+	0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69,
+	0x6e, 0x2e, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x07,
+	0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x73, 0x22, 0x97, 0x01, 0x0a, 0x13, 0x47, 0x65, 0x74, 0x43,
 	0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x73, 0x70, 0x12,
 	0x45, 0x0a, 0x06, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32,
 	0x2d, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x47,
@@ -7100,7 +7349,7 @@ var file_admin_admin_proto_rawDesc = []byte{
 	0x12, 0x37, 0x0a, 0x07, 0x72, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28,
 	0x0b, 0x32, 0x1d, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e,
 	0x2e, 0x55, 0x73, 0x65, 0x72, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64,
-	0x52, 0x07, 0x72, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x73, 0x32, 0xfc, 0x26, 0x0a, 0x05, 0x61, 0x64,
+	0x52, 0x07, 0x72, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x73, 0x32, 0xe0, 0x27, 0x0a, 0x05, 0x61, 0x64,
 	0x6d, 0x69, 0x6e, 0x12, 0x38, 0x0a, 0x05, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x12, 0x16, 0x2e, 0x6f,
 	0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x4c, 0x6f, 0x67, 0x69,
 	0x6e, 0x52, 0x65, 0x71, 0x1a, 0x17, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64,
@@ -7339,83 +7588,90 @@ var file_admin_admin_proto_rawDesc = []byte{
 	0x74, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x71,
 	0x1a, 0x21, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e,
 	0x47, 0x65, 0x74, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52,
-	0x65, 0x73, 0x70, 0x12, 0x56, 0x0a, 0x0f, 0x53, 0x65, 0x74, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74,
-	0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x20, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e,
-	0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x53, 0x65, 0x74, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43,
-	0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x71, 0x1a, 0x21, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69,
-	0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x53, 0x65, 0x74, 0x43, 0x6c, 0x69, 0x65, 0x6e,
-	0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x73, 0x70, 0x12, 0x56, 0x0a, 0x0f, 0x44,
-	0x65, 0x6c, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x20,
-	0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x44, 0x65,
-	0x6c, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x71,
-	0x1a, 0x21, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e,
-	0x44, 0x65, 0x6c, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52,
-	0x65, 0x73, 0x70, 0x12, 0x4d, 0x0a, 0x0c, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x54, 0x6f,
-	0x6b, 0x65, 0x6e, 0x12, 0x1d, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d,
-	0x69, 0x6e, 0x2e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52,
-	0x65, 0x71, 0x1a, 0x1e, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69,
-	0x6e, 0x2e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x65,
-	0x73, 0x70, 0x12, 0x56, 0x0a, 0x0f, 0x49, 0x6e, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x65,
-	0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x20, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61,
-	0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x49, 0x6e, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x65, 0x54,
-	0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x65, 0x71, 0x1a, 0x21, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d,
-	0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x49, 0x6e, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74,
-	0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x12, 0x71, 0x0a, 0x18, 0x4c, 0x61,
-	0x74, 0x65, 0x73, 0x74, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x56,
-	0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x29, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e,
-	0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x41, 0x70, 0x70, 0x6c,
-	0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65,
-	0x71, 0x1a, 0x2a, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e,
-	0x2e, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69,
-	0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x12, 0x68, 0x0a,
-	0x15, 0x41, 0x64, 0x64, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x56,
-	0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x26, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e,
-	0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x41, 0x64, 0x64, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x1a, 0x27,
-	0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x41, 0x64,
-	0x64, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73,
-	0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x12, 0x71, 0x0a, 0x18, 0x55, 0x70, 0x64, 0x61, 0x74,
-	0x65, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73,
-	0x69, 0x6f, 0x6e, 0x12, 0x29, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d,
-	0x69, 0x6e, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x1a, 0x2a,
-	0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x55, 0x70,
-	0x64, 0x61, 0x74, 0x65, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x56,
-	0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x12, 0x71, 0x0a, 0x18, 0x44, 0x65,
-	0x6c, 0x65, 0x74, 0x65, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x56,
-	0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x29, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e,
-	0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x70, 0x70, 0x6c,
-	0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65,
-	0x71, 0x1a, 0x2a, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e,
-	0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69,
-	0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x12, 0x6b, 0x0a,
-	0x16, 0x50, 0x61, 0x67, 0x65, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e,
-	0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x27, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d,
-	0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x41, 0x70, 0x70, 0x6c, 0x69,
-	0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71,
-	0x1a, 0x28, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e,
-	0x50, 0x61, 0x67, 0x65, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x56,
-	0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x12, 0x50, 0x0a, 0x0d, 0x47, 0x65,
-	0x74, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x41, 0x75, 0x74, 0x68, 0x12, 0x1e, 0x2e, 0x6f, 0x70,
-	0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x47, 0x65, 0x74, 0x47, 0x6f,
-	0x6f, 0x67, 0x6c, 0x65, 0x41, 0x75, 0x74, 0x68, 0x52, 0x65, 0x71, 0x1a, 0x1f, 0x2e, 0x6f, 0x70,
-	0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x47, 0x65, 0x74, 0x47, 0x6f,
-	0x6f, 0x67, 0x6c, 0x65, 0x41, 0x75, 0x74, 0x68, 0x52, 0x65, 0x73, 0x70, 0x12, 0x59, 0x0a, 0x10,
-	0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x41, 0x75, 0x74, 0x68,
-	0x12, 0x21, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e,
-	0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x41, 0x75, 0x74, 0x68,
-	0x52, 0x65, 0x71, 0x1a, 0x22, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d,
-	0x69, 0x6e, 0x2e, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x41,
-	0x75, 0x74, 0x68, 0x52, 0x65, 0x73, 0x70, 0x12, 0x5f, 0x0a, 0x12, 0x47, 0x65, 0x74, 0x55, 0x73,
-	0x65, 0x72, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x12, 0x23, 0x2e,
-	0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x47, 0x65, 0x74,
-	0x55, 0x73, 0x65, 0x72, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x52,
-	0x65, 0x71, 0x1a, 0x24, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69,
-	0x6e, 0x2e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x52, 0x65,
-	0x63, 0x6f, 0x72, 0x64, 0x52, 0x65, 0x73, 0x70, 0x42, 0x2e, 0x5a, 0x2c, 0x67, 0x69, 0x74, 0x68,
-	0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x73, 0x64, 0x6b,
-	0x2f, 0x63, 0x68, 0x61, 0x74, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63,
-	0x6f, 0x6c, 0x2f, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x73, 0x70, 0x12, 0x62, 0x0a, 0x13, 0x47, 0x65, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x43, 0x6c,
+	0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x24, 0x2e, 0x6f, 0x70, 0x65,
+	0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x47, 0x65, 0x74, 0x4c, 0x69, 0x73,
+	0x74, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x71,
+	0x1a, 0x25, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e,
+	0x47, 0x65, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e,
+	0x66, 0x69, 0x67, 0x52, 0x65, 0x73, 0x70, 0x12, 0x56, 0x0a, 0x0f, 0x53, 0x65, 0x74, 0x43, 0x6c,
+	0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x20, 0x2e, 0x6f, 0x70, 0x65,
+	0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x53, 0x65, 0x74, 0x43, 0x6c, 0x69,
+	0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x71, 0x1a, 0x21, 0x2e, 0x6f,
+	0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x53, 0x65, 0x74, 0x43,
+	0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x73, 0x70, 0x12,
+	0x56, 0x0a, 0x0f, 0x44, 0x65, 0x6c, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66,
+	0x69, 0x67, 0x12, 0x20, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69,
+	0x6e, 0x2e, 0x44, 0x65, 0x6c, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69,
+	0x67, 0x52, 0x65, 0x71, 0x1a, 0x21, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64,
+	0x6d, 0x69, 0x6e, 0x2e, 0x44, 0x65, 0x6c, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e,
+	0x66, 0x69, 0x67, 0x52, 0x65, 0x73, 0x70, 0x12, 0x4d, 0x0a, 0x0c, 0x47, 0x65, 0x74, 0x55, 0x73,
+	0x65, 0x72, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x1d, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d,
+	0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x54, 0x6f,
+	0x6b, 0x65, 0x6e, 0x52, 0x65, 0x71, 0x1a, 0x1e, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e,
+	0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x54, 0x6f, 0x6b,
+	0x65, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x12, 0x56, 0x0a, 0x0f, 0x49, 0x6e, 0x76, 0x61, 0x6c, 0x69,
+	0x64, 0x61, 0x74, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x20, 0x2e, 0x6f, 0x70, 0x65, 0x6e,
+	0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x49, 0x6e, 0x76, 0x61, 0x6c, 0x69, 0x64,
+	0x61, 0x74, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x65, 0x71, 0x1a, 0x21, 0x2e, 0x6f, 0x70,
+	0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x49, 0x6e, 0x76, 0x61, 0x6c,
+	0x69, 0x64, 0x61, 0x74, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x12, 0x71,
+	0x0a, 0x18, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x29, 0x2e, 0x6f, 0x70, 0x65,
+	0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74,
+	0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69,
+	0x6f, 0x6e, 0x52, 0x65, 0x71, 0x1a, 0x2a, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61,
+	0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x41, 0x70, 0x70, 0x6c, 0x69,
+	0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73,
+	0x70, 0x12, 0x68, 0x0a, 0x15, 0x41, 0x64, 0x64, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x26, 0x2e, 0x6f, 0x70, 0x65,
+	0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x41, 0x64, 0x64, 0x41, 0x70, 0x70,
+	0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x52,
+	0x65, 0x71, 0x1a, 0x27, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69,
+	0x6e, 0x2e, 0x41, 0x64, 0x64, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x12, 0x71, 0x0a, 0x18, 0x55,
+	0x70, 0x64, 0x61, 0x74, 0x65, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x29, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d,
+	0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x41, 0x70, 0x70,
+	0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x52,
+	0x65, 0x71, 0x1a, 0x2a, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69,
+	0x6e, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x12, 0x71,
+	0x0a, 0x18, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x29, 0x2e, 0x6f, 0x70, 0x65,
+	0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65,
+	0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69,
+	0x6f, 0x6e, 0x52, 0x65, 0x71, 0x1a, 0x2a, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61,
+	0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x70, 0x70, 0x6c, 0x69,
+	0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73,
+	0x70, 0x12, 0x6b, 0x0a, 0x16, 0x50, 0x61, 0x67, 0x65, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x27, 0x2e, 0x6f, 0x70,
+	0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x41,
+	0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f,
+	0x6e, 0x52, 0x65, 0x71, 0x1a, 0x28, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64,
+	0x6d, 0x69, 0x6e, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x41, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x12, 0x50,
+	0x0a, 0x0d, 0x47, 0x65, 0x74, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x41, 0x75, 0x74, 0x68, 0x12,
+	0x1e, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x47,
+	0x65, 0x74, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x41, 0x75, 0x74, 0x68, 0x52, 0x65, 0x71, 0x1a,
+	0x1f, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x47,
+	0x65, 0x74, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x41, 0x75, 0x74, 0x68, 0x52, 0x65, 0x73, 0x70,
+	0x12, 0x59, 0x0a, 0x10, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
+	0x41, 0x75, 0x74, 0x68, 0x12, 0x21, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64,
+	0x6d, 0x69, 0x6e, 0x2e, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
+	0x41, 0x75, 0x74, 0x68, 0x52, 0x65, 0x71, 0x1a, 0x22, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d,
+	0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x47, 0x6f, 0x6f,
+	0x67, 0x6c, 0x65, 0x41, 0x75, 0x74, 0x68, 0x52, 0x65, 0x73, 0x70, 0x12, 0x5f, 0x0a, 0x12, 0x47,
+	0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x52, 0x65, 0x63, 0x6f, 0x72,
+	0x64, 0x12, 0x23, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e, 0x61, 0x64, 0x6d, 0x69, 0x6e,
+	0x2e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x52, 0x65, 0x63,
+	0x6f, 0x72, 0x64, 0x52, 0x65, 0x71, 0x1a, 0x24, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x69, 0x6d, 0x2e,
+	0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x4c, 0x6f, 0x67,
+	0x69, 0x6e, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x52, 0x65, 0x73, 0x70, 0x42, 0x2e, 0x5a, 0x2c,
+	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6f, 0x70, 0x65, 0x6e, 0x69,
+	0x6d, 0x73, 0x64, 0x6b, 0x2f, 0x63, 0x68, 0x61, 0x74, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x62, 0x06, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -7430,7 +7686,7 @@ func file_admin_admin_proto_rawDescGZIP() []byte {
 	return file_admin_admin_proto_rawDescData
 }
 
-var file_admin_admin_proto_msgTypes = make([]protoimpl.MessageInfo, 124)
+var file_admin_admin_proto_msgTypes = make([]protoimpl.MessageInfo, 128)
 var file_admin_admin_proto_goTypes = []any{
 	(*LoginReq)(nil),                     // 0: openim.admin.LoginReq
 	(*LoginResp)(nil),                    // 1: openim.admin.LoginResp
@@ -7532,210 +7788,218 @@ var file_admin_admin_proto_goTypes = []any{
 	(*DelClientConfigReq)(nil),           // 97: openim.admin.DelClientConfigReq
 	(*DelClientConfigResp)(nil),          // 98: openim.admin.DelClientConfigResp
 	(*GetClientConfigReq)(nil),           // 99: openim.admin.GetClientConfigReq
-	(*GetClientConfigResp)(nil),          // 100: openim.admin.GetClientConfigResp
-	(*GetUserTokenReq)(nil),              // 101: openim.admin.GetUserTokenReq
-	(*GetUserTokenResp)(nil),             // 102: openim.admin.GetUserTokenResp
-	(*ApplicationVersion)(nil),           // 103: openim.admin.ApplicationVersion
-	(*LatestApplicationVersionReq)(nil),  // 104: openim.admin.LatestApplicationVersionReq
-	(*LatestApplicationVersionResp)(nil), // 105: openim.admin.LatestApplicationVersionResp
-	(*AddApplicationVersionReq)(nil),     // 106: openim.admin.AddApplicationVersionReq
-	(*AddApplicationVersionResp)(nil),    // 107: openim.admin.AddApplicationVersionResp
-	(*UpdateApplicationVersionReq)(nil),  // 108: openim.admin.UpdateApplicationVersionReq
-	(*UpdateApplicationVersionResp)(nil), // 109: openim.admin.UpdateApplicationVersionResp
-	(*DeleteApplicationVersionReq)(nil),  // 110: openim.admin.DeleteApplicationVersionReq
-	(*DeleteApplicationVersionResp)(nil), // 111: openim.admin.DeleteApplicationVersionResp
-	(*PageApplicationVersionReq)(nil),    // 112: openim.admin.PageApplicationVersionReq
-	(*PageApplicationVersionResp)(nil),   // 113: openim.admin.PageApplicationVersionResp
-	(*GetGoogleAuthReq)(nil),             // 114: openim.admin.GetGoogleAuthReq
-	(*GetGoogleAuthResp)(nil),            // 115: openim.admin.GetGoogleAuthResp
-	(*VerifyGoogleAuthReq)(nil),          // 116: openim.admin.VerifyGoogleAuthReq
-	(*VerifyGoogleAuthResp)(nil),         // 117: openim.admin.VerifyGoogleAuthResp
-	(*GetUserLoginRecordReq)(nil),        // 118: openim.admin.GetUserLoginRecordReq
-	(*UserLoginRecord)(nil),              // 119: openim.admin.UserLoginRecord
-	(*GetUserLoginRecordResp)(nil),       // 120: openim.admin.GetUserLoginRecordResp
-	nil,                                  // 121: openim.admin.SetClientConfigReq.ConfigEntry
-	nil,                                  // 122: openim.admin.GetClientConfigResp.ConfigEntry
-	nil,                                  // 123: openim.admin.GetUserTokenResp.TokensMapEntry
-	(*wrapperspb.StringValue)(nil),       // 124: openim.protobuf.StringValue
-	(*wrapperspb.Int32Value)(nil),        // 125: openim.protobuf.Int32Value
-	(*sdkws.RequestPagination)(nil),      // 126: openim.sdkws.RequestPagination
-	(*common.UserPublicInfo)(nil),        // 127: openim.chat.common.UserPublicInfo
-	(*sdkws.GroupInfo)(nil),              // 128: openim.sdkws.GroupInfo
-	(*wrapperspb.Int64Value)(nil),        // 129: openim.protobuf.Int64Value
-	(*wrapperspb.UInt32Value)(nil),       // 130: openim.protobuf.UInt32Value
-	(*common.AppletInfo)(nil),            // 131: openim.chat.common.AppletInfo
-	(*wrapperspb.BoolValue)(nil),         // 132: openim.protobuf.BoolValue
+	(*GetListClientConfigReq)(nil),       // 100: openim.admin.GetListClientConfigReq
+	(*ClientConfigOption)(nil),           // 101: openim.admin.ClientConfigOption
+	(*ClientConfig)(nil),                 // 102: openim.admin.ClientConfig
+	(*GetListClientConfigResp)(nil),      // 103: openim.admin.GetListClientConfigResp
+	(*GetClientConfigResp)(nil),          // 104: openim.admin.GetClientConfigResp
+	(*GetUserTokenReq)(nil),              // 105: openim.admin.GetUserTokenReq
+	(*GetUserTokenResp)(nil),             // 106: openim.admin.GetUserTokenResp
+	(*ApplicationVersion)(nil),           // 107: openim.admin.ApplicationVersion
+	(*LatestApplicationVersionReq)(nil),  // 108: openim.admin.LatestApplicationVersionReq
+	(*LatestApplicationVersionResp)(nil), // 109: openim.admin.LatestApplicationVersionResp
+	(*AddApplicationVersionReq)(nil),     // 110: openim.admin.AddApplicationVersionReq
+	(*AddApplicationVersionResp)(nil),    // 111: openim.admin.AddApplicationVersionResp
+	(*UpdateApplicationVersionReq)(nil),  // 112: openim.admin.UpdateApplicationVersionReq
+	(*UpdateApplicationVersionResp)(nil), // 113: openim.admin.UpdateApplicationVersionResp
+	(*DeleteApplicationVersionReq)(nil),  // 114: openim.admin.DeleteApplicationVersionReq
+	(*DeleteApplicationVersionResp)(nil), // 115: openim.admin.DeleteApplicationVersionResp
+	(*PageApplicationVersionReq)(nil),    // 116: openim.admin.PageApplicationVersionReq
+	(*PageApplicationVersionResp)(nil),   // 117: openim.admin.PageApplicationVersionResp
+	(*GetGoogleAuthReq)(nil),             // 118: openim.admin.GetGoogleAuthReq
+	(*GetGoogleAuthResp)(nil),            // 119: openim.admin.GetGoogleAuthResp
+	(*VerifyGoogleAuthReq)(nil),          // 120: openim.admin.VerifyGoogleAuthReq
+	(*VerifyGoogleAuthResp)(nil),         // 121: openim.admin.VerifyGoogleAuthResp
+	(*GetUserLoginRecordReq)(nil),        // 122: openim.admin.GetUserLoginRecordReq
+	(*UserLoginRecord)(nil),              // 123: openim.admin.UserLoginRecord
+	(*GetUserLoginRecordResp)(nil),       // 124: openim.admin.GetUserLoginRecordResp
+	nil,                                  // 125: openim.admin.SetClientConfigReq.ConfigEntry
+	nil,                                  // 126: openim.admin.GetClientConfigResp.ConfigEntry
+	nil,                                  // 127: openim.admin.GetUserTokenResp.TokensMapEntry
+	(*wrapperspb.StringValue)(nil),       // 128: openim.protobuf.StringValue
+	(*wrapperspb.Int32Value)(nil),        // 129: openim.protobuf.Int32Value
+	(*sdkws.RequestPagination)(nil),      // 130: openim.sdkws.RequestPagination
+	(*common.UserPublicInfo)(nil),        // 131: openim.chat.common.UserPublicInfo
+	(*sdkws.GroupInfo)(nil),              // 132: openim.sdkws.GroupInfo
+	(*wrapperspb.Int64Value)(nil),        // 133: openim.protobuf.Int64Value
+	(*wrapperspb.UInt32Value)(nil),       // 134: openim.protobuf.UInt32Value
+	(*common.AppletInfo)(nil),            // 135: openim.chat.common.AppletInfo
+	(*wrapperspb.BoolValue)(nil),         // 136: openim.protobuf.BoolValue
 }
 var file_admin_admin_proto_depIdxs = []int32{
-	124, // 0: openim.admin.AdminUpdateInfoReq.account:type_name -> openim.protobuf.StringValue
-	124, // 1: openim.admin.AdminUpdateInfoReq.password:type_name -> openim.protobuf.StringValue
-	124, // 2: openim.admin.AdminUpdateInfoReq.faceURL:type_name -> openim.protobuf.StringValue
-	124, // 3: openim.admin.AdminUpdateInfoReq.nickname:type_name -> openim.protobuf.StringValue
-	125, // 4: openim.admin.AdminUpdateInfoReq.level:type_name -> openim.protobuf.Int32Value
-	126, // 5: openim.admin.SearchAdminAccountReq.pagination:type_name -> openim.sdkws.RequestPagination
+	128, // 0: openim.admin.AdminUpdateInfoReq.account:type_name -> openim.protobuf.StringValue
+	128, // 1: openim.admin.AdminUpdateInfoReq.password:type_name -> openim.protobuf.StringValue
+	128, // 2: openim.admin.AdminUpdateInfoReq.faceURL:type_name -> openim.protobuf.StringValue
+	128, // 3: openim.admin.AdminUpdateInfoReq.nickname:type_name -> openim.protobuf.StringValue
+	129, // 4: openim.admin.AdminUpdateInfoReq.level:type_name -> openim.protobuf.Int32Value
+	130, // 5: openim.admin.SearchAdminAccountReq.pagination:type_name -> openim.sdkws.RequestPagination
 	15,  // 6: openim.admin.SearchAdminAccountResp.adminAccounts:type_name -> openim.admin.GetAdminInfoResp
-	126, // 7: openim.admin.SearchDefaultFriendReq.pagination:type_name -> openim.sdkws.RequestPagination
-	127, // 8: openim.admin.DefaultFriendAttribute.user:type_name -> openim.chat.common.UserPublicInfo
+	130, // 7: openim.admin.SearchDefaultFriendReq.pagination:type_name -> openim.sdkws.RequestPagination
+	131, // 8: openim.admin.DefaultFriendAttribute.user:type_name -> openim.chat.common.UserPublicInfo
 	23,  // 9: openim.admin.SearchDefaultFriendResp.users:type_name -> openim.admin.DefaultFriendAttribute
-	126, // 10: openim.admin.SearchDefaultGroupReq.pagination:type_name -> openim.sdkws.RequestPagination
-	128, // 11: openim.admin.GroupAttribute.group:type_name -> openim.sdkws.GroupInfo
+	130, // 10: openim.admin.SearchDefaultGroupReq.pagination:type_name -> openim.sdkws.RequestPagination
+	132, // 11: openim.admin.GroupAttribute.group:type_name -> openim.sdkws.GroupInfo
 	44,  // 12: openim.admin.FindInvitationCodeResp.codes:type_name -> openim.admin.InvitationRegister
-	127, // 13: openim.admin.InvitationRegister.usedUser:type_name -> openim.chat.common.UserPublicInfo
-	126, // 14: openim.admin.SearchInvitationCodeReq.pagination:type_name -> openim.sdkws.RequestPagination
+	131, // 13: openim.admin.InvitationRegister.usedUser:type_name -> openim.chat.common.UserPublicInfo
+	130, // 14: openim.admin.SearchInvitationCodeReq.pagination:type_name -> openim.sdkws.RequestPagination
 	44,  // 15: openim.admin.SearchInvitationCodeResp.list:type_name -> openim.admin.InvitationRegister
-	126, // 16: openim.admin.SearchUserIPLimitLoginReq.pagination:type_name -> openim.sdkws.RequestPagination
-	127, // 17: openim.admin.LimitUserLoginIP.user:type_name -> openim.chat.common.UserPublicInfo
+	130, // 16: openim.admin.SearchUserIPLimitLoginReq.pagination:type_name -> openim.sdkws.RequestPagination
+	131, // 17: openim.admin.LimitUserLoginIP.user:type_name -> openim.chat.common.UserPublicInfo
 	48,  // 18: openim.admin.SearchUserIPLimitLoginResp.limits:type_name -> openim.admin.LimitUserLoginIP
 	50,  // 19: openim.admin.AddUserIPLimitLoginReq.limits:type_name -> openim.admin.UserIPLimitLogin
 	50,  // 20: openim.admin.DelUserIPLimitLoginReq.limits:type_name -> openim.admin.UserIPLimitLogin
-	126, // 21: openim.admin.SearchIPForbiddenReq.pagination:type_name -> openim.sdkws.RequestPagination
+	130, // 21: openim.admin.SearchIPForbiddenReq.pagination:type_name -> openim.sdkws.RequestPagination
 	55,  // 22: openim.admin.SearchIPForbiddenResp.forbiddens:type_name -> openim.admin.IPForbidden
 	56,  // 23: openim.admin.AddIPForbiddenReq.forbiddens:type_name -> openim.admin.IPForbiddenAdd
-	126, // 24: openim.admin.SearchBlockUserReq.pagination:type_name -> openim.sdkws.RequestPagination
+	130, // 24: openim.admin.SearchBlockUserReq.pagination:type_name -> openim.sdkws.RequestPagination
 	74,  // 25: openim.admin.SearchBlockUserResp.users:type_name -> openim.admin.BlockUserInfo
 	77,  // 26: openim.admin.FindUserBlockInfoResp.blocks:type_name -> openim.admin.BlockInfo
-	124, // 27: openim.admin.UpdateAppletReq.name:type_name -> openim.protobuf.StringValue
-	124, // 28: openim.admin.UpdateAppletReq.appID:type_name -> openim.protobuf.StringValue
-	124, // 29: openim.admin.UpdateAppletReq.icon:type_name -> openim.protobuf.StringValue
-	124, // 30: openim.admin.UpdateAppletReq.url:type_name -> openim.protobuf.StringValue
-	124, // 31: openim.admin.UpdateAppletReq.md5:type_name -> openim.protobuf.StringValue
-	129, // 32: openim.admin.UpdateAppletReq.size:type_name -> openim.protobuf.Int64Value
-	124, // 33: openim.admin.UpdateAppletReq.version:type_name -> openim.protobuf.StringValue
-	130, // 34: openim.admin.UpdateAppletReq.priority:type_name -> openim.protobuf.UInt32Value
-	130, // 35: openim.admin.UpdateAppletReq.status:type_name -> openim.protobuf.UInt32Value
-	129, // 36: openim.admin.UpdateAppletReq.createTime:type_name -> openim.protobuf.Int64Value
-	131, // 37: openim.admin.FindAppletResp.applets:type_name -> openim.chat.common.AppletInfo
-	126, // 38: openim.admin.SearchAppletReq.pagination:type_name -> openim.sdkws.RequestPagination
-	131, // 39: openim.admin.SearchAppletResp.applets:type_name -> openim.chat.common.AppletInfo
-	121, // 40: openim.admin.SetClientConfigReq.config:type_name -> openim.admin.SetClientConfigReq.ConfigEntry
-	122, // 41: openim.admin.GetClientConfigResp.config:type_name -> openim.admin.GetClientConfigResp.ConfigEntry
-	123, // 42: openim.admin.GetUserTokenResp.tokensMap:type_name -> openim.admin.GetUserTokenResp.TokensMapEntry
-	103, // 43: openim.admin.LatestApplicationVersionResp.version:type_name -> openim.admin.ApplicationVersion
-	124, // 44: openim.admin.UpdateApplicationVersionReq.platform:type_name -> openim.protobuf.StringValue
-	124, // 45: openim.admin.UpdateApplicationVersionReq.version:type_name -> openim.protobuf.StringValue
-	124, // 46: openim.admin.UpdateApplicationVersionReq.url:type_name -> openim.protobuf.StringValue
-	124, // 47: openim.admin.UpdateApplicationVersionReq.text:type_name -> openim.protobuf.StringValue
-	132, // 48: openim.admin.UpdateApplicationVersionReq.force:type_name -> openim.protobuf.BoolValue
-	132, // 49: openim.admin.UpdateApplicationVersionReq.latest:type_name -> openim.protobuf.BoolValue
-	132, // 50: openim.admin.UpdateApplicationVersionReq.hot:type_name -> openim.protobuf.BoolValue
-	126, // 51: openim.admin.PageApplicationVersionReq.pagination:type_name -> openim.sdkws.RequestPagination
-	103, // 52: openim.admin.PageApplicationVersionResp.versions:type_name -> openim.admin.ApplicationVersion
-	119, // 53: openim.admin.GetUserLoginRecordResp.records:type_name -> openim.admin.UserLoginRecord
-	0,   // 54: openim.admin.admin.Login:input_type -> openim.admin.LoginReq
-	6,   // 55: openim.admin.admin.ChangePassword:input_type -> openim.admin.ChangePasswordReq
-	4,   // 56: openim.admin.admin.AdminUpdateInfo:input_type -> openim.admin.AdminUpdateInfoReq
-	8,   // 57: openim.admin.admin.GetAdminInfo:input_type -> openim.admin.GetAdminInfoReq
-	2,   // 58: openim.admin.admin.AddAdminAccount:input_type -> openim.admin.AddAdminAccountReq
-	9,   // 59: openim.admin.admin.ChangeAdminPassword:input_type -> openim.admin.ChangeAdminPasswordReq
-	11,  // 60: openim.admin.admin.DelAdminAccount:input_type -> openim.admin.DelAdminAccountReq
-	13,  // 61: openim.admin.admin.SearchAdminAccount:input_type -> openim.admin.SearchAdminAccountReq
-	16,  // 62: openim.admin.admin.AddDefaultFriend:input_type -> openim.admin.AddDefaultFriendReq
-	18,  // 63: openim.admin.admin.DelDefaultFriend:input_type -> openim.admin.DelDefaultFriendReq
-	20,  // 64: openim.admin.admin.FindDefaultFriend:input_type -> openim.admin.FindDefaultFriendReq
-	22,  // 65: openim.admin.admin.SearchDefaultFriend:input_type -> openim.admin.SearchDefaultFriendReq
-	25,  // 66: openim.admin.admin.AddDefaultGroup:input_type -> openim.admin.AddDefaultGroupReq
-	27,  // 67: openim.admin.admin.DelDefaultGroup:input_type -> openim.admin.DelDefaultGroupReq
-	29,  // 68: openim.admin.admin.FindDefaultGroup:input_type -> openim.admin.FindDefaultGroupReq
-	31,  // 69: openim.admin.admin.SearchDefaultGroup:input_type -> openim.admin.SearchDefaultGroupReq
-	34,  // 70: openim.admin.admin.AddInvitationCode:input_type -> openim.admin.AddInvitationCodeReq
-	36,  // 71: openim.admin.admin.GenInvitationCode:input_type -> openim.admin.GenInvitationCodeReq
-	38,  // 72: openim.admin.admin.FindInvitationCode:input_type -> openim.admin.FindInvitationCodeReq
-	40,  // 73: openim.admin.admin.UseInvitationCode:input_type -> openim.admin.UseInvitationCodeReq
-	42,  // 74: openim.admin.admin.DelInvitationCode:input_type -> openim.admin.DelInvitationCodeReq
-	45,  // 75: openim.admin.admin.SearchInvitationCode:input_type -> openim.admin.SearchInvitationCodeReq
-	47,  // 76: openim.admin.admin.SearchUserIPLimitLogin:input_type -> openim.admin.SearchUserIPLimitLoginReq
-	51,  // 77: openim.admin.admin.AddUserIPLimitLogin:input_type -> openim.admin.AddUserIPLimitLoginReq
-	53,  // 78: openim.admin.admin.DelUserIPLimitLogin:input_type -> openim.admin.DelUserIPLimitLoginReq
-	57,  // 79: openim.admin.admin.SearchIPForbidden:input_type -> openim.admin.SearchIPForbiddenReq
-	59,  // 80: openim.admin.admin.AddIPForbidden:input_type -> openim.admin.AddIPForbiddenReq
-	61,  // 81: openim.admin.admin.DelIPForbidden:input_type -> openim.admin.DelIPForbiddenReq
-	67,  // 82: openim.admin.admin.CancellationUser:input_type -> openim.admin.CancellationUserReq
-	69,  // 83: openim.admin.admin.BlockUser:input_type -> openim.admin.BlockUserReq
-	71,  // 84: openim.admin.admin.UnblockUser:input_type -> openim.admin.UnblockUserReq
-	73,  // 85: openim.admin.admin.SearchBlockUser:input_type -> openim.admin.SearchBlockUserReq
-	76,  // 86: openim.admin.admin.FindUserBlockInfo:input_type -> openim.admin.FindUserBlockInfoReq
-	63,  // 87: openim.admin.admin.CheckRegisterForbidden:input_type -> openim.admin.CheckRegisterForbiddenReq
-	65,  // 88: openim.admin.admin.CheckLoginForbidden:input_type -> openim.admin.CheckLoginForbiddenReq
-	79,  // 89: openim.admin.admin.CreateToken:input_type -> openim.admin.CreateTokenReq
-	81,  // 90: openim.admin.admin.ParseToken:input_type -> openim.admin.ParseTokenReq
-	85,  // 91: openim.admin.admin.AddApplet:input_type -> openim.admin.AddAppletReq
-	87,  // 92: openim.admin.admin.DelApplet:input_type -> openim.admin.DelAppletReq
-	89,  // 93: openim.admin.admin.UpdateApplet:input_type -> openim.admin.UpdateAppletReq
-	91,  // 94: openim.admin.admin.FindApplet:input_type -> openim.admin.FindAppletReq
-	93,  // 95: openim.admin.admin.SearchApplet:input_type -> openim.admin.SearchAppletReq
-	99,  // 96: openim.admin.admin.GetClientConfig:input_type -> openim.admin.GetClientConfigReq
-	95,  // 97: openim.admin.admin.SetClientConfig:input_type -> openim.admin.SetClientConfigReq
-	97,  // 98: openim.admin.admin.DelClientConfig:input_type -> openim.admin.DelClientConfigReq
-	101, // 99: openim.admin.admin.GetUserToken:input_type -> openim.admin.GetUserTokenReq
-	83,  // 100: openim.admin.admin.InvalidateToken:input_type -> openim.admin.InvalidateTokenReq
-	104, // 101: openim.admin.admin.LatestApplicationVersion:input_type -> openim.admin.LatestApplicationVersionReq
-	106, // 102: openim.admin.admin.AddApplicationVersion:input_type -> openim.admin.AddApplicationVersionReq
-	108, // 103: openim.admin.admin.UpdateApplicationVersion:input_type -> openim.admin.UpdateApplicationVersionReq
-	110, // 104: openim.admin.admin.DeleteApplicationVersion:input_type -> openim.admin.DeleteApplicationVersionReq
-	112, // 105: openim.admin.admin.PageApplicationVersion:input_type -> openim.admin.PageApplicationVersionReq
-	114, // 106: openim.admin.admin.GetGoogleAuth:input_type -> openim.admin.GetGoogleAuthReq
-	116, // 107: openim.admin.admin.VerifyGoogleAuth:input_type -> openim.admin.VerifyGoogleAuthReq
-	118, // 108: openim.admin.admin.GetUserLoginRecord:input_type -> openim.admin.GetUserLoginRecordReq
-	1,   // 109: openim.admin.admin.Login:output_type -> openim.admin.LoginResp
-	7,   // 110: openim.admin.admin.ChangePassword:output_type -> openim.admin.ChangePasswordResp
-	5,   // 111: openim.admin.admin.AdminUpdateInfo:output_type -> openim.admin.AdminUpdateInfoResp
-	15,  // 112: openim.admin.admin.GetAdminInfo:output_type -> openim.admin.GetAdminInfoResp
-	3,   // 113: openim.admin.admin.AddAdminAccount:output_type -> openim.admin.AddAdminAccountResp
-	10,  // 114: openim.admin.admin.ChangeAdminPassword:output_type -> openim.admin.ChangeAdminPasswordResp
-	12,  // 115: openim.admin.admin.DelAdminAccount:output_type -> openim.admin.DelAdminAccountResp
-	14,  // 116: openim.admin.admin.SearchAdminAccount:output_type -> openim.admin.SearchAdminAccountResp
-	17,  // 117: openim.admin.admin.AddDefaultFriend:output_type -> openim.admin.AddDefaultFriendResp
-	19,  // 118: openim.admin.admin.DelDefaultFriend:output_type -> openim.admin.DelDefaultFriendResp
-	21,  // 119: openim.admin.admin.FindDefaultFriend:output_type -> openim.admin.FindDefaultFriendResp
-	24,  // 120: openim.admin.admin.SearchDefaultFriend:output_type -> openim.admin.SearchDefaultFriendResp
-	26,  // 121: openim.admin.admin.AddDefaultGroup:output_type -> openim.admin.AddDefaultGroupResp
-	28,  // 122: openim.admin.admin.DelDefaultGroup:output_type -> openim.admin.DelDefaultGroupResp
-	30,  // 123: openim.admin.admin.FindDefaultGroup:output_type -> openim.admin.FindDefaultGroupResp
-	33,  // 124: openim.admin.admin.SearchDefaultGroup:output_type -> openim.admin.SearchDefaultGroupResp
-	35,  // 125: openim.admin.admin.AddInvitationCode:output_type -> openim.admin.AddInvitationCodeResp
-	37,  // 126: openim.admin.admin.GenInvitationCode:output_type -> openim.admin.GenInvitationCodeResp
-	39,  // 127: openim.admin.admin.FindInvitationCode:output_type -> openim.admin.FindInvitationCodeResp
-	41,  // 128: openim.admin.admin.UseInvitationCode:output_type -> openim.admin.UseInvitationCodeResp
-	43,  // 129: openim.admin.admin.DelInvitationCode:output_type -> openim.admin.DelInvitationCodeResp
-	46,  // 130: openim.admin.admin.SearchInvitationCode:output_type -> openim.admin.SearchInvitationCodeResp
-	49,  // 131: openim.admin.admin.SearchUserIPLimitLogin:output_type -> openim.admin.SearchUserIPLimitLoginResp
-	52,  // 132: openim.admin.admin.AddUserIPLimitLogin:output_type -> openim.admin.AddUserIPLimitLoginResp
-	54,  // 133: openim.admin.admin.DelUserIPLimitLogin:output_type -> openim.admin.DelUserIPLimitLoginResp
-	58,  // 134: openim.admin.admin.SearchIPForbidden:output_type -> openim.admin.SearchIPForbiddenResp
-	60,  // 135: openim.admin.admin.AddIPForbidden:output_type -> openim.admin.AddIPForbiddenResp
-	62,  // 136: openim.admin.admin.DelIPForbidden:output_type -> openim.admin.DelIPForbiddenResp
-	68,  // 137: openim.admin.admin.CancellationUser:output_type -> openim.admin.CancellationUserResp
-	70,  // 138: openim.admin.admin.BlockUser:output_type -> openim.admin.BlockUserResp
-	72,  // 139: openim.admin.admin.UnblockUser:output_type -> openim.admin.UnblockUserResp
-	75,  // 140: openim.admin.admin.SearchBlockUser:output_type -> openim.admin.SearchBlockUserResp
-	78,  // 141: openim.admin.admin.FindUserBlockInfo:output_type -> openim.admin.FindUserBlockInfoResp
-	64,  // 142: openim.admin.admin.CheckRegisterForbidden:output_type -> openim.admin.CheckRegisterForbiddenResp
-	66,  // 143: openim.admin.admin.CheckLoginForbidden:output_type -> openim.admin.CheckLoginForbiddenResp
-	80,  // 144: openim.admin.admin.CreateToken:output_type -> openim.admin.CreateTokenResp
-	82,  // 145: openim.admin.admin.ParseToken:output_type -> openim.admin.ParseTokenResp
-	86,  // 146: openim.admin.admin.AddApplet:output_type -> openim.admin.AddAppletResp
-	88,  // 147: openim.admin.admin.DelApplet:output_type -> openim.admin.DelAppletResp
-	90,  // 148: openim.admin.admin.UpdateApplet:output_type -> openim.admin.UpdateAppletResp
-	92,  // 149: openim.admin.admin.FindApplet:output_type -> openim.admin.FindAppletResp
-	94,  // 150: openim.admin.admin.SearchApplet:output_type -> openim.admin.SearchAppletResp
-	100, // 151: openim.admin.admin.GetClientConfig:output_type -> openim.admin.GetClientConfigResp
-	96,  // 152: openim.admin.admin.SetClientConfig:output_type -> openim.admin.SetClientConfigResp
-	98,  // 153: openim.admin.admin.DelClientConfig:output_type -> openim.admin.DelClientConfigResp
-	102, // 154: openim.admin.admin.GetUserToken:output_type -> openim.admin.GetUserTokenResp
-	84,  // 155: openim.admin.admin.InvalidateToken:output_type -> openim.admin.InvalidateTokenResp
-	105, // 156: openim.admin.admin.LatestApplicationVersion:output_type -> openim.admin.LatestApplicationVersionResp
-	107, // 157: openim.admin.admin.AddApplicationVersion:output_type -> openim.admin.AddApplicationVersionResp
-	109, // 158: openim.admin.admin.UpdateApplicationVersion:output_type -> openim.admin.UpdateApplicationVersionResp
-	111, // 159: openim.admin.admin.DeleteApplicationVersion:output_type -> openim.admin.DeleteApplicationVersionResp
-	113, // 160: openim.admin.admin.PageApplicationVersion:output_type -> openim.admin.PageApplicationVersionResp
-	115, // 161: openim.admin.admin.GetGoogleAuth:output_type -> openim.admin.GetGoogleAuthResp
-	117, // 162: openim.admin.admin.VerifyGoogleAuth:output_type -> openim.admin.VerifyGoogleAuthResp
-	120, // 163: openim.admin.admin.GetUserLoginRecord:output_type -> openim.admin.GetUserLoginRecordResp
-	109, // [109:164] is the sub-list for method output_type
-	54,  // [54:109] is the sub-list for method input_type
-	54,  // [54:54] is the sub-list for extension type_name
-	54,  // [54:54] is the sub-list for extension extendee
-	0,   // [0:54] is the sub-list for field type_name
+	128, // 27: openim.admin.UpdateAppletReq.name:type_name -> openim.protobuf.StringValue
+	128, // 28: openim.admin.UpdateAppletReq.appID:type_name -> openim.protobuf.StringValue
+	128, // 29: openim.admin.UpdateAppletReq.icon:type_name -> openim.protobuf.StringValue
+	128, // 30: openim.admin.UpdateAppletReq.url:type_name -> openim.protobuf.StringValue
+	128, // 31: openim.admin.UpdateAppletReq.md5:type_name -> openim.protobuf.StringValue
+	133, // 32: openim.admin.UpdateAppletReq.size:type_name -> openim.protobuf.Int64Value
+	128, // 33: openim.admin.UpdateAppletReq.version:type_name -> openim.protobuf.StringValue
+	134, // 34: openim.admin.UpdateAppletReq.priority:type_name -> openim.protobuf.UInt32Value
+	134, // 35: openim.admin.UpdateAppletReq.status:type_name -> openim.protobuf.UInt32Value
+	133, // 36: openim.admin.UpdateAppletReq.createTime:type_name -> openim.protobuf.Int64Value
+	135, // 37: openim.admin.FindAppletResp.applets:type_name -> openim.chat.common.AppletInfo
+	130, // 38: openim.admin.SearchAppletReq.pagination:type_name -> openim.sdkws.RequestPagination
+	135, // 39: openim.admin.SearchAppletResp.applets:type_name -> openim.chat.common.AppletInfo
+	125, // 40: openim.admin.SetClientConfigReq.config:type_name -> openim.admin.SetClientConfigReq.ConfigEntry
+	101, // 41: openim.admin.ClientConfig.options:type_name -> openim.admin.ClientConfigOption
+	102, // 42: openim.admin.GetListClientConfigResp.configs:type_name -> openim.admin.ClientConfig
+	126, // 43: openim.admin.GetClientConfigResp.config:type_name -> openim.admin.GetClientConfigResp.ConfigEntry
+	127, // 44: openim.admin.GetUserTokenResp.tokensMap:type_name -> openim.admin.GetUserTokenResp.TokensMapEntry
+	107, // 45: openim.admin.LatestApplicationVersionResp.version:type_name -> openim.admin.ApplicationVersion
+	128, // 46: openim.admin.UpdateApplicationVersionReq.platform:type_name -> openim.protobuf.StringValue
+	128, // 47: openim.admin.UpdateApplicationVersionReq.version:type_name -> openim.protobuf.StringValue
+	128, // 48: openim.admin.UpdateApplicationVersionReq.url:type_name -> openim.protobuf.StringValue
+	128, // 49: openim.admin.UpdateApplicationVersionReq.text:type_name -> openim.protobuf.StringValue
+	136, // 50: openim.admin.UpdateApplicationVersionReq.force:type_name -> openim.protobuf.BoolValue
+	136, // 51: openim.admin.UpdateApplicationVersionReq.latest:type_name -> openim.protobuf.BoolValue
+	136, // 52: openim.admin.UpdateApplicationVersionReq.hot:type_name -> openim.protobuf.BoolValue
+	130, // 53: openim.admin.PageApplicationVersionReq.pagination:type_name -> openim.sdkws.RequestPagination
+	107, // 54: openim.admin.PageApplicationVersionResp.versions:type_name -> openim.admin.ApplicationVersion
+	123, // 55: openim.admin.GetUserLoginRecordResp.records:type_name -> openim.admin.UserLoginRecord
+	0,   // 56: openim.admin.admin.Login:input_type -> openim.admin.LoginReq
+	6,   // 57: openim.admin.admin.ChangePassword:input_type -> openim.admin.ChangePasswordReq
+	4,   // 58: openim.admin.admin.AdminUpdateInfo:input_type -> openim.admin.AdminUpdateInfoReq
+	8,   // 59: openim.admin.admin.GetAdminInfo:input_type -> openim.admin.GetAdminInfoReq
+	2,   // 60: openim.admin.admin.AddAdminAccount:input_type -> openim.admin.AddAdminAccountReq
+	9,   // 61: openim.admin.admin.ChangeAdminPassword:input_type -> openim.admin.ChangeAdminPasswordReq
+	11,  // 62: openim.admin.admin.DelAdminAccount:input_type -> openim.admin.DelAdminAccountReq
+	13,  // 63: openim.admin.admin.SearchAdminAccount:input_type -> openim.admin.SearchAdminAccountReq
+	16,  // 64: openim.admin.admin.AddDefaultFriend:input_type -> openim.admin.AddDefaultFriendReq
+	18,  // 65: openim.admin.admin.DelDefaultFriend:input_type -> openim.admin.DelDefaultFriendReq
+	20,  // 66: openim.admin.admin.FindDefaultFriend:input_type -> openim.admin.FindDefaultFriendReq
+	22,  // 67: openim.admin.admin.SearchDefaultFriend:input_type -> openim.admin.SearchDefaultFriendReq
+	25,  // 68: openim.admin.admin.AddDefaultGroup:input_type -> openim.admin.AddDefaultGroupReq
+	27,  // 69: openim.admin.admin.DelDefaultGroup:input_type -> openim.admin.DelDefaultGroupReq
+	29,  // 70: openim.admin.admin.FindDefaultGroup:input_type -> openim.admin.FindDefaultGroupReq
+	31,  // 71: openim.admin.admin.SearchDefaultGroup:input_type -> openim.admin.SearchDefaultGroupReq
+	34,  // 72: openim.admin.admin.AddInvitationCode:input_type -> openim.admin.AddInvitationCodeReq
+	36,  // 73: openim.admin.admin.GenInvitationCode:input_type -> openim.admin.GenInvitationCodeReq
+	38,  // 74: openim.admin.admin.FindInvitationCode:input_type -> openim.admin.FindInvitationCodeReq
+	40,  // 75: openim.admin.admin.UseInvitationCode:input_type -> openim.admin.UseInvitationCodeReq
+	42,  // 76: openim.admin.admin.DelInvitationCode:input_type -> openim.admin.DelInvitationCodeReq
+	45,  // 77: openim.admin.admin.SearchInvitationCode:input_type -> openim.admin.SearchInvitationCodeReq
+	47,  // 78: openim.admin.admin.SearchUserIPLimitLogin:input_type -> openim.admin.SearchUserIPLimitLoginReq
+	51,  // 79: openim.admin.admin.AddUserIPLimitLogin:input_type -> openim.admin.AddUserIPLimitLoginReq
+	53,  // 80: openim.admin.admin.DelUserIPLimitLogin:input_type -> openim.admin.DelUserIPLimitLoginReq
+	57,  // 81: openim.admin.admin.SearchIPForbidden:input_type -> openim.admin.SearchIPForbiddenReq
+	59,  // 82: openim.admin.admin.AddIPForbidden:input_type -> openim.admin.AddIPForbiddenReq
+	61,  // 83: openim.admin.admin.DelIPForbidden:input_type -> openim.admin.DelIPForbiddenReq
+	67,  // 84: openim.admin.admin.CancellationUser:input_type -> openim.admin.CancellationUserReq
+	69,  // 85: openim.admin.admin.BlockUser:input_type -> openim.admin.BlockUserReq
+	71,  // 86: openim.admin.admin.UnblockUser:input_type -> openim.admin.UnblockUserReq
+	73,  // 87: openim.admin.admin.SearchBlockUser:input_type -> openim.admin.SearchBlockUserReq
+	76,  // 88: openim.admin.admin.FindUserBlockInfo:input_type -> openim.admin.FindUserBlockInfoReq
+	63,  // 89: openim.admin.admin.CheckRegisterForbidden:input_type -> openim.admin.CheckRegisterForbiddenReq
+	65,  // 90: openim.admin.admin.CheckLoginForbidden:input_type -> openim.admin.CheckLoginForbiddenReq
+	79,  // 91: openim.admin.admin.CreateToken:input_type -> openim.admin.CreateTokenReq
+	81,  // 92: openim.admin.admin.ParseToken:input_type -> openim.admin.ParseTokenReq
+	85,  // 93: openim.admin.admin.AddApplet:input_type -> openim.admin.AddAppletReq
+	87,  // 94: openim.admin.admin.DelApplet:input_type -> openim.admin.DelAppletReq
+	89,  // 95: openim.admin.admin.UpdateApplet:input_type -> openim.admin.UpdateAppletReq
+	91,  // 96: openim.admin.admin.FindApplet:input_type -> openim.admin.FindAppletReq
+	93,  // 97: openim.admin.admin.SearchApplet:input_type -> openim.admin.SearchAppletReq
+	99,  // 98: openim.admin.admin.GetClientConfig:input_type -> openim.admin.GetClientConfigReq
+	100, // 99: openim.admin.admin.GetListClientConfig:input_type -> openim.admin.GetListClientConfigReq
+	95,  // 100: openim.admin.admin.SetClientConfig:input_type -> openim.admin.SetClientConfigReq
+	97,  // 101: openim.admin.admin.DelClientConfig:input_type -> openim.admin.DelClientConfigReq
+	105, // 102: openim.admin.admin.GetUserToken:input_type -> openim.admin.GetUserTokenReq
+	83,  // 103: openim.admin.admin.InvalidateToken:input_type -> openim.admin.InvalidateTokenReq
+	108, // 104: openim.admin.admin.LatestApplicationVersion:input_type -> openim.admin.LatestApplicationVersionReq
+	110, // 105: openim.admin.admin.AddApplicationVersion:input_type -> openim.admin.AddApplicationVersionReq
+	112, // 106: openim.admin.admin.UpdateApplicationVersion:input_type -> openim.admin.UpdateApplicationVersionReq
+	114, // 107: openim.admin.admin.DeleteApplicationVersion:input_type -> openim.admin.DeleteApplicationVersionReq
+	116, // 108: openim.admin.admin.PageApplicationVersion:input_type -> openim.admin.PageApplicationVersionReq
+	118, // 109: openim.admin.admin.GetGoogleAuth:input_type -> openim.admin.GetGoogleAuthReq
+	120, // 110: openim.admin.admin.VerifyGoogleAuth:input_type -> openim.admin.VerifyGoogleAuthReq
+	122, // 111: openim.admin.admin.GetUserLoginRecord:input_type -> openim.admin.GetUserLoginRecordReq
+	1,   // 112: openim.admin.admin.Login:output_type -> openim.admin.LoginResp
+	7,   // 113: openim.admin.admin.ChangePassword:output_type -> openim.admin.ChangePasswordResp
+	5,   // 114: openim.admin.admin.AdminUpdateInfo:output_type -> openim.admin.AdminUpdateInfoResp
+	15,  // 115: openim.admin.admin.GetAdminInfo:output_type -> openim.admin.GetAdminInfoResp
+	3,   // 116: openim.admin.admin.AddAdminAccount:output_type -> openim.admin.AddAdminAccountResp
+	10,  // 117: openim.admin.admin.ChangeAdminPassword:output_type -> openim.admin.ChangeAdminPasswordResp
+	12,  // 118: openim.admin.admin.DelAdminAccount:output_type -> openim.admin.DelAdminAccountResp
+	14,  // 119: openim.admin.admin.SearchAdminAccount:output_type -> openim.admin.SearchAdminAccountResp
+	17,  // 120: openim.admin.admin.AddDefaultFriend:output_type -> openim.admin.AddDefaultFriendResp
+	19,  // 121: openim.admin.admin.DelDefaultFriend:output_type -> openim.admin.DelDefaultFriendResp
+	21,  // 122: openim.admin.admin.FindDefaultFriend:output_type -> openim.admin.FindDefaultFriendResp
+	24,  // 123: openim.admin.admin.SearchDefaultFriend:output_type -> openim.admin.SearchDefaultFriendResp
+	26,  // 124: openim.admin.admin.AddDefaultGroup:output_type -> openim.admin.AddDefaultGroupResp
+	28,  // 125: openim.admin.admin.DelDefaultGroup:output_type -> openim.admin.DelDefaultGroupResp
+	30,  // 126: openim.admin.admin.FindDefaultGroup:output_type -> openim.admin.FindDefaultGroupResp
+	33,  // 127: openim.admin.admin.SearchDefaultGroup:output_type -> openim.admin.SearchDefaultGroupResp
+	35,  // 128: openim.admin.admin.AddInvitationCode:output_type -> openim.admin.AddInvitationCodeResp
+	37,  // 129: openim.admin.admin.GenInvitationCode:output_type -> openim.admin.GenInvitationCodeResp
+	39,  // 130: openim.admin.admin.FindInvitationCode:output_type -> openim.admin.FindInvitationCodeResp
+	41,  // 131: openim.admin.admin.UseInvitationCode:output_type -> openim.admin.UseInvitationCodeResp
+	43,  // 132: openim.admin.admin.DelInvitationCode:output_type -> openim.admin.DelInvitationCodeResp
+	46,  // 133: openim.admin.admin.SearchInvitationCode:output_type -> openim.admin.SearchInvitationCodeResp
+	49,  // 134: openim.admin.admin.SearchUserIPLimitLogin:output_type -> openim.admin.SearchUserIPLimitLoginResp
+	52,  // 135: openim.admin.admin.AddUserIPLimitLogin:output_type -> openim.admin.AddUserIPLimitLoginResp
+	54,  // 136: openim.admin.admin.DelUserIPLimitLogin:output_type -> openim.admin.DelUserIPLimitLoginResp
+	58,  // 137: openim.admin.admin.SearchIPForbidden:output_type -> openim.admin.SearchIPForbiddenResp
+	60,  // 138: openim.admin.admin.AddIPForbidden:output_type -> openim.admin.AddIPForbiddenResp
+	62,  // 139: openim.admin.admin.DelIPForbidden:output_type -> openim.admin.DelIPForbiddenResp
+	68,  // 140: openim.admin.admin.CancellationUser:output_type -> openim.admin.CancellationUserResp
+	70,  // 141: openim.admin.admin.BlockUser:output_type -> openim.admin.BlockUserResp
+	72,  // 142: openim.admin.admin.UnblockUser:output_type -> openim.admin.UnblockUserResp
+	75,  // 143: openim.admin.admin.SearchBlockUser:output_type -> openim.admin.SearchBlockUserResp
+	78,  // 144: openim.admin.admin.FindUserBlockInfo:output_type -> openim.admin.FindUserBlockInfoResp
+	64,  // 145: openim.admin.admin.CheckRegisterForbidden:output_type -> openim.admin.CheckRegisterForbiddenResp
+	66,  // 146: openim.admin.admin.CheckLoginForbidden:output_type -> openim.admin.CheckLoginForbiddenResp
+	80,  // 147: openim.admin.admin.CreateToken:output_type -> openim.admin.CreateTokenResp
+	82,  // 148: openim.admin.admin.ParseToken:output_type -> openim.admin.ParseTokenResp
+	86,  // 149: openim.admin.admin.AddApplet:output_type -> openim.admin.AddAppletResp
+	88,  // 150: openim.admin.admin.DelApplet:output_type -> openim.admin.DelAppletResp
+	90,  // 151: openim.admin.admin.UpdateApplet:output_type -> openim.admin.UpdateAppletResp
+	92,  // 152: openim.admin.admin.FindApplet:output_type -> openim.admin.FindAppletResp
+	94,  // 153: openim.admin.admin.SearchApplet:output_type -> openim.admin.SearchAppletResp
+	104, // 154: openim.admin.admin.GetClientConfig:output_type -> openim.admin.GetClientConfigResp
+	103, // 155: openim.admin.admin.GetListClientConfig:output_type -> openim.admin.GetListClientConfigResp
+	96,  // 156: openim.admin.admin.SetClientConfig:output_type -> openim.admin.SetClientConfigResp
+	98,  // 157: openim.admin.admin.DelClientConfig:output_type -> openim.admin.DelClientConfigResp
+	106, // 158: openim.admin.admin.GetUserToken:output_type -> openim.admin.GetUserTokenResp
+	84,  // 159: openim.admin.admin.InvalidateToken:output_type -> openim.admin.InvalidateTokenResp
+	109, // 160: openim.admin.admin.LatestApplicationVersion:output_type -> openim.admin.LatestApplicationVersionResp
+	111, // 161: openim.admin.admin.AddApplicationVersion:output_type -> openim.admin.AddApplicationVersionResp
+	113, // 162: openim.admin.admin.UpdateApplicationVersion:output_type -> openim.admin.UpdateApplicationVersionResp
+	115, // 163: openim.admin.admin.DeleteApplicationVersion:output_type -> openim.admin.DeleteApplicationVersionResp
+	117, // 164: openim.admin.admin.PageApplicationVersion:output_type -> openim.admin.PageApplicationVersionResp
+	119, // 165: openim.admin.admin.GetGoogleAuth:output_type -> openim.admin.GetGoogleAuthResp
+	121, // 166: openim.admin.admin.VerifyGoogleAuth:output_type -> openim.admin.VerifyGoogleAuthResp
+	124, // 167: openim.admin.admin.GetUserLoginRecord:output_type -> openim.admin.GetUserLoginRecordResp
+	112, // [112:168] is the sub-list for method output_type
+	56,  // [56:112] is the sub-list for method input_type
+	56,  // [56:56] is the sub-list for extension type_name
+	56,  // [56:56] is the sub-list for extension extendee
+	0,   // [0:56] is the sub-list for field type_name
 }
 
 func init() { file_admin_admin_proto_init() }
@@ -8945,7 +9209,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[100].Exporter = func(v any, i int) any {
-			switch v := v.(*GetClientConfigResp); i {
+			switch v := v.(*GetListClientConfigReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -8957,7 +9221,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[101].Exporter = func(v any, i int) any {
-			switch v := v.(*GetUserTokenReq); i {
+			switch v := v.(*ClientConfigOption); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -8969,7 +9233,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[102].Exporter = func(v any, i int) any {
-			switch v := v.(*GetUserTokenResp); i {
+			switch v := v.(*ClientConfig); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -8981,7 +9245,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[103].Exporter = func(v any, i int) any {
-			switch v := v.(*ApplicationVersion); i {
+			switch v := v.(*GetListClientConfigResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -8993,7 +9257,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[104].Exporter = func(v any, i int) any {
-			switch v := v.(*LatestApplicationVersionReq); i {
+			switch v := v.(*GetClientConfigResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9005,7 +9269,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[105].Exporter = func(v any, i int) any {
-			switch v := v.(*LatestApplicationVersionResp); i {
+			switch v := v.(*GetUserTokenReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9017,7 +9281,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[106].Exporter = func(v any, i int) any {
-			switch v := v.(*AddApplicationVersionReq); i {
+			switch v := v.(*GetUserTokenResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9029,7 +9293,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[107].Exporter = func(v any, i int) any {
-			switch v := v.(*AddApplicationVersionResp); i {
+			switch v := v.(*ApplicationVersion); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9041,7 +9305,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[108].Exporter = func(v any, i int) any {
-			switch v := v.(*UpdateApplicationVersionReq); i {
+			switch v := v.(*LatestApplicationVersionReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9053,7 +9317,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[109].Exporter = func(v any, i int) any {
-			switch v := v.(*UpdateApplicationVersionResp); i {
+			switch v := v.(*LatestApplicationVersionResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9065,7 +9329,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[110].Exporter = func(v any, i int) any {
-			switch v := v.(*DeleteApplicationVersionReq); i {
+			switch v := v.(*AddApplicationVersionReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9077,7 +9341,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[111].Exporter = func(v any, i int) any {
-			switch v := v.(*DeleteApplicationVersionResp); i {
+			switch v := v.(*AddApplicationVersionResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9089,7 +9353,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[112].Exporter = func(v any, i int) any {
-			switch v := v.(*PageApplicationVersionReq); i {
+			switch v := v.(*UpdateApplicationVersionReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9101,7 +9365,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[113].Exporter = func(v any, i int) any {
-			switch v := v.(*PageApplicationVersionResp); i {
+			switch v := v.(*UpdateApplicationVersionResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9113,7 +9377,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[114].Exporter = func(v any, i int) any {
-			switch v := v.(*GetGoogleAuthReq); i {
+			switch v := v.(*DeleteApplicationVersionReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9125,7 +9389,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[115].Exporter = func(v any, i int) any {
-			switch v := v.(*GetGoogleAuthResp); i {
+			switch v := v.(*DeleteApplicationVersionResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9137,7 +9401,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[116].Exporter = func(v any, i int) any {
-			switch v := v.(*VerifyGoogleAuthReq); i {
+			switch v := v.(*PageApplicationVersionReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9149,7 +9413,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[117].Exporter = func(v any, i int) any {
-			switch v := v.(*VerifyGoogleAuthResp); i {
+			switch v := v.(*PageApplicationVersionResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9161,7 +9425,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[118].Exporter = func(v any, i int) any {
-			switch v := v.(*GetUserLoginRecordReq); i {
+			switch v := v.(*GetGoogleAuthReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9173,7 +9437,7 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[119].Exporter = func(v any, i int) any {
-			switch v := v.(*UserLoginRecord); i {
+			switch v := v.(*GetGoogleAuthResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9185,6 +9449,54 @@ func file_admin_admin_proto_init() {
 			}
 		}
 		file_admin_admin_proto_msgTypes[120].Exporter = func(v any, i int) any {
+			switch v := v.(*VerifyGoogleAuthReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_admin_admin_proto_msgTypes[121].Exporter = func(v any, i int) any {
+			switch v := v.(*VerifyGoogleAuthResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_admin_admin_proto_msgTypes[122].Exporter = func(v any, i int) any {
+			switch v := v.(*GetUserLoginRecordReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_admin_admin_proto_msgTypes[123].Exporter = func(v any, i int) any {
+			switch v := v.(*UserLoginRecord); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_admin_admin_proto_msgTypes[124].Exporter = func(v any, i int) any {
 			switch v := v.(*GetUserLoginRecordResp); i {
 			case 0:
 				return &v.state
@@ -9203,7 +9515,7 @@ func file_admin_admin_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_admin_admin_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   124,
+			NumMessages:   128,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -9283,6 +9595,7 @@ type AdminClient interface {
 	SearchApplet(ctx context.Context, in *SearchAppletReq, opts ...grpc.CallOption) (*SearchAppletResp, error)
 	// Client Configuration
 	GetClientConfig(ctx context.Context, in *GetClientConfigReq, opts ...grpc.CallOption) (*GetClientConfigResp, error)
+	GetListClientConfig(ctx context.Context, in *GetListClientConfigReq, opts ...grpc.CallOption) (*GetListClientConfigResp, error)
 	SetClientConfig(ctx context.Context, in *SetClientConfigReq, opts ...grpc.CallOption) (*SetClientConfigResp, error)
 	DelClientConfig(ctx context.Context, in *DelClientConfigReq, opts ...grpc.CallOption) (*DelClientConfigResp, error)
 	GetUserToken(ctx context.Context, in *GetUserTokenReq, opts ...grpc.CallOption) (*GetUserTokenResp, error)
@@ -9693,6 +10006,15 @@ func (c *adminClient) GetClientConfig(ctx context.Context, in *GetClientConfigRe
 	return out, nil
 }
 
+func (c *adminClient) GetListClientConfig(ctx context.Context, in *GetListClientConfigReq, opts ...grpc.CallOption) (*GetListClientConfigResp, error) {
+	out := new(GetListClientConfigResp)
+	err := c.cc.Invoke(ctx, "/openim.admin.admin/GetListClientConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *adminClient) SetClientConfig(ctx context.Context, in *SetClientConfigReq, opts ...grpc.CallOption) (*SetClientConfigResp, error) {
 	out := new(SetClientConfigResp)
 	err := c.cc.Invoke(ctx, "/openim.admin.admin/SetClientConfig", in, out, opts...)
@@ -9857,6 +10179,7 @@ type AdminServer interface {
 	SearchApplet(context.Context, *SearchAppletReq) (*SearchAppletResp, error)
 	// Client Configuration
 	GetClientConfig(context.Context, *GetClientConfigReq) (*GetClientConfigResp, error)
+	GetListClientConfig(context.Context, *GetListClientConfigReq) (*GetListClientConfigResp, error)
 	SetClientConfig(context.Context, *SetClientConfigReq) (*SetClientConfigResp, error)
 	DelClientConfig(context.Context, *DelClientConfigReq) (*DelClientConfigResp, error)
 	GetUserToken(context.Context, *GetUserTokenReq) (*GetUserTokenResp, error)
@@ -10004,6 +10327,9 @@ func (*UnimplementedAdminServer) SearchApplet(context.Context, *SearchAppletReq)
 }
 func (*UnimplementedAdminServer) GetClientConfig(context.Context, *GetClientConfigReq) (*GetClientConfigResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetClientConfig not implemented")
+}
+func (*UnimplementedAdminServer) GetListClientConfig(context.Context, *GetListClientConfigReq) (*GetListClientConfigResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetListClientConfig not implemented")
 }
 func (*UnimplementedAdminServer) SetClientConfig(context.Context, *SetClientConfigReq) (*SetClientConfigResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetClientConfig not implemented")
@@ -10820,6 +11146,24 @@ func _Admin_GetClientConfig_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Admin_GetListClientConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetListClientConfigReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).GetListClientConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/openim.admin.admin/GetListClientConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).GetListClientConfig(ctx, req.(*GetListClientConfigReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Admin_SetClientConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SetClientConfigReq)
 	if err := dec(in); err != nil {
@@ -11211,6 +11555,10 @@ var _Admin_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetClientConfig",
 			Handler:    _Admin_GetClientConfig_Handler,
+		},
+		{
+			MethodName: "GetListClientConfig",
+			Handler:    _Admin_GetListClientConfig_Handler,
 		},
 		{
 			MethodName: "SetClientConfig",

@@ -139,6 +139,7 @@ func SetAdminRoute(router gin.IRouter, admin *Api, mw *chatmw.MW) {
 	initGroup.POST("/get", admin.GetClientConfig) // Get client initialization configuration
 	initGroup.POST("/set", admin.SetClientConfig) // Set client initialization configuration
 	initGroup.POST("/del", admin.DelClientConfig) // Delete client initialization configuration
+	initGroup.POST("/list", admin.GetListClientConfig) // Get client initialization configuration
 
 	statistic := router.Group("/statistic", mw.CheckAdmin)
 	statistic.POST("/login_record", admin.LoginRecord)

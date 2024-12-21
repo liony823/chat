@@ -17,10 +17,19 @@ package admin
 import "context"
 
 // ClientConfig config
-type ClientConfig struct {
-	Key   string `bson:"key"`
+
+type ClientConfigOption struct {
 	Value string `bson:"value"`
-	Desc  string `bson:"desc"`
+	Label string `bson:"label"`
+}
+
+type ClientConfig struct {
+	Key     string               `bson:"key"`
+	Value   string               `bson:"value"`
+	Label   string               `bson:"label"`
+	Type    string               `bson:"type"`
+	Options []ClientConfigOption `bson:"options"`
+	Desc    string               `bson:"desc"`
 }
 
 func (ClientConfig) TableName() string {
@@ -31,4 +40,5 @@ type ClientConfigInterface interface {
 	Set(ctx context.Context, config map[string]string) error
 	Get(ctx context.Context) (map[string]string, error)
 	Del(ctx context.Context, keys []string) error
+	List(ctx context.Context) ([]*ClientConfig, error)
 }

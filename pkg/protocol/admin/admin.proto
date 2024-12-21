@@ -478,6 +478,27 @@ message DelClientConfigResp {}
 
 message GetClientConfigReq {}
 
+message GetListClientConfigReq {}
+
+message ClientConfigOption {
+  string label = 1;
+  string value = 2;
+}
+
+message ClientConfig {
+  string key = 1;
+  string value = 2;
+  string label = 3;
+  string type = 4;
+  repeated ClientConfigOption options = 5;
+  string desc = 6;
+}
+
+message GetListClientConfigResp {
+  repeated ClientConfig configs = 1;
+}
+
+
 message GetClientConfigResp {
   map<string, string> config = 1;
 }
@@ -658,6 +679,7 @@ service admin {
 
   // Client Configuration
   rpc GetClientConfig(GetClientConfigReq) returns (GetClientConfigResp);
+  rpc GetListClientConfig(GetListClientConfigReq) returns (GetListClientConfigResp);
   rpc SetClientConfig(SetClientConfigReq) returns (SetClientConfigResp);
   rpc DelClientConfig(DelClientConfigReq) returns (DelClientConfigResp);
 

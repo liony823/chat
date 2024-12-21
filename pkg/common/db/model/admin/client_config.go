@@ -46,7 +46,6 @@ type ClientConfig struct {
 	coll *mongo.Collection
 }
 
-
 func (o *ClientConfig) Set(ctx context.Context, config map[string]string) error {
 	for key, value := range config {
 		filter := bson.M{"key": key}
@@ -63,6 +62,14 @@ func (o *ClientConfig) Set(ctx context.Context, config map[string]string) error 
 
 func (o *ClientConfig) Del(ctx context.Context, keys []string) error {
 	return mongoutil.DeleteMany(ctx, o.coll, bson.M{"key": bson.M{"$in": keys}})
+}
+
+func (o *ClientConfig) List(ctx context.Context) ([]*admin.ClientConfig, error) {
+	cs, err := mongoutil.Find[*admin.ClientConfig](ctx, o.coll, bson.M{})
+	if err != nil {
+		return nil, err
+	}
+	return cs, nil
 }
 
 func (o *ClientConfig) Get(ctx context.Context) (map[string]string, error) {

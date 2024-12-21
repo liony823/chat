@@ -50,6 +50,7 @@ type AdminDatabaseInterface interface {
 	FindOnShelf(ctx context.Context) ([]*admindb.Applet, error)
 	UpdateApplet(ctx context.Context, appletID string, update map[string]any) error
 	GetConfig(ctx context.Context) (map[string]string, error)
+	GetListClientConfig(ctx context.Context) ([]*admindb.ClientConfig, error)
 	SetConfig(ctx context.Context, cs map[string]string) error
 	DelConfig(ctx context.Context, keys []string) error
 	FindInvitationRegister(ctx context.Context, codes []string) ([]*admindb.InvitationRegister, error)
@@ -231,6 +232,10 @@ func (o *AdminDatabase) UpdateApplet(ctx context.Context, appletID string, updat
 
 func (o *AdminDatabase) GetConfig(ctx context.Context) (map[string]string, error) {
 	return o.clientConfig.Get(ctx)
+}
+
+func (o *AdminDatabase) GetListClientConfig(ctx context.Context) ([]*admindb.ClientConfig, error) {
+	return o.clientConfig.List(ctx)
 }
 
 func (o *AdminDatabase) SetConfig(ctx context.Context, cs map[string]string) error {

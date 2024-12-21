@@ -31,6 +31,32 @@ func (o *adminServer) GetClientConfig(ctx context.Context, req *admin.GetClientC
 	return &admin.GetClientConfigResp{Config: conf}, nil
 }
 
+func (o *adminServer) GetListClientConfig(ctx context.Context, req *admin.GetListClientConfigReq) (*admin.GetListClientConfigResp, error) {
+	conf, err := o.Database.GetListClientConfig(ctx)
+	if err != nil {
+		return nil, err
+	}
+	cs := make([]*admin.ClientConfig, 0, len(conf))
+	for _, c := range conf {
+		opts := make([]*admin.ClientConfigOption, 0, len(c.Options))
+		for _, o := range c.Options {
+			opts = append(opts, &admin.ClientConfigOption{
+				Label: o.Label,
+				Value: o.Value,
+			})
+		}
+		cs = append(cs, &admin.ClientConfig{
+			Key:     c.Key,
+			Value:   c.Value,
+			Label:   c.Label,
+			Type:    c.Type,
+			Desc:    c.Desc,
+			Options: opts,
+		})
+	}
+	return &admin.GetListClientConfigResp{Configs: cs}, nil
+}
+
 func (o *adminServer) SetClientConfig(ctx context.Context, req *admin.SetClientConfigReq) (*admin.SetClientConfigResp, error) {
 	if _, err := mctx.CheckAdmin(ctx); err != nil {
 		return nil, err

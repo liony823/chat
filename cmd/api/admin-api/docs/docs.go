@@ -128,6 +128,41 @@ const docTemplate = `{
                 }
             }
         },
+        "/account/del_admin": {
+            "post": {
+                "description": "删除指定管理员账户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "删除管理员账户",
+                "operationId": "delAdminAccount",
+                "parameters": [
+                    {
+                        "description": "删除管理员账户",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.DelAdminAccountReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/apiresp.ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/account/google_auth": {
             "post": {
                 "description": "获取管理员账户的Google Authenticator密钥和二维码数据",
@@ -893,17 +928,6 @@ const docTemplate = `{
                 ],
                 "summary": "获取客户端配置",
                 "operationId": "getClientConfig",
-                "parameters": [
-                    {
-                        "description": "查询条件",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.GetClientConfigReq"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -917,6 +941,42 @@ const docTemplate = `{
                                     "properties": {
                                         "data": {
                                             "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.GetClientConfigResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/client_config/list": {
+            "post": {
+                "description": "获取客户端初始化配置信息列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "client_config"
+                ],
+                "summary": "获取客户端配置列表",
+                "operationId": "getListClientConfig",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.GetListClientConfigResp"
                                         }
                                     }
                                 }
@@ -1862,41 +1922,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/del_admin": {
-            "post": {
-                "description": "删除指定管理员账户",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "summary": "删除管理员账户",
-                "operationId": "delAdminAccount",
-                "parameters": [
-                    {
-                        "description": "删除管理员账户",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.DelAdminAccountReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/apiresp.ApiResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/user/import/json": {
             "post": {
                 "description": "通过JSON数据批量导入用户信息",
@@ -2333,6 +2358,43 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_openimsdk_chat_pkg_protocol_admin.ClientConfig": {
+            "type": "object",
+            "properties": {
+                "desc": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "options": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ClientConfigOption"
+                    }
+                },
+                "type": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.ClientConfigOption": {
+            "type": "object",
+            "properties": {
+                "label": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
         "github_com_openimsdk_chat_pkg_protocol_admin.DefaultFriendAttribute": {
             "type": "object",
             "properties": {
@@ -2508,9 +2570,6 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_openimsdk_chat_pkg_protocol_admin.GetClientConfigReq": {
-            "type": "object"
-        },
         "github_com_openimsdk_chat_pkg_protocol_admin.GetClientConfigResp": {
             "type": "object",
             "properties": {
@@ -2530,6 +2589,17 @@ const docTemplate = `{
                 },
                 "secret": {
                     "type": "string"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.GetListClientConfigResp": {
+            "type": "object",
+            "properties": {
+                "configs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ClientConfig"
+                    }
                 }
             }
         },
