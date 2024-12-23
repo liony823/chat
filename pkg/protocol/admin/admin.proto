@@ -639,6 +639,33 @@ message SetBucketConfigReq {
 
 message SetBucketConfigResp {}
 
+
+message ContinueSigninConfig {
+  int32 day = 1;
+  int64 increment = 2;
+}
+
+message SigninConfig {
+  string signin_type = 1;
+  int32 random_min = 2;
+  int32 random_max = 3;
+  string rule = 4;
+  int64 daily_signin = 5;
+  repeated ContinueSigninConfig continue_signin = 6;
+}
+
+message SetSigninConfigReq {
+  SigninConfig config = 1;
+}
+
+message SetSigninConfigResp {}
+
+message GetSigninConfigReq {}
+
+message GetSigninConfigResp {
+  SigninConfig config = 1;
+}
+
 service admin {
   // Login
   rpc Login(LoginReq) returns (LoginResp);
@@ -732,4 +759,8 @@ service admin {
   // bucket config
   rpc GetBucketConfig(GetBucketConfigReq) returns (GetBucketConfigResp);
   rpc SetBucketConfig(SetBucketConfigReq) returns (SetBucketConfigResp);
+
+  // signin config
+  rpc GetSigninConfig(GetSigninConfigReq) returns (GetSigninConfigResp);
+  rpc SetSigninConfig(SetSigninConfigReq) returns (SetSigninConfigResp);
 }

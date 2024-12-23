@@ -96,6 +96,9 @@ type AdminDatabaseInterface interface {
 
 	GetBucketConfig(ctx context.Context) (map[string]interface{}, error)
 	SetBucketConfig(ctx context.Context, config map[string]interface{}) error
+
+	GetSigninConfig(ctx context.Context) (*admindb.SigninConfig, error)
+	SetSigninConfig(ctx context.Context, config *admindb.SigninConfig) error
 }
 
 func NewAdminDatabase(cli *mongoutil.Client, rdb redis.UniversalClient) (AdminDatabaseInterface, error) {
@@ -155,6 +158,11 @@ func NewAdminDatabase(cli *mongoutil.Client, rdb redis.UniversalClient) (AdminDa
 		return nil, err
 	}
 
+	signinConfig, err := admin.NewSigninConfig(cli.GetDB())
+	if err != nil {
+		return nil, err
+	}
+
 	return &AdminDatabase{
 		tx:                 cli.GetTx(),
 		admin:              a,
@@ -171,6 +179,7 @@ func NewAdminDatabase(cli *mongoutil.Client, rdb redis.UniversalClient) (AdminDa
 		loginRecord:        loginRecord,
 		smsConfig:          smsConfig,
 		bucketConfig:       bucketConfig,
+		signinConfig:       signinConfig,
 	}, nil
 }
 
@@ -191,6 +200,7 @@ type AdminDatabase struct {
 	loginRecord        chatdb.UserLoginRecordInterface
 	smsConfig          admindb.SmsConfigInterface
 	bucketConfig       admindb.BucketConfigInterface
+	signinConfig       admindb.SigninConfigInterface
 }
 
 func (o *AdminDatabase) GetAdmin(ctx context.Context, account string) (*admindb.Admin, error) {
@@ -469,4 +479,12 @@ func (o *AdminDatabase) GetActiveBucketConfig(ctx context.Context) (map[string]i
 		}
 	}
 	return activeConfig, nil
+}
+
+func (o *AdminDatabase) GetSigninConfig(ctx context.Context) (*admindb.SigninConfig, error) {
+	return o.signinConfig.Get(ctx)
+}
+
+func (o *AdminDatabase) SetSigninConfig(ctx context.Context, config *admindb.SigninConfig) error {
+	return o.signinConfig.Set(ctx, config)
 }

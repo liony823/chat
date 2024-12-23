@@ -225,6 +225,13 @@ definitions:
       value:
         type: string
     type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.ContinueSigninConfig:
+    properties:
+      day:
+        type: integer
+      increment:
+        type: integer
+    type: object
   github_com_openimsdk_chat_pkg_protocol_admin.DefaultFriendAttribute:
     properties:
       createTime:
@@ -364,6 +371,11 @@ definitions:
         items:
           $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ClientConfig'
         type: array
+    type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.GetSigninConfigResp:
+    properties:
+      config:
+        $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SigninConfig'
     type: object
   github_com_openimsdk_chat_pkg_protocol_admin.GetSmsConfigResp:
     properties:
@@ -602,12 +614,34 @@ definitions:
           type: string
         type: object
     type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.SetSigninConfigReq:
+    properties:
+      config:
+        $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SigninConfig'
+    type: object
   github_com_openimsdk_chat_pkg_protocol_admin.SetSmsConfigReq:
     properties:
       config:
         additionalProperties:
           type: string
         type: object
+    type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.SigninConfig:
+    properties:
+      continue_signin:
+        items:
+          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ContinueSigninConfig'
+        type: array
+      daily_signin:
+        type: integer
+      random_max:
+        type: integer
+      random_min:
+        type: integer
+      rule:
+        type: string
+      signin_type:
+        type: string
     type: object
   github_com_openimsdk_chat_pkg_protocol_admin.UnblockUserReq:
     properties:
@@ -1968,6 +2002,50 @@ paths:
       summary: 测试
       tags:
       - common
+  /signin_config/get:
+    post:
+      consumes:
+      - application/json
+      description: 获取签到配置
+      operationId: getSigninConfig
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/apiresp.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.GetSigninConfigResp'
+              type: object
+      summary: 获取签到配置
+      tags:
+      - signin_config
+  /signin_config/set:
+    post:
+      consumes:
+      - application/json
+      description: 设置签到配置
+      operationId: setSigninConfig
+      parameters:
+      - description: 签到配置信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SetSigninConfigReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/apiresp.ApiResponse'
+      summary: 设置签到配置
+      tags:
+      - signin_config
   /sms_config/get:
     post:
       consumes:

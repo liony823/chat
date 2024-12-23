@@ -149,6 +149,10 @@ func SetAdminRoute(router gin.IRouter, admin *Api, mw *chatmw.MW) {
 	bucketConfigGroup.POST("/set", admin.SetBucketConfig) // Set bucket config
 	bucketConfigGroup.POST("/get", admin.GetBucketConfig) // Get bucket config
 
+	signinConfigGroup := router.Group("/signin_config", mw.CheckAdmin)
+	signinConfigGroup.POST("/set", admin.SetSigninConfig) // Set signin config
+	signinConfigGroup.POST("/get", admin.GetSigninConfig) // Get signin config
+
 	statistic := router.Group("/statistic", mw.CheckAdmin)
 	statistic.POST("/login_record", admin.LoginRecord)
 	statistic.POST("/new_user_count", admin.NewUserCount)

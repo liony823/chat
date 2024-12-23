@@ -1792,6 +1792,77 @@ const docTemplate = `{
                 }
             }
         },
+        "/signin_config/get": {
+            "post": {
+                "description": "获取签到配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "signin_config"
+                ],
+                "summary": "获取签到配置",
+                "operationId": "getSigninConfig",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.GetSigninConfigResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/signin_config/set": {
+            "post": {
+                "description": "设置签到配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "signin_config"
+                ],
+                "summary": "设置签到配置",
+                "operationId": "setSigninConfig",
+                "parameters": [
+                    {
+                        "description": "签到配置信息",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SetSigninConfigReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/apiresp.ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/sms_config/get": {
             "post": {
                 "description": "获取短信配置",
@@ -2537,6 +2608,17 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_openimsdk_chat_pkg_protocol_admin.ContinueSigninConfig": {
+            "type": "object",
+            "properties": {
+                "day": {
+                    "type": "integer"
+                },
+                "increment": {
+                    "type": "integer"
+                }
+            }
+        },
         "github_com_openimsdk_chat_pkg_protocol_admin.DefaultFriendAttribute": {
             "type": "object",
             "properties": {
@@ -2753,6 +2835,14 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ClientConfig"
                     }
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.GetSigninConfigResp": {
+            "type": "object",
+            "properties": {
+                "config": {
+                    "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SigninConfig"
                 }
             }
         },
@@ -3125,6 +3215,14 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_openimsdk_chat_pkg_protocol_admin.SetSigninConfigReq": {
+            "type": "object",
+            "properties": {
+                "config": {
+                    "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SigninConfig"
+                }
+            }
+        },
         "github_com_openimsdk_chat_pkg_protocol_admin.SetSmsConfigReq": {
             "type": "object",
             "properties": {
@@ -3133,6 +3231,32 @@ const docTemplate = `{
                     "additionalProperties": {
                         "type": "string"
                     }
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.SigninConfig": {
+            "type": "object",
+            "properties": {
+                "continue_signin": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ContinueSigninConfig"
+                    }
+                },
+                "daily_signin": {
+                    "type": "integer"
+                },
+                "random_max": {
+                    "type": "integer"
+                },
+                "random_min": {
+                    "type": "integer"
+                },
+                "rule": {
+                    "type": "string"
+                },
+                "signin_type": {
+                    "type": "string"
                 }
             }
         },
