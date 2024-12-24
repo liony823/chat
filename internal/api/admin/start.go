@@ -153,6 +153,16 @@ func SetAdminRoute(router gin.IRouter, admin *Api, mw *chatmw.MW) {
 	signinConfigGroup.POST("/set", admin.SetSigninConfig) // Set signin config
 	signinConfigGroup.POST("/get", admin.GetSigninConfig) // Get signin config
 
+	adminMenuGroup := router.Group("/admin_menu", mw.CheckAdmin)
+	adminMenuGroup.POST("/create", admin.CreateAdminMenu)
+	adminMenuGroup.POST("/update", admin.UpdateAdminMenu)
+	adminMenuGroup.POST("/delete", admin.DeleteAdminMenu)
+	adminMenuGroup.POST("/take", admin.TakeAdminMenu)
+	adminMenuGroup.POST("/list", admin.ListAdminMenu)
+	adminMenuGroup.POST("/user_menu", admin.ListAdminUserMenu)
+	adminMenuGroup.POST("/user_menu/assign", admin.AssignAdminUserMenu)
+	adminMenuGroup.POST("/user_menu/get", admin.GetAdminUserMenu)
+
 	statistic := router.Group("/statistic", mw.CheckAdmin)
 	statistic.POST("/login_record", admin.LoginRecord)
 	statistic.POST("/new_user_count", admin.NewUserCount)

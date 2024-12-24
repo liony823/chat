@@ -99,6 +99,19 @@ type AdminDatabaseInterface interface {
 
 	GetSigninConfig(ctx context.Context) (*admindb.SigninConfig, error)
 	SetSigninConfig(ctx context.Context, config *admindb.SigninConfig) error
+
+	TakeAdminMenu(ctx context.Context, key string) (*admindb.AdminMenu, error)
+	CreateAdminMenu(ctx context.Context, menus []*admindb.AdminMenu) error
+	UpdateAdminMenu(ctx context.Context, key string, data map[string]any) error
+	DeleteAdminMenu(ctx context.Context, keys []string) error
+	ListAdminMenu(ctx context.Context, parent string) ([]*admindb.AdminMenu, error)
+
+	CreateAdminUserMenu(ctx context.Context, userMenus []*admindb.AdminUserMenu) error
+	UpdateAdminUserMenu(ctx context.Context, userID string, menus []string) error
+	DeleteAdminUserMenu(ctx context.Context, userIDs []string) error
+	TakeAdminUserMenu(ctx context.Context, userID string) (*admindb.AdminUserMenu, error)
+	ListAdminUserMenu(ctx context.Context) ([]*admindb.AdminUserMenu, error)
+	ListAdminMenuByKeys(ctx context.Context, keys []string) ([]*admindb.AdminMenu, error)
 }
 
 func NewAdminDatabase(cli *mongoutil.Client, rdb redis.UniversalClient) (AdminDatabaseInterface, error) {
@@ -163,6 +176,16 @@ func NewAdminDatabase(cli *mongoutil.Client, rdb redis.UniversalClient) (AdminDa
 		return nil, err
 	}
 
+	adminMenu, err := admin.NewAdminMenu(cli.GetDB())
+	if err != nil {
+		return nil, err
+	}
+
+	adminUserMenu, err := admin.NewAdminUserMenu(cli.GetDB())
+	if err != nil {
+		return nil, err
+	}
+
 	return &AdminDatabase{
 		tx:                 cli.GetTx(),
 		admin:              a,
@@ -180,6 +203,8 @@ func NewAdminDatabase(cli *mongoutil.Client, rdb redis.UniversalClient) (AdminDa
 		smsConfig:          smsConfig,
 		bucketConfig:       bucketConfig,
 		signinConfig:       signinConfig,
+		adminMenu:          adminMenu,
+		adminUserMenu:      adminUserMenu,
 	}, nil
 }
 
@@ -201,6 +226,8 @@ type AdminDatabase struct {
 	smsConfig          admindb.SmsConfigInterface
 	bucketConfig       admindb.BucketConfigInterface
 	signinConfig       admindb.SigninConfigInterface
+	adminMenu          admindb.AdminMenuInterface
+	adminUserMenu      admindb.AdminUserMenuInterface
 }
 
 func (o *AdminDatabase) GetAdmin(ctx context.Context, account string) (*admindb.Admin, error) {
@@ -224,7 +251,12 @@ func (o *AdminDatabase) AddAdminAccount(ctx context.Context, admins []*admindb.A
 }
 
 func (o *AdminDatabase) DelAdminAccount(ctx context.Context, userIDs []string) error {
-	return o.admin.Delete(ctx, userIDs)
+	return o.tx.Transaction(ctx, func(ctx context.Context) error {
+		if err := o.adminUserMenu.Delete(ctx, userIDs); err != nil {
+			return err
+		}
+		return o.admin.Delete(ctx, userIDs)
+	})
 }
 
 func (o *AdminDatabase) SearchAdminAccount(ctx context.Context, pagination pagination.Pagination, filter bson.M) (int64, []*admindb.Admin, error) {
@@ -487,4 +519,48 @@ func (o *AdminDatabase) GetSigninConfig(ctx context.Context) (*admindb.SigninCon
 
 func (o *AdminDatabase) SetSigninConfig(ctx context.Context, config *admindb.SigninConfig) error {
 	return o.signinConfig.Set(ctx, config)
+}
+
+func (o *AdminDatabase) TakeAdminMenu(ctx context.Context, key string) (*admindb.AdminMenu, error) {
+	return o.adminMenu.Take(ctx, key)
+}
+
+func (o *AdminDatabase) ListAdminMenu(ctx context.Context, parent string) ([]*admindb.AdminMenu, error) {
+	return o.adminMenu.List(ctx, parent)
+}
+
+func (o *AdminDatabase) CreateAdminMenu(ctx context.Context, menus []*admindb.AdminMenu) error {
+	return o.adminMenu.Create(ctx, menus)
+}
+
+func (o *AdminDatabase) UpdateAdminMenu(ctx context.Context, key string, data map[string]any) error {
+	return o.adminMenu.Update(ctx, key, data)
+}
+
+func (o *AdminDatabase) DeleteAdminMenu(ctx context.Context, keys []string) error {
+	return o.adminMenu.Delete(ctx, keys)
+}
+
+func (o *AdminDatabase) CreateAdminUserMenu(ctx context.Context, userMenus []*admindb.AdminUserMenu) error {
+	return o.adminUserMenu.Create(ctx, userMenus)
+}
+
+func (o *AdminDatabase) UpdateAdminUserMenu(ctx context.Context, userID string, menus []string) error {
+	return o.adminUserMenu.Update(ctx, userID, menus)
+}
+
+func (o *AdminDatabase) DeleteAdminUserMenu(ctx context.Context, userIDs []string) error {
+	return o.adminUserMenu.Delete(ctx, userIDs)
+}
+
+func (o *AdminDatabase) TakeAdminUserMenu(ctx context.Context, userID string) (*admindb.AdminUserMenu, error) {
+	return o.adminUserMenu.Take(ctx, userID)
+}
+
+func (o *AdminDatabase) ListAdminUserMenu(ctx context.Context) ([]*admindb.AdminUserMenu, error) {
+	return o.adminUserMenu.List(ctx)
+}
+
+func (o *AdminDatabase) ListAdminMenuByKeys(ctx context.Context, keys []string) ([]*admindb.AdminMenu, error) {
+	return o.adminMenu.ListByKeys(ctx, keys)
 }

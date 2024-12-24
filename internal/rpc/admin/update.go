@@ -19,8 +19,10 @@ import (
 	"encoding/hex"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/liony823/tools/errs"
 
+	admindb "github.com/openimsdk/chat/pkg/common/db/table/admin"
 	"github.com/openimsdk/chat/pkg/protocol/admin"
 )
 
@@ -68,7 +70,6 @@ func ToDBAdminUpdate(req *admin.AdminUpdateInfoReq) (map[string]any, error) {
 	}
 	return update, nil
 }
-
 
 func ToDBAdminUpdatePassword(password string) (map[string]any, error) {
 	if password == "" {
@@ -132,4 +133,73 @@ func ToDBAppletUpdate(req *admin.UpdateAppletReq) (map[string]any, error) {
 
 func ToDBInvitationRegisterUpdate(userID string) map[string]any {
 	return map[string]any{"user_id": userID}
+}
+
+func ToDBAdminMenuUpdate(req *admin.UpdateAdminMenuReq) (map[string]any, error) {
+	update := make(map[string]any)
+	update["key"] = req.Key
+	if req.Name != nil {
+		update["name"] = req.Name.Value
+	}
+	if req.Path != nil {
+		update["path"] = req.Path.Value
+	}
+	if req.Component != nil {
+		update["component"] = req.Component.Value
+	}
+	if req.Icon != nil {
+		update["icon"] = req.Icon.Value
+	}
+	if req.Sort != nil {
+		update["sort"] = req.Sort.Value
+	}
+	if req.Parent != nil {
+		update["parent"] = req.Parent.Value
+	}
+	if req.Layout != nil {
+		update["layout"] = req.Layout.Value
+	}
+	if req.HiddenInMenu != nil {
+		update["hidden_in_menu"] = req.HiddenInMenu.Value
+	}
+	if req.Redirect != nil {
+		update["redirect"] = req.Redirect.Value
+	}
+	return update, nil
+}
+
+func ToDBAdminMenuCreate(req *admin.CreateAdminMenuReq) (*admindb.AdminMenu, error) {
+	admindb := &admindb.AdminMenu{}
+	if req.Name != nil {
+		admindb.Name = req.Name.Value
+	}
+	if req.Path != nil {
+		admindb.Path = req.Path.Value
+	}
+	if req.Component != nil {
+		admindb.Component = req.Component.Value
+	}
+	if req.Icon != nil {
+		admindb.Icon = req.Icon.Value
+	}
+	if req.Sort != nil {
+		admindb.Sort = req.Sort.Value
+	}
+	if req.Parent != nil {
+		admindb.Parent = req.Parent.Value
+	}
+	if req.Layout != nil {
+		admindb.Layout = req.Layout.Value
+	}
+	if req.HiddenInMenu != nil {
+		admindb.HiddenInMenu = req.HiddenInMenu.Value
+	}
+	if req.Redirect != nil {
+		admindb.Redirect = req.Redirect.Value
+	}
+
+	admindb.Key = uuid.New().String()
+
+	return admindb, nil
+
 }

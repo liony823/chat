@@ -411,6 +411,371 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin_menu/create": {
+            "post": {
+                "description": "创建菜单",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin_menu"
+                ],
+                "summary": "创建菜单",
+                "operationId": "createAdminMenu",
+                "parameters": [
+                    {
+                        "description": "菜单信息",
+                        "name": "admin_menu",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.CreateAdminMenuReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.CreateAdminMenuResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin_menu/delete": {
+            "post": {
+                "description": "删除菜单",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin_menu"
+                ],
+                "summary": "删除菜单",
+                "operationId": "deleteAdminMenu",
+                "parameters": [
+                    {
+                        "description": "菜单信息",
+                        "name": "admin_menu",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.DeleteAdminMenuReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.DeleteAdminMenuResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin_menu/list": {
+            "post": {
+                "description": "获取菜单列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin_menu"
+                ],
+                "summary": "获取菜单列表",
+                "operationId": "listAdminMenu",
+                "parameters": [
+                    {
+                        "description": "菜单信息",
+                        "name": "admin_menu",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ListAdminMenuReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ListAdminMenuResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin_menu/take": {
+            "post": {
+                "description": "获取菜单",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin_menu"
+                ],
+                "summary": "获取菜单",
+                "operationId": "takeAdminMenu",
+                "parameters": [
+                    {
+                        "description": "菜单信息",
+                        "name": "admin_menu",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.TakeAdminMenuReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.TakeAdminMenuResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin_menu/update": {
+            "post": {
+                "description": "更新菜单",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin_menu"
+                ],
+                "summary": "更新菜单",
+                "operationId": "updateAdminMenu",
+                "parameters": [
+                    {
+                        "description": "菜单信息",
+                        "name": "admin_menu",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.UpdateAdminMenuReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.UpdateAdminMenuResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin_menu/user_menu": {
+            "post": {
+                "description": "获取用户权限菜单",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin_menu"
+                ],
+                "summary": "获取用户权限菜单",
+                "operationId": "listAdminUserMenu",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ListAdminUserMenuResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin_menu/user_menu/assign": {
+            "post": {
+                "description": "分配用户权限菜单",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin_menu"
+                ],
+                "summary": "分配用户权限菜单",
+                "operationId": "assignAdminUserMenu",
+                "parameters": [
+                    {
+                        "description": "菜单信息",
+                        "name": "admin_menu",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.AssignAdminUserMenuReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.AssignAdminUserMenuResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin_menu/user_menu/get": {
+            "post": {
+                "description": "获取用户权限菜单",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin_menu"
+                ],
+                "summary": "获取用户权限菜单",
+                "operationId": "getAdminUserMenu",
+                "parameters": [
+                    {
+                        "description": "菜单信息",
+                        "name": "admin_menu",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.GetAdminUserMenuReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.GetAdminUserMenuResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/applet/add": {
             "post": {
                 "description": "添加新的小程序配置",
@@ -2456,6 +2821,41 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_openimsdk_chat_pkg_protocol_admin.AdminMenu": {
+            "type": "object",
+            "properties": {
+                "component": {
+                    "type": "string"
+                },
+                "hiddenInMenu": {
+                    "type": "boolean"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "layout": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "parent": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "redirect": {
+                    "type": "string"
+                },
+                "sort": {
+                    "type": "integer"
+                }
+            }
+        },
         "github_com_openimsdk_chat_pkg_protocol_admin.AdminUpdateInfoReq": {
             "type": "object",
             "properties": {
@@ -2507,6 +2907,23 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.AssignAdminUserMenuReq": {
+            "type": "object",
+            "properties": {
+                "menus": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "userID": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.AssignAdminUserMenuResp": {
+            "type": "object"
         },
         "github_com_openimsdk_chat_pkg_protocol_admin.BlockUserInfo": {
             "type": "object",
@@ -2619,6 +3036,41 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_openimsdk_chat_pkg_protocol_admin.CreateAdminMenuReq": {
+            "type": "object",
+            "properties": {
+                "component": {
+                    "$ref": "#/definitions/wrapperspb.StringValue"
+                },
+                "hiddenInMenu": {
+                    "$ref": "#/definitions/wrapperspb.BoolValue"
+                },
+                "icon": {
+                    "$ref": "#/definitions/wrapperspb.StringValue"
+                },
+                "layout": {
+                    "$ref": "#/definitions/wrapperspb.BoolValue"
+                },
+                "name": {
+                    "$ref": "#/definitions/wrapperspb.StringValue"
+                },
+                "parent": {
+                    "$ref": "#/definitions/wrapperspb.StringValue"
+                },
+                "path": {
+                    "$ref": "#/definitions/wrapperspb.StringValue"
+                },
+                "redirect": {
+                    "$ref": "#/definitions/wrapperspb.StringValue"
+                },
+                "sort": {
+                    "$ref": "#/definitions/wrapperspb.Int32Value"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.CreateAdminMenuResp": {
+            "type": "object"
+        },
         "github_com_openimsdk_chat_pkg_protocol_admin.DefaultFriendAttribute": {
             "type": "object",
             "properties": {
@@ -2721,6 +3173,20 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_openimsdk_chat_pkg_protocol_admin.DeleteAdminMenuReq": {
+            "type": "object",
+            "properties": {
+                "keys": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.DeleteAdminMenuResp": {
+            "type": "object"
+        },
         "github_com_openimsdk_chat_pkg_protocol_admin.DeleteApplicationVersionReq": {
             "type": "object",
             "properties": {
@@ -2786,11 +3252,36 @@ const docTemplate = `{
                 "level": {
                     "type": "integer"
                 },
+                "menus": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.AdminMenu"
+                    }
+                },
                 "nickname": {
                     "type": "string"
                 },
                 "userID": {
                     "type": "string"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.GetAdminUserMenuReq": {
+            "type": "object",
+            "properties": {
+                "userID": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.GetAdminUserMenuResp": {
+            "type": "object",
+            "properties": {
+                "menus": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.AdminMenu"
+                    }
                 }
             }
         },
@@ -2949,6 +3440,36 @@ const docTemplate = `{
                 },
                 "userID": {
                     "type": "string"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.ListAdminMenuReq": {
+            "type": "object",
+            "properties": {
+                "parent": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.ListAdminMenuResp": {
+            "type": "object",
+            "properties": {
+                "menus": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.AdminMenu"
+                    }
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.ListAdminUserMenuResp": {
+            "type": "object",
+            "properties": {
+                "menus": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.AdminMenu"
+                    }
                 }
             }
         },
@@ -3260,6 +3781,22 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_openimsdk_chat_pkg_protocol_admin.TakeAdminMenuReq": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.TakeAdminMenuResp": {
+            "type": "object",
+            "properties": {
+                "menu": {
+                    "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.AdminMenu"
+                }
+            }
+        },
         "github_com_openimsdk_chat_pkg_protocol_admin.UnblockUserReq": {
             "type": "object",
             "properties": {
@@ -3270,6 +3807,44 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.UpdateAdminMenuReq": {
+            "type": "object",
+            "properties": {
+                "component": {
+                    "$ref": "#/definitions/wrapperspb.StringValue"
+                },
+                "hiddenInMenu": {
+                    "$ref": "#/definitions/wrapperspb.BoolValue"
+                },
+                "icon": {
+                    "$ref": "#/definitions/wrapperspb.StringValue"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "layout": {
+                    "$ref": "#/definitions/wrapperspb.BoolValue"
+                },
+                "name": {
+                    "$ref": "#/definitions/wrapperspb.StringValue"
+                },
+                "parent": {
+                    "$ref": "#/definitions/wrapperspb.StringValue"
+                },
+                "path": {
+                    "$ref": "#/definitions/wrapperspb.StringValue"
+                },
+                "redirect": {
+                    "$ref": "#/definitions/wrapperspb.StringValue"
+                },
+                "sort": {
+                    "$ref": "#/definitions/wrapperspb.Int32Value"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.UpdateAdminMenuResp": {
+            "type": "object"
         },
         "github_com_openimsdk_chat_pkg_protocol_admin.UpdateAppletReq": {
             "type": "object",

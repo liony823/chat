@@ -101,6 +101,7 @@ message GetAdminInfoResp {
   bool enableGoogleAuth = 5;
   int32 level = 6;
   int64 createTime = 7;
+  repeated AdminMenu menus = 8;
 }
 
 // ################### Default Friend ###################
@@ -666,6 +667,99 @@ message GetSigninConfigResp {
   SigninConfig config = 1;
 }
 
+message AdminMenu {
+  string key = 1;
+  string name = 2;
+  string path = 3;
+  string component = 4;
+  string icon = 5;
+  int32 sort = 6;
+  string parent = 7;
+  bool layout = 8;
+  bool hiddenInMenu = 9;
+  string redirect = 10;
+}
+
+message GetAdminMenuReq {}
+
+message GetAdminMenuResp {
+  repeated AdminMenu menus = 1;
+}
+
+message CreateAdminMenuReq {
+  openim.protobuf.StringValue name = 2;
+  openim.protobuf.StringValue path = 3;
+  openim.protobuf.StringValue component = 4;
+  openim.protobuf.StringValue icon = 5;
+  openim.protobuf.Int32Value sort = 6;
+  openim.protobuf.StringValue parent = 7;
+  openim.protobuf.BoolValue layout = 8;
+  openim.protobuf.BoolValue hiddenInMenu = 9;
+  openim.protobuf.StringValue redirect = 10;
+}
+
+message CreateAdminMenuResp {}
+
+message UpdateAdminMenuReq {
+  string key = 1;
+  openim.protobuf.StringValue name = 2;
+  openim.protobuf.StringValue path = 3;
+  openim.protobuf.StringValue component = 4;
+  openim.protobuf.StringValue icon = 5;
+  openim.protobuf.Int32Value sort = 6;
+  openim.protobuf.StringValue parent = 7;
+  openim.protobuf.BoolValue layout = 8;
+  openim.protobuf.BoolValue hiddenInMenu = 9;
+  openim.protobuf.StringValue redirect = 10;
+}
+
+message UpdateAdminMenuResp {}
+
+message DeleteAdminMenuReq {
+  repeated string keys = 1;
+}
+
+message DeleteAdminMenuResp {}
+
+message TakeAdminMenuReq {
+  string key = 1;
+}
+
+message TakeAdminMenuResp {
+  AdminMenu menu = 1;
+}
+
+message ListAdminMenuReq {
+  string parent = 1;
+}
+
+message ListAdminMenuResp {
+  repeated AdminMenu menus = 1;
+}
+
+message ListAdminUserMenuReq {
+  string userID = 1;
+}
+
+message ListAdminUserMenuResp {
+  repeated AdminMenu menus = 1;
+}
+
+message GetAdminUserMenuReq {
+  string userID = 1;
+}
+
+message GetAdminUserMenuResp {
+  repeated AdminMenu menus = 1;
+}
+
+message AssignAdminUserMenuReq {
+  string userID = 1;
+  repeated string menus = 2;
+}
+
+message AssignAdminUserMenuResp {}
+
 service admin {
   // Login
   rpc Login(LoginReq) returns (LoginResp);
@@ -763,4 +857,14 @@ service admin {
   // signin config
   rpc GetSigninConfig(GetSigninConfigReq) returns (GetSigninConfigResp);
   rpc SetSigninConfig(SetSigninConfigReq) returns (SetSigninConfigResp);
+
+  // admin menu
+  rpc CreateAdminMenu(CreateAdminMenuReq) returns (CreateAdminMenuResp);
+  rpc UpdateAdminMenu(UpdateAdminMenuReq) returns (UpdateAdminMenuResp);
+  rpc DeleteAdminMenu(DeleteAdminMenuReq) returns (DeleteAdminMenuResp);
+  rpc TakeAdminMenu(TakeAdminMenuReq) returns (TakeAdminMenuResp);
+  rpc ListAdminMenu(ListAdminMenuReq) returns (ListAdminMenuResp);
+  rpc ListAdminUserMenu(ListAdminUserMenuReq) returns (ListAdminUserMenuResp);
+  rpc AssignAdminUserMenu(AssignAdminUserMenuReq) returns (AssignAdminUserMenuResp);
+  rpc GetAdminUserMenu(GetAdminUserMenuReq) returns (GetAdminUserMenuResp);
 }

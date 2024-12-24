@@ -45,6 +45,10 @@ func (o *adminServer) GetAdminInfo(ctx context.Context, req *admin.GetAdminInfoR
 	if err != nil {
 		return nil, err
 	}
+	res, err := o.ListAdminUserMenu(ctx, &admin.ListAdminUserMenuReq{UserID: userID})
+	if err != nil {
+		return nil, err
+	}
 	return &admin.GetAdminInfoResp{
 		Account:          a.Account,
 		FaceURL:          a.FaceURL,
@@ -53,6 +57,7 @@ func (o *adminServer) GetAdminInfo(ctx context.Context, req *admin.GetAdminInfoR
 		EnableGoogleAuth: a.EnableGoogleAuth,
 		Level:            a.Level,
 		CreateTime:       a.CreateTime.UnixMilli(),
+		Menus:            res.Menus,
 	}, nil
 }
 
@@ -157,6 +162,7 @@ func (o *adminServer) SearchAdminAccount(ctx context.Context, req *admin.SearchA
 			Nickname:   v.Nickname,
 			UserID:     v.UserID,
 			Level:      v.Level,
+			
 			CreateTime: v.CreateTime.Unix(),
 		}
 		accounts = append(accounts, temp)

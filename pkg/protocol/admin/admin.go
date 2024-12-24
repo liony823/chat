@@ -21,6 +21,31 @@ import (
 	"github.com/openimsdk/chat/pkg/common/constant"
 )
 
+func (x *AssignAdminUserMenuReq) Check() error {
+	if x.UserID == "" {
+		return errs.ErrArgs.WrapMsg("userID is empty")
+	}
+	if x.Menus == nil {
+		return errs.ErrArgs.WrapMsg("menus is empty")
+	}
+	if datautil.Duplicate(x.Menus) {
+		return errs.ErrArgs.WrapMsg("menus has duplicate")
+	}
+	return nil
+}
+
+func (x *UpdateAdminMenuReq) Check() error {
+	if x.Key == "" {
+		return errs.ErrArgs.WrapMsg("menu key is empty")
+	}
+
+	if x.Parent.Value == x.Key {
+		return errs.ErrArgs.WrapMsg("parent key is equal to menu key")
+	}
+
+	return nil
+}
+
 func (x *LoginReq) Check() error {
 	if x.Account == "" {
 		return errs.ErrArgs.WrapMsg("account is empty")
