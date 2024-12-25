@@ -2127,6 +2127,147 @@ const docTemplate = `{
                 }
             }
         },
+        "/operation_log/delete": {
+            "post": {
+                "description": "删除操作日志",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "operation_log"
+                ],
+                "summary": "删除操作日志",
+                "operationId": "delOperationLog",
+                "parameters": [
+                    {
+                        "description": "查询条件",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.DeleteOperationLogReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.DeleteOperationLogResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/operation_log/get": {
+            "post": {
+                "description": "获取操作日志",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "operation_log"
+                ],
+                "summary": "获取操作日志",
+                "operationId": "getOperationLog",
+                "parameters": [
+                    {
+                        "description": "查询条件",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.GetOperationLogReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.GetOperationLogResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/operation_log/search": {
+            "post": {
+                "description": "搜索操作日志",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "operation_log"
+                ],
+                "summary": "搜索操作日志",
+                "operationId": "searchOperationLog",
+                "parameters": [
+                    {
+                        "description": "查询条件",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SearchOperationLogReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SearchOperationLogResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/ping": {
             "get": {
                 "description": "测试",
@@ -3198,6 +3339,20 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_openimsdk_chat_pkg_protocol_admin.DeleteOperationLogReq": {
+            "type": "object",
+            "properties": {
+                "operationIDs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.DeleteOperationLogResp": {
+            "type": "object"
+        },
         "github_com_openimsdk_chat_pkg_protocol_admin.FindDefaultFriendResp": {
             "type": "object",
             "properties": {
@@ -3326,6 +3481,52 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ClientConfig"
                     }
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.GetOperationLogReq": {
+            "type": "object",
+            "properties": {
+                "operationID": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.GetOperationLogResp": {
+            "type": "object",
+            "properties": {
+                "IP": {
+                    "type": "string"
+                },
+                "adminAccount": {
+                    "type": "string"
+                },
+                "adminID": {
+                    "type": "string"
+                },
+                "adminName": {
+                    "type": "string"
+                },
+                "createTime": {
+                    "type": "integer"
+                },
+                "method": {
+                    "type": "string"
+                },
+                "module": {
+                    "type": "string"
+                },
+                "operation": {
+                    "type": "string"
+                },
+                "operationID": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "requestData": {
+                    "type": "string"
                 }
             }
         },
@@ -3483,6 +3684,44 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.OperationLog": {
+            "type": "object",
+            "properties": {
+                "IP": {
+                    "type": "string"
+                },
+                "adminAccount": {
+                    "type": "string"
+                },
+                "adminID": {
+                    "type": "string"
+                },
+                "adminName": {
+                    "type": "string"
+                },
+                "createTime": {
+                    "type": "integer"
+                },
+                "method": {
+                    "type": "string"
+                },
+                "module": {
+                    "type": "string"
+                },
+                "operation": {
+                    "type": "string"
+                },
+                "operationID": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "requestData": {
                     "type": "string"
                 }
             }
@@ -3682,6 +3921,31 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.InvitationRegister"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.SearchOperationLogReq": {
+            "type": "object",
+            "properties": {
+                "keyword": {
+                    "type": "string"
+                },
+                "pagination": {
+                    "$ref": "#/definitions/sdkws.RequestPagination"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.SearchOperationLogResp": {
+            "type": "object",
+            "properties": {
+                "logs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.OperationLog"
                     }
                 },
                 "total": {

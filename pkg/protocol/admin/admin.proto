@@ -760,6 +760,73 @@ message AssignAdminUserMenuReq {
 
 message AssignAdminUserMenuResp {}
 
+
+// ################### operation log ###################
+
+message OperationLog {
+  string operationID = 1;
+  string adminID = 2;
+  string adminAccount = 3;
+  string adminName = 4;
+  string module = 5;
+  string operation = 6;
+  string method = 7;
+  string path = 8;
+  string IP = 9;
+  string requestData = 10;
+  int64 createTime = 11;
+}
+
+message SearchOperationLogReq {
+  string keyword = 1;
+  openim.sdkws.RequestPagination pagination = 2;
+}
+
+message SearchOperationLogResp {
+  int64 total = 1;
+  repeated OperationLog logs = 2;
+}
+
+message GetOperationLogReq {
+  string operationID = 1;
+}
+
+message GetOperationLogResp {
+  string operationID = 1;
+  string adminID = 2;
+  string adminAccount = 3;
+  string adminName = 4;
+  string module = 5;
+  string operation = 6;
+  string method = 7;
+  string path = 8;
+  string IP = 9;
+  string requestData = 10;
+  int64 createTime = 11;
+}
+
+message DeleteOperationLogReq {
+  repeated string operationIDs = 1;
+}
+
+message DeleteOperationLogResp {}
+
+message CreateOperationLogReq {
+  string operationID = 1;
+  string adminID = 2;
+  string adminAccount = 3;
+  string adminName = 4;
+  string module = 5;
+  string operation = 6;
+  string method = 7;
+  string path = 8;
+  string IP = 9;
+  string requestData = 10;
+  int64 createTime = 11;
+}
+
+message CreateOperationLogResp {}
+
 service admin {
   // Login
   rpc Login(LoginReq) returns (LoginResp);
@@ -867,4 +934,10 @@ service admin {
   rpc ListAdminUserMenu(ListAdminUserMenuReq) returns (ListAdminUserMenuResp);
   rpc AssignAdminUserMenu(AssignAdminUserMenuReq) returns (AssignAdminUserMenuResp);
   rpc GetAdminUserMenu(GetAdminUserMenuReq) returns (GetAdminUserMenuResp);
+
+  // operation log
+  rpc SearchOperationLog(SearchOperationLogReq) returns (SearchOperationLogResp);
+  rpc GetOperationLog(GetOperationLogReq) returns (GetOperationLogResp);
+  rpc DeleteOperationLog(DeleteOperationLogReq) returns (DeleteOperationLogResp);
+  rpc CreateOperationLog(CreateOperationLogReq) returns (CreateOperationLogResp);
 }

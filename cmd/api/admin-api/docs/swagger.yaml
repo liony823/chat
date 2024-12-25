@@ -370,6 +370,15 @@ definitions:
           type: string
         type: array
     type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.DeleteOperationLogReq:
+    properties:
+      operationIDs:
+        items:
+          type: string
+        type: array
+    type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.DeleteOperationLogResp:
+    type: object
   github_com_openimsdk_chat_pkg_protocol_admin.FindDefaultFriendResp:
     properties:
       userIDs:
@@ -453,6 +462,36 @@ definitions:
         items:
           $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ClientConfig'
         type: array
+    type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.GetOperationLogReq:
+    properties:
+      operationID:
+        type: string
+    type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.GetOperationLogResp:
+    properties:
+      IP:
+        type: string
+      adminAccount:
+        type: string
+      adminID:
+        type: string
+      adminName:
+        type: string
+      createTime:
+        type: integer
+      method:
+        type: string
+      module:
+        type: string
+      operation:
+        type: string
+      operationID:
+        type: string
+      path:
+        type: string
+      requestData:
+        type: string
     type: object
   github_com_openimsdk_chat_pkg_protocol_admin.GetSigninConfigResp:
     properties:
@@ -553,6 +592,31 @@ definitions:
       code:
         type: string
       password:
+        type: string
+    type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.OperationLog:
+    properties:
+      IP:
+        type: string
+      adminAccount:
+        type: string
+      adminID:
+        type: string
+      adminName:
+        type: string
+      createTime:
+        type: integer
+      method:
+        type: string
+      module:
+        type: string
+      operation:
+        type: string
+      operationID:
+        type: string
+      path:
+        type: string
+      requestData:
         type: string
     type: object
   github_com_openimsdk_chat_pkg_protocol_admin.PageApplicationVersionReq:
@@ -681,6 +745,22 @@ definitions:
       list:
         items:
           $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.InvitationRegister'
+        type: array
+      total:
+        type: integer
+    type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.SearchOperationLogReq:
+    properties:
+      keyword:
+        type: string
+      pagination:
+        $ref: '#/definitions/sdkws.RequestPagination'
+    type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.SearchOperationLogResp:
+    properties:
+      logs:
+        items:
+          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.OperationLog'
         type: array
       total:
         type: integer
@@ -2338,6 +2418,90 @@ paths:
       summary: 搜索邀请码
       tags:
       - invitation
+  /operation_log/delete:
+    post:
+      consumes:
+      - application/json
+      description: 删除操作日志
+      operationId: delOperationLog
+      parameters:
+      - description: 查询条件
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.DeleteOperationLogReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/apiresp.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.DeleteOperationLogResp'
+              type: object
+      summary: 删除操作日志
+      tags:
+      - operation_log
+  /operation_log/get:
+    post:
+      consumes:
+      - application/json
+      description: 获取操作日志
+      operationId: getOperationLog
+      parameters:
+      - description: 查询条件
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.GetOperationLogReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/apiresp.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.GetOperationLogResp'
+              type: object
+      summary: 获取操作日志
+      tags:
+      - operation_log
+  /operation_log/search:
+    post:
+      consumes:
+      - application/json
+      description: 搜索操作日志
+      operationId: searchOperationLog
+      parameters:
+      - description: 查询条件
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SearchOperationLogReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/apiresp.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SearchOperationLogResp'
+              type: object
+      summary: 搜索操作日志
+      tags:
+      - operation_log
   /ping:
     get:
       description: 测试

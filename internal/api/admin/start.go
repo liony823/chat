@@ -64,7 +64,7 @@ func Start(ctx context.Context, index int, config *Config) error {
 	gin.SetMode(gin.ReleaseMode)
 	engine := gin.New()
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	engine.Use(gin.Recovery(), mw.CorsHandler(), mw.GinParseOperationID(), mw.GinAdminBasicAuth(config.Share.BasicAuth.Username, config.Share.BasicAuth.Password, config.Share.BasicAuth.Secret))
+	engine.Use(gin.Recovery(), mw.CorsHandler(), mw.GinParseOperationID(), mw.GinAdminBasicAuth(config.Share.BasicAuth.Username, config.Share.BasicAuth.Password, config.Share.BasicAuth.Secret), mwApi.OperationLog())
 	SetAdminRoute(engine, adminApi, mwApi)
 	return engine.Run(fmt.Sprintf(":%d", apiPort))
 }
@@ -74,15 +74,17 @@ func SetAdminRoute(router gin.IRouter, admin *Api, mw *chatmw.MW) {
 	adminRouterGroup := router.Group("/account")
 	adminRouterGroup.POST("/login", admin.AdminLogin)
 	adminRouterGroup.POST("/google_auth", mw.CheckAdmin, admin.GetGoogleAuth)
-	adminRouterGroup.POST("/verify_google_auth", mw.CheckAdmin, admin.VerifyGoogleAuth) // Login
-	adminRouterGroup.POST("/update", mw.CheckAdmin, admin.AdminUpdateInfo)              // Modify information
-	adminRouterGroup.POST("/info", mw.CheckAdmin, admin.AdminInfo)                      // Get information
-	adminRouterGroup.POST("/change_password", mw.CheckAdmin, admin.ChangeAdminPassword) // Change admin account's password
-	adminRouterGroup.POST("/add_admin", mw.CheckAdmin, admin.AddAdminAccount)           // Add admin account
-	adminRouterGroup.POST("/add_user", mw.CheckAdmin, admin.AddUserAccount)             // Add user account
-	adminRouterGroup.POST("/del_admin", mw.CheckAdmin, admin.DelAdminAccount)           // Delete admin
-	adminRouterGroup.POST("/search_admin", mw.CheckAdmin, admin.SearchAdminAccount)     // Get admin list
-	//account.POST("/add_notification_account")
+	adminRouterGroup.POST("/verify_google_auth", mw.CheckAdmin, admin.VerifyGoogleAuth)
+	adminRouterGroup.POST("/update", mw.CheckAdmin, admin.AdminUpdateInfo)
+	adminRouterGroup.POST("/info", mw.CheckAdmin, admin.AdminInfo)
+	adminRouterGroup.POST("/change_password", mw.CheckAdmin, admin.ChangeAdminPassword)
+	adminRouterGroup.POST("/add_admin", mw.CheckAdmin, admin.AddAdminAccount)
+	adminRouterGroup.POST("/add_user", mw.CheckAdmin, admin.AddUserAccount)
+	adminRouterGroup.POST("/del_admin", mw.CheckAdmin, admin.DelAdminAccount)
+	adminRouterGroup.POST("/search_admin", mw.CheckAdmin, admin.SearchAdminAccount)
+
+	operationLogGroup := router.Group("/operation_log", mw.CheckAdmin)
+	operationLogGroup.POST("/search", admin.SearchOperationLog)
 
 	importGroup := router.Group("/user/import")
 	importGroup.POST("/json", mw.CheckAdmin, admin.ImportUserByJson)
@@ -95,63 +97,63 @@ func SetAdminRoute(router gin.IRouter, admin *Api, mw *chatmw.MW) {
 
 	defaultRouter := router.Group("/default", mw.CheckAdmin)
 	defaultUserRouter := defaultRouter.Group("/user")
-	defaultUserRouter.POST("/add", admin.AddDefaultFriend)       // Add default friend at registration
-	defaultUserRouter.POST("/del", admin.DelDefaultFriend)       // Delete default friend at registration
-	defaultUserRouter.POST("/find", admin.FindDefaultFriend)     // Default friend list
-	defaultUserRouter.POST("/search", admin.SearchDefaultFriend) // Search default friend list at registration
+	defaultUserRouter.POST("/add", admin.AddDefaultFriend)
+	defaultUserRouter.POST("/del", admin.DelDefaultFriend)
+	defaultUserRouter.POST("/find", admin.FindDefaultFriend)
+	defaultUserRouter.POST("/search", admin.SearchDefaultFriend)
 	defaultGroupRouter := defaultRouter.Group("/group")
-	defaultGroupRouter.POST("/add", admin.AddDefaultGroup)       // Add default group at registration
-	defaultGroupRouter.POST("/del", admin.DelDefaultGroup)       // Delete default group at registration
-	defaultGroupRouter.POST("/find", admin.FindDefaultGroup)     // Get default group list at registration
-	defaultGroupRouter.POST("/search", admin.SearchDefaultGroup) // Search default group list at registration
+	defaultGroupRouter.POST("/add", admin.AddDefaultGroup)
+	defaultGroupRouter.POST("/del", admin.DelDefaultGroup)
+	defaultGroupRouter.POST("/find", admin.FindDefaultGroup)
+	defaultGroupRouter.POST("/search", admin.SearchDefaultGroup)
 
 	invitationCodeRouter := router.Group("/invitation_code", mw.CheckAdmin)
-	invitationCodeRouter.POST("/add", admin.AddInvitationCode)       // Add invitation code
-	invitationCodeRouter.POST("/gen", admin.GenInvitationCode)       // Generate invitation code
-	invitationCodeRouter.POST("/del", admin.DelInvitationCode)       // Delete invitation code
-	invitationCodeRouter.POST("/search", admin.SearchInvitationCode) // Search invitation code
+	invitationCodeRouter.POST("/add", admin.AddInvitationCode)
+	invitationCodeRouter.POST("/gen", admin.GenInvitationCode)
+	invitationCodeRouter.POST("/del", admin.DelInvitationCode)
+	invitationCodeRouter.POST("/search", admin.SearchInvitationCode)
 
 	forbiddenRouter := router.Group("/forbidden", mw.CheckAdmin)
 	ipForbiddenRouter := forbiddenRouter.Group("/ip")
-	ipForbiddenRouter.POST("/add", admin.AddIPForbidden)       // Add forbidden IP for registration/login
-	ipForbiddenRouter.POST("/del", admin.DelIPForbidden)       // Delete forbidden IP for registration/login
-	ipForbiddenRouter.POST("/search", admin.SearchIPForbidden) // Search forbidden IPs for registration/login
+	ipForbiddenRouter.POST("/add", admin.AddIPForbidden)
+	ipForbiddenRouter.POST("/del", admin.DelIPForbidden)
+	ipForbiddenRouter.POST("/search", admin.SearchIPForbidden)
 	userForbiddenRouter := forbiddenRouter.Group("/user")
-	userForbiddenRouter.POST("/add", admin.AddUserIPLimitLogin)       // Add limit for user login on specific IP
-	userForbiddenRouter.POST("/del", admin.DelUserIPLimitLogin)       // Delete user limit on specific IP for login
-	userForbiddenRouter.POST("/search", admin.SearchUserIPLimitLogin) // Search limit for user login on specific IP
+	userForbiddenRouter.POST("/add", admin.AddUserIPLimitLogin)
+	userForbiddenRouter.POST("/del", admin.DelUserIPLimitLogin)
+	userForbiddenRouter.POST("/search", admin.SearchUserIPLimitLogin)
 
 	appletRouterGroup := router.Group("/applet", mw.CheckAdmin)
-	appletRouterGroup.POST("/add", admin.AddApplet)       // Add applet
-	appletRouterGroup.POST("/del", admin.DelApplet)       // Delete applet
-	appletRouterGroup.POST("/update", admin.UpdateApplet) // Modify applet
-	appletRouterGroup.POST("/search", admin.SearchApplet) // Search applet
+	appletRouterGroup.POST("/add", admin.AddApplet)
+	appletRouterGroup.POST("/del", admin.DelApplet)
+	appletRouterGroup.POST("/update", admin.UpdateApplet)
+	appletRouterGroup.POST("/search", admin.SearchApplet)
 
 	blockRouter := router.Group("/block", mw.CheckAdmin)
-	blockRouter.POST("/add", admin.BlockUser)          // Block user
-	blockRouter.POST("/del", admin.UnblockUser)        // Unblock user
-	blockRouter.POST("/search", admin.SearchBlockUser) // Search blocked users
+	blockRouter.POST("/add", admin.BlockUser)
+	blockRouter.POST("/del", admin.UnblockUser)
+	blockRouter.POST("/search", admin.SearchBlockUser)
 
 	userRouter := router.Group("/user", mw.CheckAdmin)
-	userRouter.POST("/password/reset", admin.ResetUserPassword) // Reset user password
+	userRouter.POST("/password/reset", admin.ResetUserPassword)
 
 	initGroup := router.Group("/client_config", mw.CheckAdmin)
-	initGroup.POST("/get", admin.GetClientConfig)      // Get client initialization configuration
-	initGroup.POST("/set", admin.SetClientConfig)      // Set client initialization configuration
-	initGroup.POST("/del", admin.DelClientConfig)      // Delete client initialization configuration
-	initGroup.POST("/list", admin.GetListClientConfig) // Get client initialization configuration
+	initGroup.POST("/get", admin.GetClientConfig)
+	initGroup.POST("/set", admin.SetClientConfig)
+	initGroup.POST("/del", admin.DelClientConfig)
+	initGroup.POST("/list", admin.GetListClientConfig)
 
 	smsConfigGroup := router.Group("/sms_config", mw.CheckAdmin)
-	smsConfigGroup.POST("/set", admin.SetSmsConfig) // Set sms config
-	smsConfigGroup.POST("/get", admin.GetSmsConfig) // Get sms config
+	smsConfigGroup.POST("/set", admin.SetSmsConfig)
+	smsConfigGroup.POST("/get", admin.GetSmsConfig)
 
 	bucketConfigGroup := router.Group("/bucket_config", mw.CheckAdmin)
-	bucketConfigGroup.POST("/set", admin.SetBucketConfig) // Set bucket config
-	bucketConfigGroup.POST("/get", admin.GetBucketConfig) // Get bucket config
+	bucketConfigGroup.POST("/set", admin.SetBucketConfig)
+	bucketConfigGroup.POST("/get", admin.GetBucketConfig)
 
 	signinConfigGroup := router.Group("/signin_config", mw.CheckAdmin)
-	signinConfigGroup.POST("/set", admin.SetSigninConfig) // Set signin config
-	signinConfigGroup.POST("/get", admin.GetSigninConfig) // Get signin config
+	signinConfigGroup.POST("/set", admin.SetSigninConfig)
+	signinConfigGroup.POST("/get", admin.GetSigninConfig)
 
 	adminMenuGroup := router.Group("/admin_menu", mw.CheckAdmin)
 	adminMenuGroup.POST("/create", admin.CreateAdminMenu)

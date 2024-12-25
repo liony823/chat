@@ -112,6 +112,13 @@ type AdminDatabaseInterface interface {
 	TakeAdminUserMenu(ctx context.Context, userID string) (*admindb.AdminUserMenu, error)
 	ListAdminUserMenu(ctx context.Context) ([]*admindb.AdminUserMenu, error)
 	ListAdminMenuByKeys(ctx context.Context, keys []string) ([]*admindb.AdminMenu, error)
+
+	// operation log
+	CreateOperationLog(ctx context.Context, operationLog []*admindb.OperationLog) error
+	DeleteOperationLog(ctx context.Context, ids []string) error
+	TakeOperationLog(ctx context.Context, id string) (*admindb.OperationLog, error)
+	UpdateOperationLog(ctx context.Context, id string, data map[string]any) error
+	SearchOperationLog(ctx context.Context, keyword string, pagination pagination.Pagination) (int64, []*admindb.OperationLog, error)
 }
 
 func NewAdminDatabase(cli *mongoutil.Client, rdb redis.UniversalClient) (AdminDatabaseInterface, error) {
@@ -186,6 +193,11 @@ func NewAdminDatabase(cli *mongoutil.Client, rdb redis.UniversalClient) (AdminDa
 		return nil, err
 	}
 
+	operationLog, err := admin.NewOperationLog(cli.GetDB())
+	if err != nil {
+		return nil, err
+	}
+
 	return &AdminDatabase{
 		tx:                 cli.GetTx(),
 		admin:              a,
@@ -205,6 +217,7 @@ func NewAdminDatabase(cli *mongoutil.Client, rdb redis.UniversalClient) (AdminDa
 		signinConfig:       signinConfig,
 		adminMenu:          adminMenu,
 		adminUserMenu:      adminUserMenu,
+		operationLog:       operationLog,
 	}, nil
 }
 
@@ -228,6 +241,7 @@ type AdminDatabase struct {
 	signinConfig       admindb.SigninConfigInterface
 	adminMenu          admindb.AdminMenuInterface
 	adminUserMenu      admindb.AdminUserMenuInterface
+	operationLog       admindb.OperationLogInterface
 }
 
 func (o *AdminDatabase) GetAdmin(ctx context.Context, account string) (*admindb.Admin, error) {
@@ -563,4 +577,24 @@ func (o *AdminDatabase) ListAdminUserMenu(ctx context.Context) ([]*admindb.Admin
 
 func (o *AdminDatabase) ListAdminMenuByKeys(ctx context.Context, keys []string) ([]*admindb.AdminMenu, error) {
 	return o.adminMenu.ListByKeys(ctx, keys)
+}
+
+func (o *AdminDatabase) CreateOperationLog(ctx context.Context, operationLog []*admindb.OperationLog) error {
+	return o.operationLog.Create(ctx, operationLog)
+}
+
+func (o *AdminDatabase) DeleteOperationLog(ctx context.Context, ids []string) error {
+	return o.operationLog.Delete(ctx, ids)
+}
+
+func (o *AdminDatabase) TakeOperationLog(ctx context.Context, id string) (*admindb.OperationLog, error) {
+	return o.operationLog.Take(ctx, id)
+}
+
+func (o *AdminDatabase) SearchOperationLog(ctx context.Context, keyword string, pagination pagination.Pagination) (int64, []*admindb.OperationLog, error) {
+	return o.operationLog.Search(ctx, keyword, pagination)
+}
+
+func (o *AdminDatabase) UpdateOperationLog(ctx context.Context, id string, data map[string]any) error {
+	return o.operationLog.Update(ctx, id, data)
 }
