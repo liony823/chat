@@ -15,12 +15,19 @@
 package mw
 
 import (
+	"bytes"
+	"io"
 	"strconv"
+	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/liony823/tools/apiresp"
 	"github.com/liony823/tools/errs"
+	"github.com/liony823/tools/log"
 	"github.com/openimsdk/chat/pkg/common/constant"
+	"github.com/openimsdk/chat/pkg/common/utils"
 	"github.com/openimsdk/chat/pkg/protocol/admin"
 	constantpb "github.com/openimsdk/protocol/constant"
 )
@@ -45,7 +52,6 @@ func (o *MW) parseToken(c *gin.Context) (string, int32, string, error) {
 	return resp.UserID, resp.UserType, token, nil
 }
 
-
 func (o *MW) parseTokenType(c *gin.Context, userType int32) (string, string, error) {
 	userID, t, token, err := o.parseToken(c)
 	if err != nil {
@@ -56,7 +62,6 @@ func (o *MW) parseTokenType(c *gin.Context, userType int32) (string, string, err
 	}
 	return userID, token, nil
 }
-
 
 func (o *MW) isValidToken(c *gin.Context, userID string, token string) error {
 	resp, err := o.client.GetUserToken(c, &admin.GetUserTokenReq{UserID: userID})
@@ -138,6 +143,49 @@ func (o *MW) CheckAdminOrNil(c *gin.Context) {
 	if userType == constant.AdminUser {
 		o.setToken(c, userID, constant.AdminUser)
 	}
+}
+
+// OperationLog 操作日志中间件
+func (o *MW) OperationLog(c *gin.Context) {
+	// 不记录GET请求和swagger相关请求
+	if c.Request.Method == "GET" || strings.Contains(c.Request.URL.Path, "swagger") {
+		return
+	}
+
+	// 获取请求数据
+	var requestData string
+	if c.Request.Body != nil {
+		bodyBytes, _ := io.ReadAll(c.Request.Body)
+		c.Request.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
+		requestData = string(bodyBytes)
+	}
+
+	// 获取管理员信息
+	adminInfo, err := o.client.GetAdminInfo(c, &admin.GetAdminInfoReq{})
+	if err != nil {
+		log.ZDebug(c, "get admin info error", err)
+		return
+	}
+
+	// 获取模块和操作说明
+	module, operation := utils.GetModuleAndOperation(c.Request.URL.Path)
+
+	// 异步保存日志
+	go func() {
+		o.client.CreateOperationLog(c, &admin.CreateOperationLogReq{
+			OperationID:  uuid.New().String(),
+			AdminID:      adminInfo.UserID,
+			AdminAccount: adminInfo.Account,
+			AdminName:    adminInfo.Nickname,
+			Module:       module,
+			Operation:    operation,
+			Method:       c.Request.Method,
+			Path:         c.Request.URL.Path,
+			IP:           c.ClientIP(),
+			RequestData:  requestData,
+			CreateTime:   time.Now().UnixMilli(),
+		})
+	}()
 }
 
 func SetToken(c *gin.Context, userID string, userType int32) {

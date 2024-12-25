@@ -61,6 +61,7 @@ func (s *adminServer) CreateOperationLog(ctx context.Context, req *adminpb.Creat
 	}
 
 	create := &admindb.OperationLog{
+		OperationID:  req.OperationID,
 		AdminID:      req.AdminID,
 		AdminAccount: req.AdminAccount,
 		AdminName:    req.AdminName,
@@ -70,7 +71,7 @@ func (s *adminServer) CreateOperationLog(ctx context.Context, req *adminpb.Creat
 		Path:         req.Path,
 		IP:           req.IP,
 		RequestData:  req.RequestData,
-		CreateTime:   time.Unix(req.CreateTime, 0),
+		CreateTime:   time.UnixMilli(req.CreateTime),
 	}
 
 	err = s.Database.CreateOperationLog(ctx, []*admindb.OperationLog{create})
