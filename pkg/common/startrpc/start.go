@@ -11,16 +11,12 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/liony823/tools/discovery/etcd"
+	"github.com/liony823/tools/utils/datautil"
+	"github.com/liony823/tools/utils/runtimeenv"
 	"github.com/openimsdk/chat/pkg/common/config"
 	"github.com/openimsdk/chat/pkg/common/kdisc"
 	disetcd "github.com/openimsdk/chat/pkg/common/kdisc/etcd"
-	"github.com/openimsdk/tools/discovery/etcd"
-	"github.com/openimsdk/tools/utils/datautil"
-	"github.com/openimsdk/tools/utils/runtimeenv"
-
-	"github.com/liony823/tools/utils/datautil"
-	"github.com/openimsdk/chat/pkg/common/config"
-	"github.com/openimsdk/chat/pkg/common/kdisc"
 
 	"github.com/liony823/tools/discovery"
 	"github.com/liony823/tools/errs"

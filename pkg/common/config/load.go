@@ -5,14 +5,26 @@ import (
 	"path/filepath"
 	"strings"
 
-	"strings"
-
 	"github.com/liony823/tools/errs"
 	"github.com/mitchellh/mapstructure"
+	"github.com/openimsdk/chat/pkg/common/constant"
 	"github.com/spf13/viper"
 )
 
-func LoadConfig(path string, envPrefix string, config any) error {
+func Load(configDirectory string, configFileName string, envPrefix string, runtimeEnv string, config any) error {
+	if runtimeEnv == constant.KUBERNETES {
+		mountPath := os.Getenv(constant.MountConfigFilePath)
+		if mountPath == "" {
+			return errs.ErrArgs.WrapMsg(constant.MountConfigFilePath + " env is empty")
+		}
+
+		return loadConfig(filepath.Join(mountPath, configFileName), envPrefix, config)
+	}
+
+	return loadConfig(filepath.Join(configDirectory, configFileName), envPrefix, config)
+}
+
+func loadConfig(path string, envPrefix string, config any) error {
 	v := viper.New()
 	v.SetConfigFile(path)
 	v.SetEnvPrefix(envPrefix)

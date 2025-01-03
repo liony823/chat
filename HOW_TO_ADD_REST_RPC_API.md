@@ -101,7 +101,7 @@ We add REST RPC API implementation to the corresponding service implementation g
 ...
 func (o *ChatApi) GetTokenForVideoMeeting(c *gin.Context)
 {
-	a2r.Call(chat.ChatClient.GetTokenForVideoMeeting, o.chatClient, c)
+	a2r.Call(c,chat.ChatClient.GetTokenForVideoMeeting, o.chatClient)
 }
 ...
 ```

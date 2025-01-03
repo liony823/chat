@@ -96,7 +96,7 @@ func (o *Api) ResetUserPassword(c *gin.Context) {
 // @Success		200	{object}	apiresp.ApiResponse
 // @Router			/account/del_admin [post]
 func (o *Api) DelAdminAccount(c *gin.Context) {
-	a2r.Call(admin.AdminClient.DelAdminAccount, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.DelAdminAccount, o.adminClient)
 }
 
 // @Summary		搜索管理员账户
@@ -109,7 +109,7 @@ func (o *Api) DelAdminAccount(c *gin.Context) {
 // @Success		200	{object}	apiresp.ApiResponse{data=admin.SearchAdminAccountResp}
 // @Router			/account/search_admin [post]
 func (o *Api) SearchAdminAccount(c *gin.Context) {
-	a2r.Call(admin.AdminClient.SearchAdminAccount, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.SearchAdminAccount, o.adminClient)
 }
 
 func (o *Api) registerChatUser(ctx context.Context, ip string, users []*chat.RegisterUserInfo) error {

@@ -16,7 +16,7 @@ import (
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/forbidden/user/add [post]
 func (o *Api) AddUserIPLimitLogin(c *gin.Context) {
-	a2r.Call(admin.AdminClient.AddUserIPLimitLogin, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.AddUserIPLimitLogin, o.adminClient)
 }
 
 // @Summary		搜索用户IP登录限制
@@ -29,7 +29,7 @@ func (o *Api) AddUserIPLimitLogin(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse{data=admin.SearchUserIPLimitLoginResp}
 // @Router			/forbidden/user/search [post]
 func (o *Api) SearchUserIPLimitLogin(c *gin.Context) {
-	a2r.Call(admin.AdminClient.SearchUserIPLimitLogin, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.SearchUserIPLimitLogin, o.adminClient)
 }
 
 // @Summary		删除用户IP登录限制
@@ -42,7 +42,7 @@ func (o *Api) SearchUserIPLimitLogin(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/forbidden/user/del [post]
 func (o *Api) DelUserIPLimitLogin(c *gin.Context) {
-	a2r.Call(admin.AdminClient.DelUserIPLimitLogin, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.DelUserIPLimitLogin, o.adminClient)
 }
 
 // @Summary		添加IP黑名单
@@ -55,7 +55,7 @@ func (o *Api) DelUserIPLimitLogin(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/forbidden/ip/add [post]
 func (o *Api) AddIPForbidden(c *gin.Context) {
-	a2r.Call(admin.AdminClient.AddIPForbidden, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.AddIPForbidden, o.adminClient)
 }
 
 // @Summary		删除IP黑名单
@@ -68,7 +68,7 @@ func (o *Api) AddIPForbidden(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/forbidden/ip/del [post]
 func (o *Api) DelIPForbidden(c *gin.Context) {
-	a2r.Call(admin.AdminClient.DelIPForbidden, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.DelIPForbidden, o.adminClient)
 }
 
 // @Summary		搜索IP黑名单
@@ -81,5 +81,5 @@ func (o *Api) DelIPForbidden(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse{data=admin.SearchIPForbiddenResp}
 // @Router			/forbidden/ip/search [post]
 func (o *Api) SearchIPForbidden(c *gin.Context) {
-	a2r.Call(admin.AdminClient.SearchIPForbidden, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.SearchIPForbidden, o.adminClient)
 }

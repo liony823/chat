@@ -12,6 +12,7 @@ import (
 	"github.com/liony823/tools/discovery"
 	"github.com/liony823/tools/errs"
 	"github.com/liony823/tools/mw"
+	"github.com/liony823/tools/utils/runtimeenv"
 	"github.com/openimsdk/chat/pkg/common/config"
 	"github.com/openimsdk/chat/pkg/common/constant"
 	"github.com/openimsdk/chat/pkg/common/db/database"

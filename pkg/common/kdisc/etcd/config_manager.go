@@ -8,9 +8,9 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/openimsdk/tools/errs"
-	"github.com/openimsdk/tools/log"
-	"github.com/openimsdk/tools/utils/datautil"
+	"github.com/liony823/tools/errs"
+	"github.com/liony823/tools/log"
+	"github.com/liony823/tools/utils/datautil"
 	clientv3 "go.etcd.io/etcd/client/v3"
 )
 

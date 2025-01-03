@@ -16,7 +16,7 @@ import (
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/applet/add [post]
 func (o *Api) AddApplet(c *gin.Context) {
-	a2r.Call(admin.AdminClient.AddApplet, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.AddApplet, o.adminClient)
 }
 
 // @Summary		删除小程序
@@ -29,7 +29,7 @@ func (o *Api) AddApplet(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/applet/del [post]
 func (o *Api) DelApplet(c *gin.Context) {
-	a2r.Call(admin.AdminClient.DelApplet, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.DelApplet, o.adminClient)
 }
 
 // @Summary		更新小程序
@@ -42,7 +42,7 @@ func (o *Api) DelApplet(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/applet/update [post]
 func (o *Api) UpdateApplet(c *gin.Context) {
-	a2r.Call(admin.AdminClient.UpdateApplet, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.UpdateApplet, o.adminClient)
 }
 
 // @Summary		搜索小程序
@@ -55,5 +55,5 @@ func (o *Api) UpdateApplet(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse{data=admin.SearchAppletResp}
 // @Router			/applet/search [post]
 func (o *Api) SearchApplet(c *gin.Context) {
-	a2r.Call(admin.AdminClient.SearchApplet, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.SearchApplet, o.adminClient)
 }

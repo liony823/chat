@@ -16,7 +16,7 @@ import (
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/invitation_code/add [post]
 func (o *Api) AddInvitationCode(c *gin.Context) {
-	a2r.Call(admin.AdminClient.AddInvitationCode, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.AddInvitationCode, o.adminClient)
 }
 
 // @Summary		生成邀请码
@@ -29,7 +29,7 @@ func (o *Api) AddInvitationCode(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/invitation_code/gen [post]
 func (o *Api) GenInvitationCode(c *gin.Context) {
-	a2r.Call(admin.AdminClient.GenInvitationCode, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.GenInvitationCode, o.adminClient)
 }
 
 // @Summary		删除邀请码
@@ -42,7 +42,7 @@ func (o *Api) GenInvitationCode(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/invitation_code/del [post]
 func (o *Api) DelInvitationCode(c *gin.Context) {
-	a2r.Call(admin.AdminClient.DelInvitationCode, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.DelInvitationCode, o.adminClient)
 }
 
 // @Summary		搜索邀请码
@@ -55,5 +55,5 @@ func (o *Api) DelInvitationCode(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse{data=admin.SearchInvitationCodeResp}
 // @Router			/invitation_code/search [post]
 func (o *Api) SearchInvitationCode(c *gin.Context) {
-	a2r.Call(admin.AdminClient.SearchInvitationCode, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.SearchInvitationCode, o.adminClient)
 }

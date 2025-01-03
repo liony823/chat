@@ -51,7 +51,7 @@ func (o *Api) BlockUser(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/block/del [post]
 func (o *Api) UnblockUser(c *gin.Context) {
-	a2r.Call(admin.AdminClient.UnblockUser, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.UnblockUser, o.adminClient)
 }
 
 // @Summary		搜索被封禁用户
@@ -64,5 +64,5 @@ func (o *Api) UnblockUser(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse{data=admin.SearchBlockUserResp}
 // @Router			/block/search [post]
 func (o *Api) SearchBlockUser(c *gin.Context) {
-	a2r.Call(admin.AdminClient.SearchBlockUser, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.SearchBlockUser, o.adminClient)
 }

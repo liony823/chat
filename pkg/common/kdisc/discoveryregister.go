@@ -19,9 +19,8 @@ import (
 
 	"github.com/liony823/tools/discovery"
 	"github.com/liony823/tools/discovery/etcd"
-	"github.com/liony823/tools/discovery/zookeeper"
+	"github.com/liony823/tools/discovery/kubernetes"
 	"github.com/liony823/tools/errs"
-	"time"
 
 	"github.com/openimsdk/chat/pkg/common/config"
 )
@@ -43,7 +42,7 @@ func NewDiscoveryRegister(discovery *config.Discovery, runtimeEnv string) (disco
 		return etcd.NewSvcDiscoveryRegistry(
 			discovery.Etcd.RootDirectory,
 			discovery.Etcd.Address,
-			etcd.WithDialTimeout(time.Duration(discovery.DialTimeout)*time.Second),
+			etcd.WithDialTimeout(60*time.Second),
 			etcd.WithMaxCallSendMsgSize(20*1024*1024),
 			etcd.WithUsernameAndPassword(discovery.Etcd.Username, discovery.Etcd.Password))
 	default:

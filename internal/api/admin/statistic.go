@@ -20,7 +20,7 @@ import (
 // @Success		200	{object}	apiresp.ApiResponse{data=admin.GetUserLoginRecordResp}
 // @Router			/statistic/login_record [post]
 func (o *Api) LoginRecord(c *gin.Context) {
-	a2r.Call(admin.AdminClient.GetUserLoginRecord, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.GetUserLoginRecord, o.adminClient)
 }
 
 // @Summary		统计用户登录数
@@ -33,7 +33,7 @@ func (o *Api) LoginRecord(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse{data=chat.UserLoginCountResp}
 // @Router			/statistic/login_user_count [post]
 func (o *Api) LoginUserCount(c *gin.Context) {
-	a2r.Call(chat.ChatClient.UserLoginCount, o.chatClient, c)
+	a2r.Call(c, chat.ChatClient.UserLoginCount, o.chatClient)
 }
 
 // @Summary		统计新增用户数

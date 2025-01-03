@@ -21,7 +21,7 @@ import (
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/default/user/add [post]
 func (o *Api) AddDefaultFriend(c *gin.Context) {
-	a2r.Call(admin.AdminClient.AddDefaultFriend, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.AddDefaultFriend, o.adminClient)
 }
 
 // @Summary		添加默认群组
@@ -73,7 +73,7 @@ func (o *Api) AddDefaultGroup(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/default/user/del [post]
 func (o *Api) DelDefaultFriend(c *gin.Context) {
-	a2r.Call(admin.AdminClient.DelDefaultFriend, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.DelDefaultFriend, o.adminClient)
 }
 
 // @Summary		查找默认好友
@@ -85,7 +85,7 @@ func (o *Api) DelDefaultFriend(c *gin.Context) {
 // @Success		200	{object}	apiresp.ApiResponse{data=admin.FindDefaultFriendResp}
 // @Router			/default/user/find [post]
 func (o *Api) FindDefaultFriend(c *gin.Context) {
-	a2r.Call(admin.AdminClient.FindDefaultFriend, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.FindDefaultFriend, o.adminClient)
 }
 
 // @Summary		搜索默认好友
@@ -97,7 +97,7 @@ func (o *Api) FindDefaultFriend(c *gin.Context) {
 // @Success		200	{object}	apiresp.ApiResponse{data=admin.SearchDefaultFriendResp}
 // @Router			/default/user/search [post]
 func (o *Api) SearchDefaultFriend(c *gin.Context) {
-	a2r.Call(admin.AdminClient.SearchDefaultFriend, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.SearchDefaultFriend, o.adminClient)
 }
 
 // @Summary		删除默认群组
@@ -110,7 +110,7 @@ func (o *Api) SearchDefaultFriend(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/default/group/del [post]
 func (o *Api) DelDefaultGroup(c *gin.Context) {
-	a2r.Call(admin.AdminClient.DelDefaultGroup, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.DelDefaultGroup, o.adminClient)
 }
 
 // @Summary		查找默认群组
@@ -122,7 +122,7 @@ func (o *Api) DelDefaultGroup(c *gin.Context) {
 // @Success		200	{object}	apiresp.ApiResponse{data=admin.FindDefaultGroupResp}
 // @Router			/default/group/find [post]
 func (o *Api) FindDefaultGroup(c *gin.Context) {
-	a2r.Call(admin.AdminClient.FindDefaultGroup, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.FindDefaultGroup, o.adminClient)
 }
 
 // @Summary		搜索默认群组

@@ -16,7 +16,7 @@ import (
 // @Success		200		{object}	apiresp.ApiResponse{data=admin.SearchOperationLogResp}
 // @Router			/operation_log/search [post]
 func (o *Api) SearchOperationLog(c *gin.Context) {
-	a2r.Call(admin.AdminClient.SearchOperationLog, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.SearchOperationLog, o.adminClient)
 }
 
 // @Summary		获取操作日志
@@ -29,7 +29,7 @@ func (o *Api) SearchOperationLog(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse{data=admin.GetOperationLogResp}
 // @Router			/operation_log/get [post]
 func (o *Api) GetOperationLog(c *gin.Context) {
-	a2r.Call(admin.AdminClient.GetOperationLog, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.GetOperationLog, o.adminClient)
 }
 
 // @Summary		删除操作日志
@@ -42,5 +42,5 @@ func (o *Api) GetOperationLog(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse{data=admin.DeleteOperationLogResp}
 // @Router			/operation_log/delete [post]
 func (o *Api) DeleteOperationLog(c *gin.Context) {
-	a2r.Call(admin.AdminClient.DeleteOperationLog, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.DeleteOperationLog, o.adminClient)
 }

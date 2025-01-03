@@ -16,7 +16,7 @@ import (
 // @Success		200		{object}	apiresp.ApiResponse{data=admin.LatestApplicationVersionResp}
 // @Router			/application/latest_version [post]
 func (o *Api) LatestApplicationVersion(c *gin.Context) {
-	a2r.Call(admin.AdminClient.LatestApplicationVersion, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.LatestApplicationVersion, o.adminClient)
 }
 
 // @Summary		分页查询应用版本
@@ -29,7 +29,7 @@ func (o *Api) LatestApplicationVersion(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse{data=admin.PageApplicationVersionResp}
 // @Router			/application/page_versions [post]
 func (o *Api) PageApplicationVersion(c *gin.Context) {
-	a2r.Call(admin.AdminClient.PageApplicationVersion, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.PageApplicationVersion, o.adminClient)
 }
 
 // @Summary		添加应用版本
@@ -42,7 +42,7 @@ func (o *Api) PageApplicationVersion(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/application/add_version [post]
 func (o *Api) AddApplicationVersion(c *gin.Context) {
-	a2r.Call(admin.AdminClient.AddApplicationVersion, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.AddApplicationVersion, o.adminClient)
 }
 
 // @Summary		更新应用版本
@@ -55,7 +55,7 @@ func (o *Api) AddApplicationVersion(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/application/update_version [post]
 func (o *Api) UpdateApplicationVersion(c *gin.Context) {
-	a2r.Call(admin.AdminClient.UpdateApplicationVersion, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.UpdateApplicationVersion, o.adminClient)
 }
 
 // @Summary		删除应用版本
@@ -68,5 +68,5 @@ func (o *Api) UpdateApplicationVersion(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/application/delete_version [post]
 func (o *Api) DeleteApplicationVersion(c *gin.Context) {
-	a2r.Call(admin.AdminClient.DeleteApplicationVersion, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.DeleteApplicationVersion, o.adminClient)
 }

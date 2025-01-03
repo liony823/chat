@@ -16,7 +16,7 @@ import (
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/signin_config/set [post]
 func (o *Api) SetSigninConfig(c *gin.Context) {
-	a2r.Call(admin.AdminClient.SetSigninConfig, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.SetSigninConfig, o.adminClient)
 }
 
 // @Summary		获取签到配置
@@ -28,5 +28,5 @@ func (o *Api) SetSigninConfig(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse{data=admin.GetSigninConfigResp}
 // @Router			/signin_config/get [post]
 func (o *Api) GetSigninConfig(c *gin.Context) {
-	a2r.Call(admin.AdminClient.GetSigninConfig, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.GetSigninConfig, o.adminClient)
 }

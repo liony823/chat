@@ -16,7 +16,7 @@ import (
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/sms_config/set [post]
 func (o *Api) SetSmsConfig(c *gin.Context) {
-	a2r.Call(admin.AdminClient.SetSmsConfig, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.SetSmsConfig, o.adminClient)
 }
 
 // @Summary		获取短信配置
@@ -28,5 +28,5 @@ func (o *Api) SetSmsConfig(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse{data=admin.GetSmsConfigResp}
 // @Router			/sms_config/get [post]
 func (o *Api) GetSmsConfig(c *gin.Context) {
-	a2r.Call(admin.AdminClient.GetSmsConfig, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.GetSmsConfig, o.adminClient)
 }

@@ -90,7 +90,7 @@ func (o *Api) AdminUpdateInfo(c *gin.Context) {
 // @Success		200	{object}	apiresp.ApiResponse{data=admin.GetAdminInfoResp}
 // @Router			/account/info [post]
 func (o *Api) AdminInfo(c *gin.Context) {
-	a2r.Call(admin.AdminClient.GetAdminInfo, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.GetAdminInfo, o.adminClient)
 }
 
 // @Summary		管理员密码
@@ -103,7 +103,7 @@ func (o *Api) AdminInfo(c *gin.Context) {
 // @Success		200	{object}	apiresp.ApiResponse
 // @Router			/account/change_password [post]
 func (o *Api) ChangeAdminPassword(c *gin.Context) {
-	a2r.Call(admin.AdminClient.ChangeAdminPassword, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.ChangeAdminPassword, o.adminClient)
 }
 
 // @Summary		添加管理员账户
@@ -116,7 +116,7 @@ func (o *Api) ChangeAdminPassword(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/account/add_admin [post]
 func (o *Api) AddAdminAccount(c *gin.Context) {
-	a2r.Call(admin.AdminClient.AddAdminAccount, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.AddAdminAccount, o.adminClient)
 }
 
 // @Summary		获取Google Authenticator密钥和二维码数据
@@ -128,7 +128,7 @@ func (o *Api) AddAdminAccount(c *gin.Context) {
 // @Success		200	{object}	apiresp.ApiResponse{data=admin.GetGoogleAuthResp}
 // @Router			/account/google_auth [post]
 func (o *Api) GetGoogleAuth(c *gin.Context) {
-	a2r.Call(admin.AdminClient.GetGoogleAuth, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.GetGoogleAuth, o.adminClient)
 }
 
 // @Summary		验证Google Authenticator动态令牌
@@ -141,5 +141,5 @@ func (o *Api) GetGoogleAuth(c *gin.Context) {
 // @Success		200	{object}	apiresp.ApiResponse{data=admin.VerifyGoogleAuthResp}
 // @Router			/account/verify_google_auth [post]
 func (o *Api) VerifyGoogleAuth(c *gin.Context) {
-	a2r.Call(admin.AdminClient.VerifyGoogleAuth, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.VerifyGoogleAuth, o.adminClient)
 }

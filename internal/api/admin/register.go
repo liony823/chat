@@ -16,7 +16,7 @@ import (
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/user/allow_register/set [post]
 func (o *Api) SetAllowRegister(c *gin.Context) {
-	a2r.Call(chat.ChatClient.SetAllowRegister, o.chatClient, c)
+	a2r.Call(c, chat.ChatClient.SetAllowRegister, o.chatClient)
 }
 
 // @Summary		获取注册配置
@@ -28,5 +28,5 @@ func (o *Api) SetAllowRegister(c *gin.Context) {
 // @Success		200	{object}	apiresp.ApiResponse{data=chat.GetAllowRegisterResp}
 // @Router			/user/allow_register/get [post]
 func (o *Api) GetAllowRegister(c *gin.Context) {
-	a2r.Call(chat.ChatClient.GetAllowRegister, o.chatClient, c)
+	a2r.Call(c, chat.ChatClient.GetAllowRegister, o.chatClient)
 }

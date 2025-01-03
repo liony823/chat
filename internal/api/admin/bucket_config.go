@@ -15,9 +15,8 @@ import (
 // @Success		200		{object}	apiresp.ApiResponse{data=admin.GetBucketConfigResp}
 // @Router			/bucket_config/get [post]
 func (o *Api) GetBucketConfig(c *gin.Context) {
-	a2r.Call(admin.AdminClient.GetBucketConfig, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.GetBucketConfig, o.adminClient)
 }
-
 
 // @Summary		设置桶配置
 // @Description	设置桶配置
@@ -29,5 +28,5 @@ func (o *Api) GetBucketConfig(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/bucket_config/set [post]
 func (o *Api) SetBucketConfig(c *gin.Context) {
-	a2r.Call(admin.AdminClient.SetBucketConfig, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.SetBucketConfig, o.adminClient)
 }

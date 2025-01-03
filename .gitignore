@@ -374,3 +374,4 @@ dist
 # config files, may contain sensitive informatio
 config/config.yaml
 
+go.sum

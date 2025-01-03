@@ -16,7 +16,7 @@ import (
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/client_config/set [post]
 func (o *Api) SetClientConfig(c *gin.Context) {
-	a2r.Call(admin.AdminClient.SetClientConfig, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.SetClientConfig, o.adminClient)
 }
 
 // @Summary		删除客户端配置
@@ -29,7 +29,7 @@ func (o *Api) SetClientConfig(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse
 // @Router			/client_config/del [post]
 func (o *Api) DelClientConfig(c *gin.Context) {
-	a2r.Call(admin.AdminClient.DelClientConfig, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.DelClientConfig, o.adminClient)
 }
 
 // @Summary		获取客户端配置
@@ -41,7 +41,7 @@ func (o *Api) DelClientConfig(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse{data=admin.GetClientConfigResp}
 // @Router			/client_config/get [post]
 func (o *Api) GetClientConfig(c *gin.Context) {
-	a2r.Call(admin.AdminClient.GetClientConfig, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.GetClientConfig, o.adminClient)
 }
 
 // @Summary		获取客户端配置列表
@@ -53,5 +53,5 @@ func (o *Api) GetClientConfig(c *gin.Context) {
 // @Success		200		{object}	apiresp.ApiResponse{data=admin.GetListClientConfigResp}
 // @Router			/client_config/list [post]
 func (o *Api) GetListClientConfig(c *gin.Context) {
-	a2r.Call(admin.AdminClient.GetListClientConfig, o.adminClient, c)
+	a2r.Call(c, admin.AdminClient.GetListClientConfig, o.adminClient)
 }
