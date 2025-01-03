@@ -5,10 +5,9 @@ etcd:
   username: ""
   password: ""
 
-zookeeper:
-  schema: openim
-  address: [localhost:12181]
-  username: ""
-  password: ""
+kubernetes:
+  namespace: default
 
-dialTimeout: 180
+rpcService:
+  chat: chat-rpc-service
+  admin: admin-rpc-service

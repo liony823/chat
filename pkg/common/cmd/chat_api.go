@@ -19,9 +19,9 @@ type ChatApiCmd struct {
 func NewChatApiCmd() *ChatApiCmd {
 	var ret ChatApiCmd
 	ret.configMap = map[string]any{
-		ShareFileName:           &ret.apiConfig.Share,
-		ChatAPIChatCfgFileName:  &ret.apiConfig.ApiConfig,
-		DiscoveryConfigFileName: &ret.apiConfig.Discovery,
+		config.ShareFileName:           &ret.apiConfig.Share,
+		config.ChatAPIChatCfgFileName:  &ret.apiConfig.ApiConfig,
+		config.DiscoveryConfigFileName: &ret.apiConfig.Discovery,
 	}
 	ret.RootCmd = NewRootCmd(program.GetProcessName(), WithConfigMap(ret.configMap))
 	ret.ctx = context.WithValue(context.Background(), "version", config.Version)
