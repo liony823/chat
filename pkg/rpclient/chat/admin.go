@@ -57,6 +57,7 @@ func (o *AdminClient) CheckInvitationCode(ctx context.Context, invitationCode st
 	return nil
 }
 
+// / 检查注册IP是否被禁止
 func (o *AdminClient) CheckRegister(ctx context.Context, ip string) error {
 	_, err := o.client.CheckRegisterForbidden(ctx, &admin.CheckRegisterForbiddenReq{Ip: ip})
 	return err

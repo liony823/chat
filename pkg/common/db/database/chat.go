@@ -31,6 +31,7 @@ import (
 
 type ChatDatabaseInterface interface {
 	GetUser(ctx context.Context, userID string) (account *chatdb.Account, err error)
+	GetUserByAccount(ctx context.Context, accountStr string) (account *chatdb.Account, err error)
 	UpdateUseInfo(ctx context.Context, userID string, attribute map[string]any, updateCred, delCred []*chatdb.Credential) (err error)
 	FindAttribute(ctx context.Context, userIDs []string) ([]*chatdb.Attribute, error)
 	FindAttributeByAccount(ctx context.Context, accounts []string) ([]*chatdb.Attribute, error)
@@ -112,6 +113,10 @@ type ChatDatabase struct {
 
 func (o *ChatDatabase) GetUser(ctx context.Context, userID string) (account *chatdb.Account, err error) {
 	return o.account.Take(ctx, userID)
+}
+
+func (o *ChatDatabase) GetUserByAccount(ctx context.Context, accountStr string) (account *chatdb.Account, err error) {
+	return o.account.TakeByAccount(ctx, accountStr)
 }
 
 func (o *ChatDatabase) UpdateUseInfo(ctx context.Context, userID string, attribute map[string]any, updateCred, delCred []*chatdb.Credential) (err error) {

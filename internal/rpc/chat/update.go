@@ -33,9 +33,6 @@ func ToDBAttributeUpdate(req *chat.UpdateUserInfoReq) (map[string]any, error) {
 	if req.AreaCode != nil {
 		update["area_code"] = req.AreaCode.Value
 	}
-	if req.Email != nil {
-		update["email"] = req.Email.Value
-	}
 	if req.Nickname != nil {
 		if req.Nickname.Value == "" {
 			return nil, errs.ErrArgs.WrapMsg("nickname can not be empty")

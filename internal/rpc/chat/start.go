@@ -82,6 +82,7 @@ type chatSvr struct {
 	Livekit         *rtc.LiveKit
 	ChatAdminUserID string
 	AllowRegister   bool
+	chat.UnimplementedChatServer
 }
 
 func (o *chatSvr) WithAdminUser(ctx context.Context) context.Context {

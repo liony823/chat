@@ -53,6 +53,10 @@ func (o *Account) Take(ctx context.Context, userId string) (*chat.Account, error
 	return mongoutil.FindOne[*chat.Account](ctx, o.coll, bson.M{"user_id": userId})
 }
 
+func (o *Account) TakeByAccount(ctx context.Context, account string) (*chat.Account, error) {
+	return mongoutil.FindOne[*chat.Account](ctx, o.coll, bson.M{"account": account})
+}
+
 func (o *Account) Update(ctx context.Context, userID string, data map[string]any) error {
 	if len(data) == 0 {
 		return nil

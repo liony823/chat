@@ -11,6 +11,7 @@ import (
 
 	"github.com/liony823/tools/utils/datautil"
 	"github.com/liony823/tools/utils/network"
+	"github.com/liony823/tools/utils/pwdutil"
 	constantpb "github.com/openimsdk/protocol/constant"
 
 	"github.com/liony823/tools/errs"
@@ -205,6 +206,17 @@ func (o *chatSvr) genUserID() string {
 	return string(data)
 }
 
+func (o *chatSvr) genAccount() string {
+	const l = 10
+	data := make([]byte, l)
+	rand.Read(data)
+	chars := []byte("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	for i := 0; i < len(data); i++ {
+		data[i] = chars[data[i]%10]
+	}
+	return string(data)
+}
+
 func (o *chatSvr) genVerifyCode() string {
 	data := make([]byte, o.Code.Len)
 	rand.Read(data)
@@ -248,15 +260,15 @@ func (o *chatSvr) RegisterUser(ctx context.Context, req *chat.RegisterUserReq) (
 				return nil, err
 			}
 		}
-		if req.User.Email == "" {
-			if _, err := o.verifyCode(ctx, o.verifyCodeJoin(req.User.AreaCode, req.User.PhoneNumber), req.VerifyCode); err != nil {
-				return nil, err
-			}
-		} else {
-			if _, err := o.verifyCode(ctx, req.User.Email, req.VerifyCode); err != nil {
-				return nil, err
-			}
-		}
+		// if req.User.Email == "" {
+		// 	if _, err := o.verifyCode(ctx, o.verifyCodeJoin(req.User.AreaCode, req.User.PhoneNumber), req.VerifyCode); err != nil {
+		// 		return nil, err
+		// 	}
+		// } else {
+		// 	if _, err := o.verifyCode(ctx, req.User.Email, req.VerifyCode); err != nil {
+		// 		return nil, err
+		// 	}
+		// }
 	}
 	if req.User.UserID == "" {
 		for i := 0; i < 20; i++ {
@@ -305,29 +317,65 @@ func (o *chatSvr) RegisterUser(ctx context.Context, req *chat.RegisterUserReq) (
 			AllowChange: true,
 		})
 		registerType = constant.AccountRegister
+	} else {
+		for i := 0; i < 20; i++ {
+			account := o.genAccount()
+			_, err := o.Database.GetUserByAccount(ctx, account)
+			if err == nil {
+				continue
+			} else if dbutil.IsDBNotFound(err) {
+				req.User.Account = account
+				break
+			}
+		}
 	}
 
-	if req.User.Email != "" {
-		registerType = constant.EmailRegister
+	if req.User.RegisterType == constant.AutoDeviceRegister {
+		registerType = constant.AutoDeviceRegister
 		credentials = append(credentials, &chatdb.Credential{
 			UserID:      req.User.UserID,
-			Account:     req.User.Email,
-			Type:        constant.CredentialEmail,
+			Account:     req.User.Account,
+			Type:        constant.CredentialAutoDevice,
 			AllowChange: true,
 		})
 	}
+
+	// if req.User.Email != "" {
+	// 	registerType = constant.EmailRegister
+	// 	credentials = append(credentials, &chatdb.Credential{
+	// 		UserID:      req.User.UserID,
+	// 		Account:     req.User.Email,
+	// 		Type:        constant.CredentialEmail,
+	// 		AllowChange: true,
+	// 	})
+	// }
+
+	var accountType string
+	if registerType == constant.AutoDeviceRegister {
+		accountType = constant.AutoDevice
+	} else if registerType == constant.PhoneRegister {
+		accountType = constant.Phone
+	} else {
+		accountType = constant.Account
+	}
+
+	hashedPassword, err := pwdutil.EncryptPassword(req.User.Password)
+	if err != nil {
+		return nil, err
+	}
+
 	register := &chatdb.Register{
 		UserID:      req.User.UserID,
 		DeviceID:    req.DeviceID,
 		IP:          req.Ip,
 		Platform:    constantpb.PlatformID2Name[int(req.Platform)],
-		AccountType: "",
+		AccountType: accountType,
 		Mode:        constant.UserMode,
 		CreateTime:  time.Now(),
 	}
 	account := &chatdb.Account{
 		UserID:         req.User.UserID,
-		Password:       req.User.Password,
+		Password:       hashedPassword,
 		OperatorUserID: mcontext.GetOpUserID(ctx),
 		ChangeTime:     register.CreateTime,
 		CreateTime:     register.CreateTime,
@@ -434,7 +482,7 @@ func (o *chatSvr) Login(ctx context.Context, req *chat.LoginReq) (*chat.LoginRes
 		if err != nil {
 			return nil, err
 		}
-		if account.Password != req.Password {
+		if !pwdutil.VerifyPassword(account.Password, req.Password) {
 			return nil, eerrs.ErrPassword.Wrap()
 		}
 	}

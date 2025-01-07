@@ -67,7 +67,7 @@ func (o *chatSvr) checkRegisterInfo(ctx context.Context, user *chat.RegisterUser
 	if user == nil {
 		return errs.ErrArgs.WrapMsg("user is nil")
 	}
-	if user.Email == "" && !(user.PhoneNumber != "" && user.AreaCode != "") && (!isAdmin || user.Account == "") {
+	if !(user.PhoneNumber != "" && user.AreaCode != "") && user.Account == "" {
 		return errs.ErrArgs.WrapMsg("at least one valid account is required")
 	}
 	if user.PhoneNumber != "" {
@@ -98,16 +98,16 @@ func (o *chatSvr) checkRegisterInfo(ctx context.Context, user *chat.RegisterUser
 			return err
 		}
 	}
-	if user.Email != "" {
-		if !stringutil.IsValidEmail(user.Email) {
-			return errs.ErrArgs.WrapMsg("invalid email")
-		}
-		_, err := o.Database.TakeAttributeByAccount(ctx, user.Email)
-		if err == nil {
-			return eerrs.ErrEmailAlreadyRegister.Wrap()
-		} else if !dbutil.IsDBNotFound(err) {
-			return err
-		}
-	}
+	// if user.Email != "" {
+	// 	if !stringutil.IsValidEmail(user.Email) {
+	// 		return errs.ErrArgs.WrapMsg("invalid email")
+	// 	}
+	// 	_, err := o.Database.TakeAttributeByAccount(ctx, user.Email)
+	// 	if err == nil {
+	// 		return eerrs.ErrEmailAlreadyRegister.Wrap()
+	// 	} else if !dbutil.IsDBNotFound(err) {
+	// 		return err
+	// 	}
+	// }
 	return nil
 }

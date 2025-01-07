@@ -27,11 +27,25 @@ func (x *UpdateUserInfoReq) Check() error {
 	if x.UserID == "" {
 		return errs.ErrArgs.WrapMsg("userID is empty")
 	}
-	if x.Email != nil && x.Email.Value != "" {
-		if err := EmailCheck(x.Email.Value); err != nil {
-			return err
+
+	if x.Account != nil && x.Account.Value != "" {
+		if err := AccountCheck(x.Account.Value); err != nil {
+			return errs.ErrArgs.WrapMsg("account is invalid")
 		}
 	}
+
+	if x.PhoneNumber != nil && x.PhoneNumber.Value != "" {
+		if err := PhoneNumberCheck(x.PhoneNumber.Value); err != nil {
+			return errs.ErrArgs.WrapMsg("phoneNumber is invalid")
+		}
+	}
+
+	if x.Nickname != nil && x.Nickname.Value != "" {
+		if err := NicknameCheck(x.Nickname.Value); err != nil {
+			return errs.ErrArgs.WrapMsg("nickname is invalid")
+		}
+	}
+
 	return nil
 }
 
@@ -122,7 +136,8 @@ func (x *RegisterUserReq) Check() error {
 	if x.User == nil {
 		return errs.ErrArgs.WrapMsg("user is empty")
 	}
-	if x.User.Email == "" {
+
+	if x.User.RegisterType == constant.PhoneRegister {
 		if x.User.AreaCode == "" {
 			return errs.ErrArgs.WrapMsg("AreaCode is empty")
 		} else if err := AreaCodeCheck(x.User.AreaCode); err != nil {
@@ -133,9 +148,13 @@ func (x *RegisterUserReq) Check() error {
 		} else if err := PhoneNumberCheck(x.User.PhoneNumber); err != nil {
 			return err
 		}
-	} else {
-		if err := EmailCheck(x.User.Email); err != nil {
-			return err
+	} else if x.User.RegisterType == constant.AutoDeviceRegister {
+		if x.DeviceID == "" {
+			return errs.ErrArgs.WrapMsg("DeviceID is empty")
+		}
+	} else if x.User.RegisterType == constant.AccountRegister {
+		if x.User.Account == "" {
+			return errs.ErrArgs.WrapMsg("Account is empty")
 		}
 	}
 	return nil
@@ -145,7 +164,8 @@ func (x *LoginReq) Check() error {
 	if x.Platform < constantpb.IOSPlatformID || x.Platform > constantpb.AdminPlatformID {
 		return errs.ErrArgs.WrapMsg("platform is invalid")
 	}
-	if x.Email == "" {
+
+	if x.RegisterType == constant.PhoneRegister {
 		if x.AreaCode == "" {
 			return errs.ErrArgs.WrapMsg("AreaCode is empty")
 		} else if err := AreaCodeCheck(x.AreaCode); err != nil {
@@ -156,9 +176,13 @@ func (x *LoginReq) Check() error {
 		} else if err := PhoneNumberCheck(x.PhoneNumber); err != nil {
 			return err
 		}
-	} else {
-		if err := EmailCheck(x.Email); err != nil {
-			return err
+	} else if x.RegisterType == constant.AutoDeviceRegister {
+		if x.DeviceID == "" {
+			return errs.ErrArgs.WrapMsg("DeviceID is empty")
+		}
+	} else if x.RegisterType == constant.AccountRegister {
+		if x.Account == "" {
+			return errs.ErrArgs.WrapMsg("Account is empty")
 		}
 	}
 	return nil
@@ -238,6 +262,30 @@ func (x *GetTokenForVideoMeetingReq) Check() error {
 	}
 	if x.Identity == "" {
 		errs.ErrArgs.WrapMsg("User Identity is empty")
+	}
+	return nil
+}
+
+func AccountCheck(account string) error {
+	pattern := `^[a-zA-Z][a-zA-Z0-9_]{4,20}$`
+	if err := regexMatch(pattern, account); err != nil {
+		return errs.WrapMsg(err, "Account is invalid")
+	}
+	return nil
+}
+
+func PasswordCheck(password string) error {
+	pattern := `^[a-zA-Z0-9]{6,18}$`
+	if err := regexMatch(pattern, password); err != nil {
+		return errs.WrapMsg(err, "Password is invalid")
+	}
+	return nil
+}
+
+func NicknameCheck(nickname string) error {
+	pattern := `^[^\s]{2,20}$`
+	if err := regexMatch(pattern, nickname); err != nil {
+		return errs.WrapMsg(err, "Nickname is invalid")
 	}
 	return nil
 }

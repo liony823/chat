@@ -25,9 +25,9 @@ const (
 
 // AccountType.
 const (
-	Email   = "email"
-	Phone   = "phone"
-	Account = "account"
+	Phone      = "phone"
+	Account    = "account"
+	AutoDevice = "auto_device"
 )
 
 // Mode.
@@ -84,7 +84,7 @@ const (
 
 const RpcCustomHeader = constant.RpcCustomHeader
 
-const NeedInvitationCodeRegisterConfigKey = "needInvitationCodeRegister"
+const NeedInvitationCodeRegisterConfigKey = "app_signup_invite_code_visible"
 
 const (
 	DefaultAllowVibration = 1
@@ -101,8 +101,9 @@ const CtxApiToken = "api-token"
 
 const (
 	AccountRegister = iota
-	EmailRegister
 	PhoneRegister
+	AutoDeviceRegister
+	EmailRegister
 )
 
 const (
@@ -115,5 +116,6 @@ const (
 const (
 	CredentialAccount = iota
 	CredentialPhone
+	CredentialAutoDevice
 	CredentialEmail
 )
