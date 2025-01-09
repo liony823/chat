@@ -19,14 +19,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/openimsdk/chat/pkg/protocol/wrapperspb"
+	// "github.com/openimsdk/protocol/wrapperspb"
 	"github.com/openimsdk/tools/utils/datautil"
 
 	"github.com/openimsdk/chat/pkg/common/db/dbutil"
 	admindb "github.com/openimsdk/chat/pkg/common/db/table/admin"
 	"github.com/openimsdk/chat/pkg/common/mctx"
 	"github.com/openimsdk/chat/pkg/protocol/admin"
-	"github.com/openimsdk/chat/pkg/protocol/chat"
+
+	// "github.com/openimsdk/chat/pkg/protocol/chat"
 	"github.com/openimsdk/tools/errs"
 	"github.com/openimsdk/tools/mcontext"
 )
@@ -35,11 +36,11 @@ func (o *adminServer) CancellationUser(ctx context.Context, req *admin.Cancellat
 	if _, err := mctx.CheckAdmin(ctx); err != nil {
 		return nil, err
 	}
-	empty := wrapperspb.StringValue{Value: ""}
-	update := &chat.UpdateUserInfoReq{UserID: req.UserID, Account: &empty}
-	if err := o.Chat.UpdateUser(ctx, update); err != nil {
-		return nil, err
-	}
+	// empty := wrapperspb.StringValue{Value: ""}
+	// // update := &chat.UpdateUserInfoReq{UserID: req.UserID, Account: &empty}
+	// if err := o.Chat.UpdateUser(ctx, update); err != nil {
+	// 	return nil, err
+	// }
 	return &admin.CancellationUserResp{}, nil
 }
 
