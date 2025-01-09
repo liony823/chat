@@ -15,9 +15,9 @@
 syntax = "proto3";
 package openim.sdkws;
 
-import "wrapperspb/wrapperspb.proto";
+import "pkg/protocol/wrapperspb/wrapperspb.proto";
 
-option go_package = "github.com/openimsdk/protocol/sdkws";
+option go_package = "github.com/openimsdk/chat/pkg/protocol/sdkws";
 
 ////////////////////////////////base///////////////////////////////
 
@@ -73,6 +73,10 @@ message PublicUserInfo {
   string nickname = 2;
   string faceURL = 3;
   string ex = 4;
+  string about = 5;
+  string coverURL = 6;
+  string address = 7;
+  string account = 8;
 }
 
 message UserInfo {
@@ -83,6 +87,11 @@ message UserInfo {
   int64 createTime = 5;
   int32 appMangerLevel = 6;
   int32 globalRecvMsgOpt = 7;
+  string account = 8;
+  string about = 9;
+  string coverURL = 10;
+  string address = 11;
+  string publicKey = 12;
 }
 
 message UserInfoWithEx {
@@ -164,6 +173,7 @@ message SeqRange {
 message PullMsgs {
   repeated MsgData Msgs = 1;
   bool isEnd = 2;
+  int64 endSeq = 3;
 }
 
 message PullMessageBySeqsResp {
@@ -238,6 +248,8 @@ message GroupCreatedTips {
   repeated GroupMemberFullInfo memberList = 3;
   int64 operationTime = 4;
   GroupMemberFullInfo groupOwnerUser = 5;
+  uint64 groupMemberVersion = 6;
+  string groupMemberVersionID = 7;
 }
 
 //	OnGroupInfoSet()
@@ -245,16 +257,22 @@ message GroupInfoSetTips {
   GroupMemberFullInfo opUser = 1; //who do this
   int64 muteTime = 2;
   GroupInfo group = 3;
+  uint64 groupMemberVersion = 4;
+  string groupMemberVersionID = 5;
 }
 
 message GroupInfoSetNameTips {
   GroupMemberFullInfo opUser = 1; //who do this
   GroupInfo group = 2;
+  uint64 groupMemberVersion = 3;
+  string groupMemberVersionID = 4;
 }
 
 message GroupInfoSetAnnouncementTips {
   GroupMemberFullInfo opUser = 1; //who do this
   GroupInfo group = 2;
+  uint64 groupMemberVersion = 3;
+  string groupMemberVersionID = 4;
 }
 
 //	OnJoinGroupApplication()
@@ -270,6 +288,8 @@ message MemberQuitTips {
   GroupInfo group = 1;
   GroupMemberFullInfo quitUser = 2;
   int64 operationTime = 3;
+  uint64 groupMemberVersion = 4;
+  string groupMemberVersionID = 5;
 }
 
 //	OnApplicationGroupAccepted()
@@ -295,6 +315,9 @@ message GroupOwnerTransferredTips {
   GroupMemberFullInfo newGroupOwner = 3;
   string oldGroupOwner = 4;
   int64 operationTime = 5;
+  GroupMemberFullInfo oldGroupOwnerInfo = 6;
+  uint64 groupMemberVersion = 7;
+  string groupMemberVersionID = 8;
 }
 
 //	OnMemberKicked()
@@ -303,6 +326,8 @@ message MemberKickedTips {
   GroupMemberFullInfo opUser = 2;
   repeated GroupMemberFullInfo kickedUserList = 3;
   int64 operationTime = 4;
+  uint64 groupMemberVersion = 5;
+  string groupMemberVersionID = 6;
 }
 
 //	OnMemberInvited()
@@ -311,6 +336,9 @@ message MemberInvitedTips {
   GroupMemberFullInfo opUser = 2;
   repeated GroupMemberFullInfo invitedUserList = 3;
   int64 operationTime = 4;
+  uint64 groupMemberVersion = 5;
+  string groupMemberVersionID = 6;
+  GroupMemberFullInfo inviterUser = 7;
 }
 
 //Actively join the group
@@ -318,6 +346,8 @@ message MemberEnterTips {
   GroupInfo group = 1;
   GroupMemberFullInfo entrantUser = 2;
   int64 operationTime = 3;
+  uint64 groupMemberVersion = 5;
+  string groupMemberVersionID = 6;
 }
 
 message GroupDismissedTips {
@@ -332,6 +362,8 @@ message GroupMemberMutedTips {
   int64 operationTime = 3;
   GroupMemberFullInfo mutedUser = 4;
   uint32 mutedSeconds = 5;
+  uint64 groupMemberVersion = 6;
+  string groupMemberVersionID = 7;
 }
 
 message GroupMemberCancelMutedTips {
@@ -339,18 +371,24 @@ message GroupMemberCancelMutedTips {
   GroupMemberFullInfo opUser = 2;
   int64 operationTime = 3;
   GroupMemberFullInfo mutedUser = 4;
+  uint64 groupMemberVersion = 5;
+  string groupMemberVersionID = 6;
 }
 
 message GroupMutedTips {
   GroupInfo group = 1;
   GroupMemberFullInfo opUser = 2;
   int64 operationTime = 3;
+  uint64 groupMemberVersion = 4;
+  string groupMemberVersionID = 5;
 }
 
 message GroupCancelMutedTips {
   GroupInfo group = 1;
   GroupMemberFullInfo opUser = 2;
   int64 operationTime = 3;
+  uint64 groupMemberVersion = 4;
+  string groupMemberVersionID = 5;
 }
 
 message GroupMemberInfoSetTips {
@@ -358,6 +396,9 @@ message GroupMemberInfoSetTips {
   GroupMemberFullInfo opUser = 2;
   int64 operationTime = 3;
   GroupMemberFullInfo changedUser = 4;
+  uint64 groupMemberVersion = 5;
+  string groupMemberVersionID = 6;
+  uint64 groupSortVersion = 7;
 }
 
 //////////////////////friend/////////////////////
@@ -375,18 +416,20 @@ message FromToUserID {
 
 //FromUserID apply to add ToUserID
 message FriendApplicationTips {
-  FromToUserID fromToUserID = 1; //from：sender； to：receiver
+  FromToUserID fromToUserID = 1; //from：发起者； to：接收者
 }
 
 //FromUserID accept or reject ToUserID
 message FriendApplicationApprovedTips {
-  FromToUserID fromToUserID = 1; //from: approver; to: requester
+  FromToUserID fromToUserID = 1; //from：同意者；to：请求发起者
   string handleMsg = 2;
+  uint64 friendVersion = 3;
+  string friendVersionID = 4;
 }
 
 //FromUserID accept or reject ToUserID
 message FriendApplicationRejectedTips {
-  FromToUserID fromToUserID = 1; //from: rejecter; to: requester
+  FromToUserID fromToUserID = 1; //from：拒绝者；to：请求发起者
   string handleMsg = 2;
 }
 
@@ -395,11 +438,15 @@ message FriendAddedTips {
   FriendInfo friend = 1;
   int64 operationTime = 2;
   PublicUserInfo opUser = 3; //who do this
+  uint64 friendVersion = 4;
+  string friendVersionID = 5;
 }
 
 // FromUserID  deleted a friend ToUserID
 message FriendDeletedTips {
   FromToUserID fromToUserID = 1; //from：owner； to：friend
+  uint64 friendVersion = 2;
+  string friendVersionID = 3;
 }
 
 message BlackAddedTips {
@@ -412,6 +459,9 @@ message BlackDeletedTips {
 
 message FriendInfoChangedTips {
   FromToUserID fromToUserID = 1; //from：changed； to：friend
+  uint64 friendVersion = 2;
+  string friendVersionID = 3;
+  uint64 friendSortVersion = 4;
 }
 
 //////////////////////user/////////////////////
@@ -536,4 +586,28 @@ message RequestPagination {
 message FriendsInfoUpdateTips {
   FromToUserID fromToUserID = 1;
   repeated string friendIDs = 2;
+  uint64 friendVersion = 3;
+  string friendVersionID = 4;
+}
+
+message SubUserOnlineStatusElem {
+  string userID = 1;
+  repeated int32 onlinePlatformIDs = 2;
+}
+
+message SubUserOnlineStatusTips {
+  repeated SubUserOnlineStatusElem subscribers = 1;
+}
+
+message SubUserOnlineStatus {
+  repeated string subscribeUserID = 1;
+  repeated string unsubscribeUserID = 2;
+}
+
+message StreamMsgTips {
+  string conversationID = 1;
+  string clientMsgID = 2;
+  int64 startIndex = 3;
+  repeated string packets = 4;
+  bool end = 5;
 }

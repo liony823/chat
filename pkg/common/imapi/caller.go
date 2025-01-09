@@ -2,11 +2,14 @@ package imapi
 
 import (
 	"context"
-	"github.com/openimsdk/tools/log"
 	"sync"
 	"time"
 
+	"github.com/openimsdk/protocol/msggateway"
+	"github.com/openimsdk/tools/log"
+
 	"github.com/openimsdk/chat/pkg/eerrs"
+	chatpb "github.com/openimsdk/chat/pkg/protocol/chat"
 	"github.com/openimsdk/protocol/auth"
 	"github.com/openimsdk/protocol/constant"
 	constantpb "github.com/openimsdk/protocol/constant"
@@ -29,6 +32,10 @@ type CallerInterface interface {
 	UserRegisterCount(ctx context.Context, start int64, end int64) (map[string]int64, int64, error)
 	FriendUserIDs(ctx context.Context, userID string) ([]string, error)
 	AccountCheckSingle(ctx context.Context, userID string) (bool, error)
+
+	// OWL 新加
+	UserOlineStatus(ctx context.Context, userIDs []string) ([]msggateway.GetUsersOnlineStatusResp_SuccessResult, error)
+	UserOlineTimes(ctx context.Context, userIDs []string) (*chatpb.GetUsersTimeResp, error)
 }
 
 type authToken struct {
@@ -189,4 +196,20 @@ func (c *Caller) AccountCheckSingle(ctx context.Context, userID string) (bool, e
 		return false, eerrs.ErrAccountAlreadyRegister.Wrap()
 	}
 	return true, nil
+}
+
+func (c *Caller) UserOlineStatus(ctx context.Context, userIDs []string) ([]msggateway.GetUsersOnlineStatusResp_SuccessResult, error) {
+	resp, err := allUserOnlineStatus.Call(ctx, c.imApi, &msggateway.GetUsersOnlineStatusReq{UserIDs: userIDs})
+	if err != nil {
+		return nil, err
+	}
+	return *resp, nil
+}
+
+func (c *Caller) UserOlineTimes(ctx context.Context, userIDs []string) (*chatpb.GetUsersTimeResp, error) {
+	resp, err := usersOnlineTime.Call(ctx, c.imApi, &chatpb.GetUsersTimeReq{UserIDs: userIDs})
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
 }

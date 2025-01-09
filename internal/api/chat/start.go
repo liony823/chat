@@ -134,12 +134,12 @@ func SetChatRoute(router gin.IRouter, chat *Api, mw *chatmw.MW) {
 	account.POST("/password/change", mw.CheckToken, chat.ChangePassword) // Change password
 
 	user := router.Group("/user", mw.CheckToken)
-	user.POST("/update", chat.UpdateUserInfo)                 // Edit personal information
-	user.POST("/find/public", chat.FindUserPublicInfo)        // Get user's public information
-	user.POST("/find/full", chat.FindUserFullInfo)            // Get all information of the user
-	user.POST("/search/full", chat.SearchUserFullInfo)        // Search user's public information
-	user.POST("/search/public", chat.SearchUserPublicInfo)    // Search all information of the user
-	user.POST("/rtc/get_token", chat.GetTokenForVideoMeeting) // Get token for video meeting for the user
+	user.POST("/update", chat.UpdateUserInfo)          // Edit personal information
+	user.POST("/find/public", chat.FindUserPublicInfo) // Get user's public information
+	user.POST("/find/full", chat.FindUserFullInfo)     // Get all information of the user
+	user.POST("/search/full", chat.SearchUserFullInfo) // Search user's public information
+	user.POST("/search/public", chat.SearchUserPublicInfo)
+	user.POST("/rtc/get_token", chat.GetTokenForVideoMeeting)
 
 	router.POST("/friend/search", mw.CheckToken, chat.SearchFriend)
 
@@ -151,5 +151,33 @@ func SetChatRoute(router gin.IRouter, chat *Api, mw *chatmw.MW) {
 	applicationGroup.POST("/latest_version", chat.LatestApplicationVersion)
 	applicationGroup.POST("/page_versions", chat.PageApplicationVersion)
 
-	router.Group("/callback").POST("/open_im", chat.OpenIMCallback) // Callback
+	router.Group("/callback").POST("/:command", chat.OpenIMCallback) // Callback
+
+	/* OWL 新加接口 */
+
+	user.POST("/search/by_address_or_account", chat.FindUserByAddressOrAccount) // Search user by address or account            // Get token for video meeting for the user
+	user.POST("/statistic", chat.GetStatistic)                                  // Get user's statistic
+	user.POST("/online_time", chat.GetUsersOnlineTime)                          // Get users' online time
+
+	group := router.Group("/group", mw.CheckToken)
+	group.POST("/contact/get", chat.GetGroupFromContact) // Get group from contact
+	group.POST("/contact/save", chat.SaveGroupToContact) // Save group to contact
+	group.POST("/contact/delete", chat.DeleteGroupFromContact) // Delete group from contact
+
+	post := router.Group("/post", mw.CheckToken)
+	post.POST("/publish", chat.PublishPost)
+	post.POST("/like", chat.ChangeLikePost)
+	post.POST("/collect", chat.ChangeCollectPost)
+	post.POST("/forward", chat.ForwardPost)
+	post.POST("/comment", chat.CommentPost)
+	post.POST("/pin", chat.PinPost)
+	post.POST("/reference", chat.ReferencePost)
+	post.POST("/delete", chat.DeletePost)
+	post.POST("/:postID", chat.GetPostByID)
+	post.POST("/list_by_user", chat.GetPostListByUser)
+	post.POST("/list", chat.GetPostList)
+	post.POST("/list_all_type", chat.GetAllTypePost)
+	post.POST("/comment_list", chat.GetCommentPostListByPostID)
+	post.POST("/change_allow_comment", chat.ChangeAllowCommentPost)
+	post.POST("/change_allow_forward", chat.ChangeAllowForwardPost)
 }

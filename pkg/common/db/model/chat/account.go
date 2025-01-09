@@ -19,6 +19,7 @@ import (
 	"time"
 
 	"github.com/openimsdk/tools/db/mongoutil"
+	"github.com/openimsdk/tools/db/pagination"
 	"github.com/openimsdk/tools/errs"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -69,4 +70,10 @@ func (o *Account) Delete(ctx context.Context, userIDs []string) error {
 		return nil
 	}
 	return mongoutil.DeleteMany(ctx, o.coll, bson.M{"user_id": bson.M{"$in": userIDs}})
+}
+
+// OWL 新加
+
+func (o *Account) GetAllUserID(ctx context.Context, pagination pagination.Pagination) (int64, []string, error) {
+	return mongoutil.FindPage[string](ctx, o.coll, bson.M{}, pagination, options.Find().SetProjection(bson.M{"_id": 0, "user_id": 1}))
 }

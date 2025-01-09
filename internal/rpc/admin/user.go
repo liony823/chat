@@ -16,10 +16,11 @@ package admin
 
 import (
 	"context"
-	"github.com/openimsdk/protocol/wrapperspb"
-	"github.com/openimsdk/tools/utils/datautil"
 	"strings"
 	"time"
+
+	"github.com/openimsdk/chat/pkg/protocol/wrapperspb"
+	"github.com/openimsdk/tools/utils/datautil"
 
 	"github.com/openimsdk/chat/pkg/common/db/dbutil"
 	admindb "github.com/openimsdk/chat/pkg/common/db/table/admin"
@@ -34,8 +35,8 @@ func (o *adminServer) CancellationUser(ctx context.Context, req *admin.Cancellat
 	if _, err := mctx.CheckAdmin(ctx); err != nil {
 		return nil, err
 	}
-	empty := wrapperspb.String("")
-	update := &chat.UpdateUserInfoReq{UserID: req.UserID, Account: empty, AreaCode: empty, PhoneNumber: empty, Email: empty}
+	empty := wrapperspb.StringValue{Value: ""}
+	update := &chat.UpdateUserInfoReq{UserID: req.UserID, Account: &empty}
 	if err := o.Chat.UpdateUser(ctx, update); err != nil {
 		return nil, err
 	}
@@ -113,12 +114,12 @@ func (o *adminServer) SearchBlockUser(ctx context.Context, req *admin.SearchBloc
 		}
 		if userFull := userMap[info.UserID]; userFull != nil {
 			user.Account = userFull.Account
-			user.PhoneNumber = userFull.PhoneNumber
-			user.AreaCode = userFull.AreaCode
-			user.Email = userFull.Email
+			// user.PhoneNumber = userFull.PhoneNumber
+			// user.AreaCode = userFull.AreaCode
+			// user.Email = userFull.Email
 			user.Nickname = userFull.Nickname
 			user.FaceURL = userFull.FaceURL
-			user.Gender = userFull.Gender
+			// user.Gender = userFull.Gender
 		}
 		users = append(users, user)
 	}

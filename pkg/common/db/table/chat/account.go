@@ -17,6 +17,8 @@ package chat
 import (
 	"context"
 	"time"
+
+	"github.com/openimsdk/tools/db/pagination"
 )
 
 type Account struct {
@@ -37,4 +39,5 @@ type AccountInterface interface {
 	Update(ctx context.Context, userID string, data map[string]any) error
 	UpdatePassword(ctx context.Context, userId string, password string) error
 	Delete(ctx context.Context, userIDs []string) error
+	GetAllUserID(ctx context.Context, pagination pagination.Pagination) (int64, []string, error)
 }

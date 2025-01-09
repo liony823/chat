@@ -18,6 +18,8 @@ import (
 	"io"
 	"time"
 
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/openimsdk/chat/internal/api/util"
 
 	"github.com/gin-gonic/gin"
@@ -76,12 +78,36 @@ func (o *Api) VerifyCode(c *gin.Context) {
 	a2r.Call(c, chatpb.ChatClient.VerifyCode, o.chatClient)
 }
 
+func validateSignature(publicKey, nonce, signature string) (b bool, err error) {
+	pubKey, err := hexutil.Decode(publicKey)
+	if err != nil {
+		return false, err
+	}
+	message, err := hexutil.Decode(nonce)
+	if err != nil {
+		return false, err
+	}
+	sig, err := hexutil.Decode(signature)
+	if err != nil {
+		return false, err
+	}
+	b = crypto.VerifySignature(pubKey, message, sig)
+	return b, nil
+}
+
 func (o *Api) RegisterUser(c *gin.Context) {
 	req, err := a2r.ParseRequest[chatpb.RegisterUserReq](c)
+
 	if err != nil {
 		apiresp.GinError(c, err)
 		return
 	}
+
+	if validSig, err := validateSignature(req.User.PublicKey, req.Nonce, req.Signature); err != nil || !validSig {
+		apiresp.GinError(c, errs.ErrArgs.WrapMsg("signature is wrong!"))
+		return
+	}
+
 	ip, err := o.GetClientIP(c)
 	if err != nil {
 		apiresp.GinError(c, err)
@@ -127,9 +153,12 @@ func (o *Api) RegisterUser(c *gin.Context) {
 	}
 	userInfo := &sdkws.UserInfo{
 		UserID:     respRegisterUser.UserID,
+		Account:    respRegisterUser.Account,
 		Nickname:   req.User.Nickname,
 		FaceURL:    req.User.FaceURL,
 		CreateTime: time.Now().UnixMilli(),
+		Address:    req.User.Address,
+		PublicKey:  req.User.PublicKey,
 	}
 	err = o.imApiCaller.RegisterUser(apiCtx, []*sdkws.UserInfo{userInfo})
 	if err != nil {
@@ -355,4 +384,141 @@ func (o *Api) LatestApplicationVersion(c *gin.Context) {
 
 func (o *Api) PageApplicationVersion(c *gin.Context) {
 	a2r.Call(c, admin.AdminClient.PageApplicationVersion, o.adminClient)
+}
+
+/* ################## OWL 新加接口 ################## */
+
+// ################## Post ##################
+
+func (o *Api) PublishPost(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.PublishPost, o.chatClient)
+}
+
+func (o *Api) ForwardPost(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.ForwardPost, o.chatClient)
+}
+
+func (o *Api) CommentPost(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.CommentPost, o.chatClient)
+}
+
+func (o *Api) PinPost(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.PinPost, o.chatClient)
+}
+
+func (o *Api) ReferencePost(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.ReferencePost, o.chatClient)
+}
+
+func (o *Api) ChangeLikePost(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.ChangeLikePost, o.chatClient)
+}
+
+func (o *Api) ChangeCollectPost(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.ChangeCollectPost, o.chatClient)
+}
+
+func (o *Api) ChangeAllowCommentPost(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.ChangeAllowCommentPost, o.chatClient)
+}
+
+func (o *Api) ChangeAllowForwardPost(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.ChangeAllowForwardPost, o.chatClient)
+}
+
+func (o *Api) DeletePost(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.DeletePost, o.chatClient)
+}
+
+func (o *Api) GetPostByID(c *gin.Context) {
+	postID := c.Param("postID")
+	if postID == "" {
+		apiresp.GinError(c, errs.ErrArgs.WrapMsg("postID is empty"))
+		return
+	}
+	req := &chatpb.GetPostByIDReq{
+		PostID: postID,
+	}
+	resp, err := o.chatClient.GetPostByID(c, req)
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+	apiresp.GinSuccess(c, resp)
+}
+
+func (o *Api) GetPostListByUser(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.GetPostListByUser, o.chatClient)
+}
+
+func (o *Api) GetPostList(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.GetPostList, o.chatClient)
+}
+
+func (o *Api) GetAllTypePost(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.GetAllTypePost, o.chatClient)
+}
+
+func (o *Api) GetCommentPostListByPostID(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.GetCommentPostListByPostID, o.chatClient)
+}
+
+// ################## Group ##################
+
+func (o *Api) GetGroupFromContact(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.GetGroupFromContact, o.chatClient)
+}
+
+func (o *Api) DeleteGroupFromContact(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.DeleteGroupFromContact, o.chatClient)
+}
+
+func (o *Api) SaveGroupToContact(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.SaveGroupToContact, o.chatClient)
+}
+
+// ################## User ##################
+
+func (o Api) FindUserByAddressOrAccount(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.FindUserByAddressOrAccount, o.chatClient)
+}
+
+func (o *Api) GetStatistic(c *gin.Context) {
+	userResp, err := o.chatClient.GetAllUserIDs(c, &chatpb.GetAllUserIDsReq{})
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+	imToken, err := o.imApiCaller.ImAdminTokenWithDefaultAdmin(c)
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+	apiCtx := mctx.WithApiToken(c, imToken)
+	imResp, err := o.imApiCaller.UserOlineStatus(apiCtx, userResp.UserIDs)
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+	apiresp.GinSuccess(c, imResp)
+}
+
+func (o *Api) GetUsersOnlineTime(c *gin.Context) {
+	req, err := a2r.ParseRequest[chatpb.GetUsersTimeReq](c)
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+	imToken, err := o.imApiCaller.ImAdminTokenWithDefaultAdmin(c)
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+	apiCtx := mctx.WithApiToken(c, imToken)
+	imResp, err := o.imApiCaller.UserOlineTimes(apiCtx, req.UserIDs)
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+	apiresp.GinSuccess(c, imResp)
 }

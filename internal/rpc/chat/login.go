@@ -8,6 +8,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/crypto"
 	constantpb "github.com/openimsdk/protocol/constant"
 	"github.com/openimsdk/tools/utils/datautil"
 
@@ -203,6 +205,20 @@ func (o *chatSvr) genUserID() string {
 	return string(data)
 }
 
+func (o *chatSvr) genAccount() string {
+	const l = 6
+	data := make([]byte, l)
+	rand.Read(data)
+	chars := []byte("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	result := make([]byte, l)
+	result[0] = chars[data[0]%52] // 确保第一个字符是字母
+	chars = append(chars, []byte("0123456789")...)
+	for i := 1; i < len(data); i++ {
+		result[i] = chars[data[i]%62]
+	}
+	return string(result)
+}
+
 func (o *chatSvr) genVerifyCode() string {
 	data := make([]byte, o.Code.Len)
 	rand.Read(data)
@@ -222,7 +238,7 @@ func (o *chatSvr) RegisterUser(ctx context.Context, req *chat.RegisterUserReq) (
 	if err = o.checkRegisterInfo(ctx, req.User, isAdmin); err != nil {
 		return nil, err
 	}
-	var usedInvitationCode bool
+	// var usedInvitationCode bool
 	if !isAdmin {
 		if !o.AllowRegister {
 			return nil, errs.ErrNoPermission.WrapMsg("register user is disabled")
@@ -233,28 +249,28 @@ func (o *chatSvr) RegisterUser(ctx context.Context, req *chat.RegisterUserReq) (
 		if err := o.Admin.CheckRegister(ctx, req.Ip); err != nil {
 			return nil, err
 		}
-		conf, err := o.Admin.GetConfig(ctx)
-		if err != nil {
-			return nil, err
-		}
-		if val := conf[constant.NeedInvitationCodeRegisterConfigKey]; datautil.Contain(strings.ToLower(val), "1", "true", "yes") {
-			usedInvitationCode = true
-			if req.InvitationCode == "" {
-				return nil, errs.ErrArgs.WrapMsg("invitation code is empty")
-			}
-			if err := o.Admin.CheckInvitationCode(ctx, req.InvitationCode); err != nil {
-				return nil, err
-			}
-		}
-		if req.User.Email == "" {
-			if _, err := o.verifyCode(ctx, o.verifyCodeJoin(req.User.AreaCode, req.User.PhoneNumber), req.VerifyCode); err != nil {
-				return nil, err
-			}
-		} else {
-			if _, err := o.verifyCode(ctx, req.User.Email, req.VerifyCode); err != nil {
-				return nil, err
-			}
-		}
+		// conf, err := o.Admin.GetConfig(ctx)
+		// if err != nil {
+		// 	return nil, err
+		// }
+		// if val := conf[constant.NeedInvitationCodeRegisterConfigKey]; datautil.Contain(strings.ToLower(val), "1", "true", "yes") {
+		// 	usedInvitationCode = true
+		// 	if req.InvitationCode == "" {
+		// 		return nil, errs.ErrArgs.WrapMsg("invitation code is empty")
+		// 	}
+		// 	if err := o.Admin.CheckInvitationCode(ctx, req.InvitationCode); err != nil {
+		// 		return nil, err
+		// 	}
+		// }
+		// if req.User.Email == "" {
+		// 	if _, err := o.verifyCode(ctx, o.verifyCodeJoin(req.User.AreaCode, req.User.PhoneNumber), req.VerifyCode); err != nil {
+		// 		return nil, err
+		// 	}
+		// } else {
+		// 	if _, err := o.verifyCode(ctx, req.User.Email, req.VerifyCode); err != nil {
+		// 		return nil, err
+		// 	}
+		// }
 	}
 	if req.User.UserID == "" {
 		for i := 0; i < 20; i++ {
@@ -280,20 +296,46 @@ func (o *chatSvr) RegisterUser(ctx context.Context, req *chat.RegisterUserReq) (
 			return nil, err
 		}
 	}
+
+	if req.User.Account == "" {
+		for i := 0; i < 20; i++ {
+			account := o.genAccount()
+			_, err := o.Database.TakeAttributeByAccount(ctx, account)
+			if err == nil {
+				continue
+			} else if dbutil.IsDBNotFound(err) {
+				req.User.Account = account
+				break
+			} else {
+				return nil, err
+			}
+		}
+		if req.User.Account == "" {
+			return nil, errs.ErrInternalServer.WrapMsg("gen account failed")
+		}
+	} else {
+		_, err := o.Database.TakeAttributeByAccount(ctx, req.User.Account)
+		if err == nil {
+			return nil, errs.ErrArgs.WrapMsg("account already register")
+		} else if !dbutil.IsDBNotFound(err) {
+			return nil, err
+		}
+	}
+
 	var (
 		credentials  []*chatdb.Credential
 		registerType int32
 	)
 
-	if req.User.PhoneNumber != "" {
-		registerType = constant.PhoneRegister
-		credentials = append(credentials, &chatdb.Credential{
-			UserID:      req.User.UserID,
-			Account:     BuildCredentialPhone(req.User.AreaCode, req.User.PhoneNumber),
-			Type:        constant.CredentialPhone,
-			AllowChange: true,
-		})
-	}
+	// if req.User.PhoneNumber != "" {
+	// 	registerType = constant.PhoneRegister
+	// 	credentials = append(credentials, &chatdb.Credential{
+	// 		UserID:      req.User.UserID,
+	// 		Account:     BuildCredentialPhone(req.User.AreaCode, req.User.PhoneNumber),
+	// 		Type:        constant.CredentialPhone,
+	// 		AllowChange: true,
+	// 	})
+	// }
 
 	if req.User.Account != "" {
 		credentials = append(credentials, &chatdb.Credential{
@@ -305,15 +347,15 @@ func (o *chatSvr) RegisterUser(ctx context.Context, req *chat.RegisterUserReq) (
 		registerType = constant.AccountRegister
 	}
 
-	if req.User.Email != "" {
-		registerType = constant.EmailRegister
-		credentials = append(credentials, &chatdb.Credential{
-			UserID:      req.User.UserID,
-			Account:     req.User.Email,
-			Type:        constant.CredentialEmail,
-			AllowChange: true,
-		})
-	}
+	// if req.User.Email != "" {
+	// 	registerType = constant.EmailRegister
+	// 	credentials = append(credentials, &chatdb.Credential{
+	// 		UserID:      req.User.UserID,
+	// 		Account:     req.User.Email,
+	// 		Type:        constant.CredentialEmail,
+	// 		AllowChange: true,
+	// 	})
+	// }
 	register := &chatdb.Register{
 		UserID:      req.User.UserID,
 		DeviceID:    req.DeviceID,
@@ -324,23 +366,23 @@ func (o *chatSvr) RegisterUser(ctx context.Context, req *chat.RegisterUserReq) (
 		CreateTime:  time.Now(),
 	}
 	account := &chatdb.Account{
-		UserID:         req.User.UserID,
-		Password:       req.User.Password,
+		UserID: req.User.UserID,
+		// Password:       req.User.Password,
 		OperatorUserID: mcontext.GetOpUserID(ctx),
 		ChangeTime:     register.CreateTime,
 		CreateTime:     register.CreateTime,
 	}
 
 	attribute := &chatdb.Attribute{
-		UserID:         req.User.UserID,
-		Account:        req.User.Account,
-		PhoneNumber:    req.User.PhoneNumber,
-		AreaCode:       req.User.AreaCode,
-		Email:          req.User.Email,
-		Nickname:       req.User.Nickname,
-		FaceURL:        req.User.FaceURL,
-		Gender:         req.User.Gender,
-		BirthTime:      time.UnixMilli(req.User.Birth),
+		UserID:  req.User.UserID,
+		Account: req.User.Account,
+		// PhoneNumber:    req.User.PhoneNumber,
+		// AreaCode:       req.User.AreaCode,
+		// Email:          req.User.Email,
+		Nickname: req.User.Nickname,
+		FaceURL:  req.User.FaceURL,
+		// Gender:         req.User.Gender,
+		// BirthTime:      time.UnixMilli(req.User.Birth),
 		ChangeTime:     register.CreateTime,
 		CreateTime:     register.CreateTime,
 		AllowVibration: constant.DefaultAllowVibration,
@@ -351,11 +393,11 @@ func (o *chatSvr) RegisterUser(ctx context.Context, req *chat.RegisterUserReq) (
 	if err := o.Database.RegisterUser(ctx, register, account, attribute, credentials); err != nil {
 		return nil, err
 	}
-	if usedInvitationCode {
-		if err := o.Admin.UseInvitationCode(ctx, req.User.UserID, req.InvitationCode); err != nil {
-			log.ZError(ctx, "UseInvitationCode", err, "userID", req.User.UserID, "invitationCode", req.InvitationCode)
-		}
-	}
+	// if usedInvitationCode {
+	// 	if err := o.Admin.UseInvitationCode(ctx, req.User.UserID, req.InvitationCode); err != nil {
+	// 		log.ZError(ctx, "UseInvitationCode", err, "userID", req.User.UserID, "invitationCode", req.InvitationCode)
+	// 	}
+	// }
 	var resp chat.RegisterUserResp
 	if req.AutoLogin {
 		chatToken, err := o.Admin.CreateToken(ctx, req.User.UserID, constant.NormalUser)
@@ -366,40 +408,68 @@ func (o *chatSvr) RegisterUser(ctx context.Context, req *chat.RegisterUserReq) (
 		}
 	}
 	resp.UserID = req.User.UserID
+	resp.Account = req.User.Account
 	return &resp, nil
+}
+
+// OWL 新加
+// 验证签名
+func validateSignature(publicKey, nonce, signature string) (b bool, err error) {
+	pubKey, err := hexutil.Decode(publicKey)
+	if err != nil {
+		return false, err
+	}
+	message, err := hexutil.Decode(nonce)
+	if err != nil {
+		return false, err
+	}
+	sig, err := hexutil.Decode(signature)
+	if err != nil {
+		return false, err
+	}
+	b = crypto.VerifySignature(pubKey, message, sig)
+	return b, nil
 }
 
 func (o *chatSvr) Login(ctx context.Context, req *chat.LoginReq) (*chat.LoginResp, error) {
 	resp := &chat.LoginResp{}
-	if req.Password == "" && req.VerifyCode == "" {
-		return nil, errs.ErrArgs.WrapMsg("password or code must be set")
-	}
+	// if req.Password == "" && req.VerifyCode == "" {
+	// 	return nil, errs.ErrArgs.WrapMsg("password or code must be set")
+	// }
 	var (
 		err        error
 		credential *chatdb.Credential
-		acc        string
+		attribute  *chatdb.Attribute
 	)
 
-	switch {
-	case req.Account != "":
-		acc = req.Account
-	case req.PhoneNumber != "":
-		if req.AreaCode == "" {
-			return nil, errs.ErrArgs.WrapMsg("area code must")
-		}
-		if !strings.HasPrefix(req.AreaCode, "+") {
-			req.AreaCode = "+" + req.AreaCode
-		}
-		if _, err := strconv.ParseUint(req.AreaCode[1:], 10, 64); err != nil {
-			return nil, errs.ErrArgs.WrapMsg("area code must be number")
-		}
-		acc = BuildCredentialPhone(req.AreaCode, req.PhoneNumber)
-	case req.Email != "":
-		acc = req.Email
-	default:
-		return nil, errs.ErrArgs.WrapMsg("account or phone number or email must be set")
+	if validSig, err := validateSignature(req.PublicKey, req.Nonce, req.Signature); err != nil || !validSig {
+		return nil, errs.ErrArgs.WrapMsg("signature is invalid")
 	}
-	credential, err = o.Database.TakeCredentialByAccount(ctx, acc)
+
+	if req.Address != "" {
+		attribute, err = o.Database.TakeAttributeByAddress(ctx, req.Address)
+	}
+
+	// switch {
+	// case req.Account != "":
+	// 	acc = req.Account
+	// case req.PhoneNumber != "":
+	// 	if req.AreaCode == "" {
+	// 		return nil, errs.ErrArgs.WrapMsg("area code must")
+	// 	}
+	// 	if !strings.HasPrefix(req.AreaCode, "+") {
+	// 		req.AreaCode = "+" + req.AreaCode
+	// 	}
+	// 	if _, err := strconv.ParseUint(req.AreaCode[1:], 10, 64); err != nil {
+	// 		return nil, errs.ErrArgs.WrapMsg("area code must be number")
+	// 	}
+	// 	acc = BuildCredentialPhone(req.AreaCode, req.PhoneNumber)
+	// case req.Email != "":
+	// 	acc = req.Email
+	// default:
+	// 	return nil, errs.ErrArgs.WrapMsg("account or phone number or email must be set")
+	// }
+	credential, err = o.Database.TakeCredentialByAccount(ctx, attribute.Account)
 	if err != nil {
 		if dbutil.IsDBNotFound(err) {
 			return nil, eerrs.ErrAccountNotFound.WrapMsg("user unregistered")
@@ -409,30 +479,30 @@ func (o *chatSvr) Login(ctx context.Context, req *chat.LoginReq) (*chat.LoginRes
 	if err := o.Admin.CheckLogin(ctx, credential.UserID, req.Ip); err != nil {
 		return nil, err
 	}
-	var verifyCodeID *string
-	if req.Password == "" {
-		var account string
-		if req.Email == "" {
-			account = o.verifyCodeJoin(req.AreaCode, req.PhoneNumber)
-		} else {
-			account = req.Email
-		}
-		id, err := o.verifyCode(ctx, account, req.VerifyCode)
-		if err != nil {
-			return nil, err
-		}
-		if id != "" {
-			verifyCodeID = &id
-		}
-	} else {
-		account, err := o.Database.TakeAccount(ctx, credential.UserID)
-		if err != nil {
-			return nil, err
-		}
-		if account.Password != req.Password {
-			return nil, eerrs.ErrPassword.Wrap()
-		}
-	}
+	// var verifyCodeID *string
+	// if req.Password == "" {
+	// 	var account string
+	// 	if req.Email == "" {
+	// 		account = o.verifyCodeJoin(req.AreaCode, req.PhoneNumber)
+	// 	} else {
+	// 		account = req.Email
+	// 	}
+	// 	id, err := o.verifyCode(ctx, account, req.VerifyCode)
+	// 	if err != nil {
+	// 		return nil, err
+	// 	}
+	// 	if id != "" {
+	// 		verifyCodeID = &id
+	// 	}
+	// } else {
+	// 	account, err := o.Database.TakeAccount(ctx, credential.UserID)
+	// 	if err != nil {
+	// 		return nil, err
+	// 	}
+	// 	if account.Password != req.Password {
+	// 		return nil, eerrs.ErrPassword.Wrap()
+	// 	}
+	// }
 	chatToken, err := o.Admin.CreateToken(ctx, credential.UserID, constant.NormalUser)
 	if err != nil {
 		return nil, err
@@ -444,13 +514,8 @@ func (o *chatSvr) Login(ctx context.Context, req *chat.LoginReq) (*chat.LoginRes
 		DeviceID:  req.DeviceID,
 		Platform:  constantpb.PlatformIDToName(int(req.Platform)),
 	}
-	if err := o.Database.LoginRecord(ctx, record, verifyCodeID); err != nil {
+	if err := o.Database.LoginRecord(ctx, record, nil); err != nil {
 		return nil, err
-	}
-	if verifyCodeID != nil {
-		if err := o.Database.DelVerifyCode(ctx, *verifyCodeID); err != nil {
-			return nil, err
-		}
 	}
 	resp.UserID = credential.UserID
 	resp.ChatToken = chatToken.Token

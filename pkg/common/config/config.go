@@ -20,8 +20,14 @@ type Share struct {
 		Secret      string `mapstructure:"secret"`
 		AdminUserID string `mapstructure:"adminUserID"`
 	} `mapstructure:"openIM"`
-	ChatAdmin   []string `mapstructure:"chatAdmin"`
-	ProxyHeader string   `mapstructure:"proxyHeader"`
+	ChatAdmin   []string     `mapstructure:"chatAdmin"`
+	ProxyHeader string       `mapstructure:"proxyHeader"`
+	RedPacket   RpcRedPacket `mapstructure:"redPacket"`
+}
+
+type RpcRedPacket struct {
+	ApiURL  string `mapstructure:"apiURL"`
+	Timeout int    `mapstructure:"timeout"`
 }
 
 type RpcService struct {

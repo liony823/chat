@@ -2,6 +2,8 @@ package admin
 
 import (
 	"context"
+	"time"
+
 	admindb "github.com/openimsdk/chat/pkg/common/db/table/admin"
 	"github.com/openimsdk/chat/pkg/common/mctx"
 	"github.com/openimsdk/chat/pkg/protocol/admin"
@@ -10,7 +12,6 @@ import (
 	"github.com/redis/go-redis/v9"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"time"
 )
 
 func IsNotFound(err error) bool {
@@ -77,13 +78,27 @@ func (o *adminServer) UpdateApplicationVersion(ctx context.Context, req *admin.U
 		return nil, errs.ErrArgs.WrapMsg("invalid id " + err.Error())
 	}
 	update := make(map[string]any)
-	putUpdate(update, "platform", req.Platform)
-	putUpdate(update, "version", req.Version)
-	putUpdate(update, "url", req.Url)
-	putUpdate(update, "text", req.Text)
-	putUpdate(update, "force", req.Force)
-	putUpdate(update, "latest", req.Latest)
-	putUpdate(update, "hot", req.Hot)
+	if req.Platform.Value != "" {
+		update["platform"] = req.Platform.Value
+	}
+	if req.Version.Value != "" {
+		update["version"] = req.Version.Value
+	}
+	if req.Url.Value != "" {
+		update["url"] = req.Url.Value
+	}
+	if req.Text.Value != "" {
+		update["text"] = req.Text.Value
+	}
+	if req.Force.Value {
+		update["force"] = req.Force.Value
+	}
+	if req.Latest.Value {
+		update["latest"] = req.Latest.Value
+	}
+	if req.Hot.Value {
+		update["hot"] = req.Hot.Value
+	}
 	if err := o.Database.UpdateVersion(ctx, oid, update); err != nil {
 		return nil, err
 	}
@@ -117,12 +132,4 @@ func (o *adminServer) PageApplicationVersion(ctx context.Context, req *admin.Pag
 		Total:    total,
 		Versions: datautil.Slice(res, o.db2pbApplication),
 	}, nil
-}
-
-func putUpdate[T any](update map[string]any, name string, val interface{ GetValuePtr() *T }) {
-	ptrVal := val.GetValuePtr()
-	if ptrVal == nil {
-		return
-	}
-	update[name] = *ptrVal
 }

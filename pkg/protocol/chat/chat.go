@@ -27,11 +27,11 @@ func (x *UpdateUserInfoReq) Check() error {
 	if x.UserID == "" {
 		return errs.ErrArgs.WrapMsg("userID is empty")
 	}
-	if x.Email != nil && x.Email.Value != "" {
-		if err := EmailCheck(x.Email.Value); err != nil {
-			return err
-		}
-	}
+	// if x.Email != nil && x.Email.Value != "" {
+	// 	if err := EmailCheck(x.Email.Value); err != nil {
+	// 		return err
+	// 	}
+	// }
 	return nil
 }
 
@@ -122,22 +122,27 @@ func (x *RegisterUserReq) Check() error {
 	if x.User == nil {
 		return errs.ErrArgs.WrapMsg("user is empty")
 	}
-	if x.User.Email == "" {
-		if x.User.AreaCode == "" {
-			return errs.ErrArgs.WrapMsg("AreaCode is empty")
-		} else if err := AreaCodeCheck(x.User.AreaCode); err != nil {
-			return err
-		}
-		if x.User.PhoneNumber == "" {
-			return errs.ErrArgs.WrapMsg("PhoneNumber is empty")
-		} else if err := PhoneNumberCheck(x.User.PhoneNumber); err != nil {
-			return err
-		}
-	} else {
-		if err := EmailCheck(x.User.Email); err != nil {
-			return err
-		}
+
+	if x.User.Address == "" {
+		return errs.ErrArgs.WrapMsg("address is empty")
 	}
+
+	// if x.User.Email == "" {
+	// 	if x.User.AreaCode == "" {
+	// 		return errs.ErrArgs.WrapMsg("AreaCode is empty")
+	// 	} else if err := AreaCodeCheck(x.User.AreaCode); err != nil {
+	// 		return err
+	// 	}
+	// 	if x.User.PhoneNumber == "" {
+	// 		return errs.ErrArgs.WrapMsg("PhoneNumber is empty")
+	// 	} else if err := PhoneNumberCheck(x.User.PhoneNumber); err != nil {
+	// 		return err
+	// 	}
+	// } else {
+	// 	if err := EmailCheck(x.User.Email); err != nil {
+	// 		return err
+	// 	}
+	// }
 	return nil
 }
 
@@ -145,22 +150,27 @@ func (x *LoginReq) Check() error {
 	if x.Platform < constantpb.IOSPlatformID || x.Platform > constantpb.AdminPlatformID {
 		return errs.ErrArgs.WrapMsg("platform is invalid")
 	}
-	if x.Email == "" {
-		if x.AreaCode == "" {
-			return errs.ErrArgs.WrapMsg("AreaCode is empty")
-		} else if err := AreaCodeCheck(x.AreaCode); err != nil {
-			return err
-		}
-		if x.PhoneNumber == "" {
-			return errs.ErrArgs.WrapMsg("PhoneNumber is empty")
-		} else if err := PhoneNumberCheck(x.PhoneNumber); err != nil {
-			return err
-		}
-	} else {
-		if err := EmailCheck(x.Email); err != nil {
-			return err
-		}
+
+	if x.Address == "" {
+		return errs.ErrArgs.WrapMsg("address is empty")
 	}
+
+	// if x.Email == "" {
+	// 	if x.AreaCode == "" {
+	// 		return errs.ErrArgs.WrapMsg("AreaCode is empty")
+	// 	} else if err := AreaCodeCheck(x.AreaCode); err != nil {
+	// 		return err
+	// 	}
+	// 	if x.PhoneNumber == "" {
+	// 		return errs.ErrArgs.WrapMsg("PhoneNumber is empty")
+	// 	} else if err := PhoneNumberCheck(x.PhoneNumber); err != nil {
+	// 		return err
+	// 	}
+	// } else {
+	// 	if err := EmailCheck(x.Email); err != nil {
+	// 		return err
+	// 	}
+	// }
 	return nil
 }
 
@@ -296,24 +306,24 @@ func (x *AddUserAccountReq) Check() error {
 		return errs.ErrArgs.WrapMsg("user is empty")
 	}
 
-	if x.User.Email == "" {
-		if x.User.AreaCode == "" || x.User.PhoneNumber == "" {
-			return errs.ErrArgs.WrapMsg("area code or phone number is empty")
-		}
-		if x.User.AreaCode[0] != '+' {
-			x.User.AreaCode = "+" + x.User.AreaCode
-		}
-		if _, err := strconv.ParseUint(x.User.AreaCode[1:], 10, 64); err != nil {
-			return errs.ErrArgs.WrapMsg("area code must be number")
-		}
-		if _, err := strconv.ParseUint(x.User.PhoneNumber, 10, 64); err != nil {
-			return errs.ErrArgs.WrapMsg("phone number must be number")
-		}
-	} else {
-		if err := EmailCheck(x.User.Email); err != nil {
-			return errs.ErrArgs.WrapMsg("email must be right")
-		}
-	}
+	// if x.User.Email == "" {
+	// 	if x.User.AreaCode == "" || x.User.PhoneNumber == "" {
+	// 		return errs.ErrArgs.WrapMsg("area code or phone number is empty")
+	// 	}
+	// 	if x.User.AreaCode[0] != '+' {
+	// 		x.User.AreaCode = "+" + x.User.AreaCode
+	// 	}
+	// 	if _, err := strconv.ParseUint(x.User.AreaCode[1:], 10, 64); err != nil {
+	// 		return errs.ErrArgs.WrapMsg("area code must be number")
+	// 	}
+	// 	if _, err := strconv.ParseUint(x.User.PhoneNumber, 10, 64); err != nil {
+	// 		return errs.ErrArgs.WrapMsg("phone number must be number")
+	// 	}
+	// } else {
+	// 	if err := EmailCheck(x.User.Email); err != nil {
+	// 		return errs.ErrArgs.WrapMsg("email must be right")
+	// 	}
+	// }
 
 	return nil
 }

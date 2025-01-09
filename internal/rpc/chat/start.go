@@ -9,6 +9,7 @@ import (
 	"github.com/openimsdk/chat/pkg/protocol/admin"
 	"github.com/openimsdk/chat/pkg/protocol/chat"
 	"github.com/openimsdk/tools/db/mongoutil"
+	"github.com/openimsdk/tools/db/tx"
 	"github.com/openimsdk/tools/discovery"
 	"github.com/openimsdk/tools/errs"
 	"github.com/openimsdk/tools/mw"
@@ -18,6 +19,7 @@ import (
 	"github.com/openimsdk/chat/pkg/common/config"
 	"github.com/openimsdk/chat/pkg/common/db/database"
 	"github.com/openimsdk/chat/pkg/email"
+	"github.com/openimsdk/chat/pkg/redpacket"
 	chatClient "github.com/openimsdk/chat/pkg/rpclient/chat"
 	"github.com/openimsdk/chat/pkg/sms"
 )
@@ -58,6 +60,7 @@ func Start(ctx context.Context, config *Config, client discovery.SvcDiscoveryReg
 	if err != nil {
 		return err
 	}
+	srv.RedPacketClient = redpacket.NewRedPacketClient(config.Share.RedPacket.ApiURL)
 	srv.Admin = chatClient.NewAdminClient(admin.NewAdminClient(conn))
 	srv.Code = verifyCode{
 		UintTime:   time.Duration(config.RpcConfig.VerifyCode.UintTime) * time.Second,
@@ -69,11 +72,15 @@ func Start(ctx context.Context, config *Config, client discovery.SvcDiscoveryReg
 	}
 	srv.Livekit = rtc.NewLiveKit(config.RpcConfig.LiveKit.Key, config.RpcConfig.LiveKit.Secret, config.RpcConfig.LiveKit.URL)
 	srv.AllowRegister = config.RpcConfig.AllowRegister
+	srv.Share = config.Share
+	srv.tx = mgocli.GetTx()
 	chat.RegisterChatServer(server, &srv)
 	return nil
 }
 
 type chatSvr struct {
+	tx              tx.Tx
+	RedPacketClient *redpacket.Client
 	Database        database.ChatDatabaseInterface
 	Admin           *chatClient.AdminClient
 	SMS             sms.SMS
@@ -82,6 +89,8 @@ type chatSvr struct {
 	Livekit         *rtc.LiveKit
 	ChatAdminUserID string
 	AllowRegister   bool
+	Share           config.Share
+	chat.UnimplementedChatServer
 }
 
 func (o *chatSvr) WithAdminUser(ctx context.Context) context.Context {

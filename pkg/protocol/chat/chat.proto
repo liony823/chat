@@ -15,9 +15,9 @@
 syntax = "proto3";
 package openim.chat;
 
-import "common/common.proto";
-import "sdkws/sdkws.proto";
-import "wrapperspb/wrapperspb.proto";
+import "pkg/protocol/common/common.proto";
+import "pkg/protocol/wrapperspb/wrapperspb.proto";
+import "pkg/protocol/sdkws/sdkws.proto";
 
 option go_package = "github.com/openimsdk/chat/pkg/protocol/chat";
 
@@ -33,19 +33,15 @@ message UserIdentity {
 message UpdateUserInfoReq {
   string userID = 1;
   openim.protobuf.StringValue account = 2;
-  openim.protobuf.StringValue phoneNumber = 3;
-  openim.protobuf.StringValue areaCode = 4;
-  openim.protobuf.StringValue email = 5;
-  openim.protobuf.StringValue nickname = 6;
-  openim.protobuf.StringValue faceURL = 7;
-  openim.protobuf.Int32Value gender = 8;
-  openim.protobuf.Int32Value level = 9;
-  openim.protobuf.Int64Value birth = 10;
-  openim.protobuf.Int32Value allowAddFriend = 11;
-  openim.protobuf.Int32Value allowBeep = 12;
-  openim.protobuf.Int32Value allowVibration = 13;
-  openim.protobuf.Int32Value globalRecvMsgOpt = 14;
-  openim.protobuf.Int32Value RegisterType = 15;
+  openim.protobuf.StringValue nickname = 3;
+  openim.protobuf.StringValue faceURL = 4;
+  openim.protobuf.StringValue coverURL = 5;
+  openim.protobuf.StringValue about = 6;
+  openim.protobuf.Int32Value allowAddFriend = 7;
+  openim.protobuf.Int32Value allowBeep = 8;
+  openim.protobuf.Int32Value allowVibration = 9;
+  openim.protobuf.Int32Value globalRecvMsgOpt = 10;
+  openim.protobuf.Int32Value RegisterType = 11;
 }
 
 message UpdateUserInfoResp {
@@ -106,28 +102,25 @@ message RegisterUserInfo {
   string userID = 1;
   string nickname = 2;
   string faceURL = 3;
-  int64 birth = 4;
-  int32 gender = 5;
-  string areaCode = 6;
-  string phoneNumber = 7;
-  string email = 8;
-  string account = 9;
-  string password = 10;
-  int32 RegisterType = 11;
+  string account = 4;
+  string publicKey = 5;
+  string Address = 6;
+  int32 RegisterType = 7;
 }
 
 message RegisterUserReq {
-  string invitationCode = 1;
-  string verifyCode = 2;
-  string ip = 3;
-  string deviceID = 4;
-  int32 platform = 5;
-  bool autoLogin = 6;
-  RegisterUserInfo user = 7;
+  string nonce = 6;
+  string signature = 7;
+  string ip = 1;
+  string deviceID = 2;
+  int32 platform = 3;
+  bool autoLogin = 4;
+  RegisterUserInfo user = 5;
 }
 
 message RegisterUserResp {
   string userID = 1;
+  string account = 2;
   string chatToken = 3;
 }
 
@@ -141,15 +134,13 @@ message AddUserAccountReq {
 message AddUserAccountResp {}
 
 message LoginReq {
-  string areaCode = 1;
-  string phoneNumber = 2;
-  string verifyCode = 3;
-  string account = 4;
-  string password = 5;
-  int32 platform = 6;
-  string deviceID = 7;
-  string ip = 8;
-  string email = 9;
+  string address = 1;
+  int32 platform = 2;
+  string deviceID = 3;
+  string ip = 4;
+  string nonce = 5;
+  string signature = 6;
+  string publicKey = 7;
 }
 
 message ResetPasswordReq {
@@ -208,7 +199,13 @@ message OpenIMCallbackReq {
   string body = 2;
 }
 
-message OpenIMCallbackResp {}
+message OpenIMCallbackResp {
+  int32 actionCode = 1;
+  int32 errCode = 2;
+  int32 nextCode = 3;
+  string errMsg = 4;
+  string errDlt= 5;
+}
 
 message SearchUserFullInfoReq {
   string keyword = 1;
@@ -288,6 +285,248 @@ message GetAllowRegisterResp {
   bool allowRegister = 1;
 }
 
+// OWL 新加
+
+
+// ########## User ##########
+
+message GetAllUserIDsReq {
+}
+
+message GetAllUserIDsResp {
+  repeated string userIDs = 1;
+}
+
+message OnlineTime {
+  string userID = 1;
+  int64 timestamp = 3;
+}
+
+message GetUsersTimeReq {
+  repeated string userIDs = 2;
+}
+
+message GetUsersTimeResp{
+  repeated OnlineTime timeList = 1;
+}
+
+message FindUserByAddressOrAccountReq {
+  string address = 1;
+  string account = 2;
+}
+
+// ########## Contact ##########
+
+message getGroupFromContactReq{
+}
+
+
+message getGroupFromContactResp{
+  repeated string groupIDs = 1;
+}
+
+message saveGroupToContactReq{
+  repeated string groupIDs = 1;
+}
+
+message saveGroupToContactResp{
+
+}
+
+message deleteGroupFromContactReq{
+  repeated string groupIDs = 1;
+}
+
+message deleteGroupFromContactResp{
+  
+}
+
+// ########## Post ##########
+
+message Post{
+  string postID = 1;
+  string userID = 2;
+  string content = 3;
+  int64 commentCount = 4;
+  int64 forwardCount = 5;
+  int64 likeCount = 6;
+  int32 allowComment = 7;
+  int32 allowForward = 8;
+  int32 isLiked = 9;
+  int32 isCollected = 10;
+  int32 isForwarded = 11;
+  int64 createTime = 12;
+  int64 updateTime = 13;
+  repeated string atUserIds = 14;
+  openim.chat.common.UserPublicInfo userInfo = 15;
+  repeated openim.chat.common.PostMedia mediaMsgs = 16;
+  repeated openim.chat.common.UserPublicInfo atUserInfoList = 17;
+  string forwardPostID = 18;
+  string commentPostID = 19;
+  string refPostID = 20;
+  Post forwardPost = 21;
+  Post commentPost = 22;
+  Post refPost = 23;
+  int32 isPinned = 24;
+  int32 isCommented = 25;
+}
+
+message PublishPostReq {
+  openim.protobuf.StringValue content = 1;
+  int32 allowComment = 2;
+  int32 allowForward = 3;
+  repeated string atUserIds = 4;
+  repeated openim.chat.common.PostMedia mediaMsgs = 5;
+}
+
+message PublishPostResp {
+  Post post = 1;
+}
+
+message GetPostByIDReq {
+  string postID = 1;
+}
+
+message GetPostByIDResp {
+  Post post = 1;
+}
+
+message GetAllTypePostReq {
+  int32 count = 1;
+}
+
+message GetAllTypePostResp {
+  repeated TypePosts allPosts = 1;
+}
+
+message TypePosts {
+  int32 type = 1;
+  int64 nextCursor = 2;
+  repeated Post posts = 3;
+}
+
+message GetPostListReq {
+  int64 nextCursor = 1;
+  int32 count = 2;
+  int32 type = 3;
+}
+
+message GetPostListResp {
+  int64 nextCursor = 1;
+  repeated Post posts = 2;
+}
+
+
+message GetPostListByUserReq {
+  string userID = 1;
+  int64 nextCursor = 2;
+  int32 count = 3;
+}
+
+message GetPostListByUserResp {
+  int64 nextCursor = 1;
+  repeated Post posts = 2;
+}
+
+message GetCommentPostListByPostIDReq {
+  string postID = 1;
+  int64 nextCursor = 2;
+  int32 count = 3;
+}
+
+message GetCommentPostListByPostIDResp {
+  int64 nextCursor = 1;
+  repeated Post posts = 2;
+}
+
+message DeletePostReq {
+  string postID = 1;
+}
+
+
+
+message DeletePostResp {
+}
+
+message ChangeAllowCommentPostReq {
+  string postID = 1;
+}
+
+message ChangeAllowCommentPostResp {
+  string postID = 1;
+  int32 allowComment = 2;
+}
+
+message ChangeAllowForwardPostReq {
+  string postID = 1;
+}
+
+message ChangeAllowForwardPostResp {
+  string postID = 1;
+  int32 allowForward = 2;
+}
+
+message LikePostReq {
+  string postID = 1;
+  int32  isLiked = 2;
+}
+
+message LikePostResp {
+  int32 isLiked = 1;
+}
+
+message CollectPostReq {
+  string postID = 1;
+  int32  isCollected = 2;
+}
+
+message CollectPostResp {
+  int32 isCollected = 1;
+}
+
+message ForwardPostReq {
+  string forwardPostID = 1;
+  int32 isForwarded = 2;
+}
+
+message ForwardPostResp {
+  int32 isForwarded = 1;
+}
+
+message ReferencePostReq {
+  string refPostID = 1;
+  openim.protobuf.StringValue content = 2;
+  int32 allowComment = 3;
+  int32 allowForward = 4;
+  repeated string atUserIds = 5;
+  repeated openim.chat.common.PostMedia mediaMsgs = 6;
+}
+
+message ReferencePostResp {
+}
+
+message CommentPostReq {
+  string commentPostID = 1;
+  openim.protobuf.StringValue content = 2;
+  int32 allowComment = 3;
+  int32 allowForward = 4; 
+  repeated string atUserIds = 5;
+  repeated openim.chat.common.PostMedia mediaMsgs = 6;
+}
+
+message CommentPostResp {
+  Post post = 1;
+}
+
+message PinPostReq {
+  string postID = 1;
+  int32 isPinned = 2;
+}
+
+message PinPostResp {
+}
+
+
 
 service chat {
   // Edit personal information - called by the user or an administrator
@@ -323,4 +562,54 @@ service chat {
 
   rpc SetAllowRegister(SetAllowRegisterReq) returns(SetAllowRegisterResp);
   rpc GetAllowRegister(GetAllowRegisterReq) returns(GetAllowRegisterResp);
+
+  // OWL 新加
+
+  // ########## Contact ##########
+
+    //保存群组至联系列表
+    rpc SaveGroupToContact(saveGroupToContactReq) returns (saveGroupToContactResp);
+    //从联系列表移除群组
+    rpc DeleteGroupFromContact(deleteGroupFromContactReq) returns (deleteGroupFromContactResp);
+    //从联系列表获取群组
+    rpc GetGroupFromContact(getGroupFromContactReq) returns (getGroupFromContactResp);
+
+    // ########## User ##########
+
+    // 获取所有用户id
+    rpc GetAllUserIDs(GetAllUserIDsReq) returns (GetAllUserIDsResp);
+
+    rpc FindUserByAddressOrAccount(FindUserByAddressOrAccountReq) returns (FindUserPublicInfoResp);
+
+  // ########## Post ##########
+    // 发布帖子 
+    rpc PublishPost(PublishPostReq) returns (PublishPostResp);
+    // 获取所有帖子类型
+    rpc GetAllTypePost(GetAllTypePostReq) returns (GetAllTypePostResp);
+    // 获取帖子列表
+    rpc GetPostList(GetPostListReq) returns (GetPostListResp);
+    // 获取帖子列表(用户)
+    rpc GetPostListByUser(GetPostListByUserReq) returns (GetPostListByUserResp);
+    // 获取评论帖子列表
+    rpc GetCommentPostListByPostID(GetCommentPostListByPostIDReq) returns (GetCommentPostListByPostIDResp);
+    // 获取帖子详情
+    rpc GetPostByID(GetPostByIDReq) returns (GetPostByIDResp);
+    // 删除帖子
+    rpc DeletePost(DeletePostReq) returns (DeletePostResp);
+    // 修改帖子允许评论
+    rpc ChangeAllowCommentPost(ChangeAllowCommentPostReq) returns (ChangeAllowCommentPostResp);
+    // 修改帖子允许转发
+    rpc ChangeAllowForwardPost(ChangeAllowForwardPostReq) returns (ChangeAllowForwardPostResp);
+    // 点赞帖子
+    rpc ChangeLikePost(LikePostReq) returns (LikePostResp);
+    // 收藏帖子
+    rpc ChangeCollectPost(CollectPostReq) returns (CollectPostResp);
+    // 置顶帖子
+    rpc PinPost(PinPostReq) returns (PinPostResp);
+    // 转发帖子
+    rpc ForwardPost(ForwardPostReq) returns (ForwardPostResp);
+    // 评论帖子
+    rpc CommentPost(CommentPostReq) returns (CommentPostResp);
+    // 引用帖子
+    rpc ReferencePost(ReferencePostReq) returns (ReferencePostResp);
 }

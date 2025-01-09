@@ -76,6 +76,7 @@ type adminServer struct {
 	Database database.AdminDatabaseInterface
 	Chat     *chatClient.ChatClient
 	Token    *tokenverify.Token
+	adminpb.UnimplementedAdminServer
 }
 
 func (o *adminServer) initAdmin(ctx context.Context, admins []string, imUserID string) error {

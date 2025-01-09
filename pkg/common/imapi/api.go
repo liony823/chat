@@ -15,8 +15,10 @@
 package imapi
 
 import (
+	chatpb "github.com/openimsdk/chat/pkg/protocol/chat"
 	"github.com/openimsdk/protocol/auth"
 	"github.com/openimsdk/protocol/group"
+	"github.com/openimsdk/protocol/msggateway"
 	"github.com/openimsdk/protocol/relation"
 	"github.com/openimsdk/protocol/user"
 )
@@ -34,4 +36,8 @@ var (
 	registerUserCount = NewApiCaller[user.UserRegisterCountReq, user.UserRegisterCountResp]("/statistics/user/register")
 	friendUserIDs     = NewApiCaller[relation.GetFriendIDsReq, relation.GetFriendIDsResp]("/friend/get_friend_id")
 	accountCheck      = NewApiCaller[user.AccountCheckReq, user.AccountCheckResp]("/user/account_check")
+
+	// OWL 新加
+	allUserOnlineStatus = NewApiCaller[msggateway.GetUsersOnlineStatusReq, []msggateway.GetUsersOnlineStatusResp_SuccessResult]("/user/get_users_online_status")
+	usersOnlineTime     = NewApiCaller[chatpb.GetUsersTimeReq, chatpb.GetUsersTimeResp]("/user/get_users_time")
 )

@@ -9,3 +9,7 @@ openIM:
 chatAdmin:
    # Default username and password for the admin
   - "chatAdmin"
+
+redPacket:
+  apiURL: http://127.0.0.1:10086/v1
+  timeout: 20
