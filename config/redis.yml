@@ -3,7 +3,7 @@ address: [ localhost:16379 ]
 # Username for Redis authentication (leave blank if not used)
 username: ''
 # Password for Redis authentication
-password: openIM123
+password: owlIM123
 # Enable or disable pipeline processing
 enablePipeline: false
 # Enable or disable cluster mode

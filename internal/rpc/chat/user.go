@@ -34,7 +34,7 @@ import (
 	"github.com/openimsdk/chat/pkg/common/mctx"
 	"github.com/openimsdk/chat/pkg/protocol/chat"
 	"github.com/openimsdk/chat/pkg/protocol/common"
-	"github.com/openimsdk/chat/pkg/protocol/sdkws"
+	"github.com/openimsdk/protocol/sdkws"
 	"github.com/openimsdk/tools/errs"
 )
 

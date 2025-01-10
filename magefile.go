@@ -76,8 +76,6 @@ var protoModules = []string{
 	"admin",
 	"chat",
 	"common",
-	"wrapperspb",
-	"sdkws",
 }
 
 // install proto plugin
@@ -121,10 +119,14 @@ func GenGo() error {
 		return err
 	}
 
+	fmt.Println("protocel 路径： ", build.Default.GOPATH)
+
 	for _, module := range protoModules {
 		args := []string{
 			"--proto_path=./pkg/protocol",
 			"--proto_path=./",
+			fmt.Sprintf("--proto_path=%s/pkg/mod", build.Default.GOPATH),
+			fmt.Sprintf("--proto_path=%s/pkg/mod/github.com/liony823/protocol@%s", build.Default.GOPATH, "v0.0.1-owl-fix"),
 			"--go_out=" + filepath.Join("./pkg/protocol", module),
 			"--go-grpc_out=" + filepath.Join("./pkg/protocol", module),
 			"--go_opt=module=github.com/openimsdk/chat/pkg/protocol/" + strings.Join([]string{module}, "/"),
