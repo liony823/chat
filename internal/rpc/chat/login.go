@@ -450,6 +450,13 @@ func (o *chatSvr) Login(ctx context.Context, req *chat.LoginReq) (*chat.LoginRes
 
 	if req.Address != "" {
 		attribute, err = o.Database.TakeAttributeByAddress(ctx, req.Address)
+
+		if err != nil {
+			if dbutil.IsDBNotFound(err) {
+				return nil, eerrs.ErrAccountNotFound.WrapMsg("user unregistered")
+			}
+			return nil, err
+		}
 	}
 
 	// switch {
