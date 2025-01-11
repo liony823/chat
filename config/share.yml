@@ -13,3 +13,9 @@ chatAdmin:
 redPacket:
   apiURL: http://127.0.0.1:10086/v1
   timeout: 20
+
+
+liveKit:
+  url: "ws://127.0.0.1:7880" # LIVEKIT_URL, LiveKit server address and port
+  key: "APIGPW3gnFTzqHH"
+  secret: "23ztfSqsfQ8hKkHzHTl3Z4bvaxro0snjk5jwbp5p6Q3"

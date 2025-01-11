@@ -70,7 +70,7 @@ func Start(ctx context.Context, config *Config, client discovery.SvcDiscoveryReg
 		ValidTime:  time.Duration(config.RpcConfig.VerifyCode.ValidTime) * time.Second,
 		Len:        config.RpcConfig.VerifyCode.Len,
 	}
-	srv.Livekit = rtc.NewLiveKit(config.RpcConfig.LiveKit.Key, config.RpcConfig.LiveKit.Secret, config.RpcConfig.LiveKit.URL)
+	srv.Livekit = rtc.NewLiveKit(config.Share.LiveKit.Key, config.Share.LiveKit.Secret, config.Share.LiveKit.URL)
 	srv.AllowRegister = config.RpcConfig.AllowRegister
 	srv.Share = config.Share
 	srv.tx = mgocli.GetTx()

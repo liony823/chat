@@ -23,6 +23,11 @@ type Share struct {
 	ChatAdmin   []string     `mapstructure:"chatAdmin"`
 	ProxyHeader string       `mapstructure:"proxyHeader"`
 	RedPacket   RpcRedPacket `mapstructure:"redPacket"`
+	LiveKit     struct {
+		URL    string `mapstructure:"url"`
+		Key    string `mapstructure:"key"`
+		Secret string `mapstructure:"secret"`
+	} `mapstructure:"liveKit"`
 }
 
 type RpcRedPacket struct {
@@ -144,11 +149,6 @@ type Chat struct {
 			SMTPPort                int    `mapstructure:"smtpPort"`
 		} `mapstructure:"mail"`
 	} `mapstructure:"verifyCode"`
-	LiveKit struct {
-		URL    string `mapstructure:"url"`
-		Key    string `mapstructure:"key"`
-		Secret string `mapstructure:"secret"`
-	} `mapstructure:"liveKit"`
 	AllowRegister bool `mapstructure:"allowRegister"`
 }
 
