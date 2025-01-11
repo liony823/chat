@@ -333,7 +333,7 @@ func (o *Api) OpenIMCallback(c *gin.Context) {
 		return
 	}
 	req := &chatpb.OpenIMCallbackReq{
-		Command: c.Query(constantpb.CallbackCommand),
+		Command: c.Param(constantpb.CallbackCommand),
 		Body:    string(body),
 	}
 	if _, err := o.chatClient.OpenIMCallback(c, req); err != nil {
