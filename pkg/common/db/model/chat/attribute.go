@@ -176,3 +176,8 @@ func (o *Attribute) Delete(ctx context.Context, userIDs []string) error {
 	}
 	return mongoutil.DeleteMany(ctx, o.coll, bson.M{"user_id": bson.M{"$in": userIDs}})
 }
+
+// OWL 新加
+func (o *Attribute) TakeByAddress(ctx context.Context, address string) (*chat.Attribute, error) {
+	return mongoutil.FindOne[*chat.Attribute](ctx, o.coll, bson.M{"address": address})
+}

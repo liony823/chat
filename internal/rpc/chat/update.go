@@ -17,7 +17,6 @@ package chat
 import (
 	"github.com/openimsdk/chat/pkg/common/constant"
 	chatdb "github.com/openimsdk/chat/pkg/common/db/table/chat"
-	"time"
 
 	"github.com/openimsdk/tools/errs"
 
@@ -29,12 +28,6 @@ func ToDBAttributeUpdate(req *chat.UpdateUserInfoReq) (map[string]any, error) {
 	if req.Account != nil {
 		update["account"] = req.Account.Value
 	}
-	if req.AreaCode != nil {
-		update["area_code"] = req.AreaCode.Value
-	}
-	if req.Email != nil {
-		update["email"] = req.Email.Value
-	}
 	if req.Nickname != nil {
 		if req.Nickname.Value == "" {
 			return nil, errs.ErrArgs.WrapMsg("nickname can not be empty")
@@ -44,14 +37,11 @@ func ToDBAttributeUpdate(req *chat.UpdateUserInfoReq) (map[string]any, error) {
 	if req.FaceURL != nil {
 		update["face_url"] = req.FaceURL.Value
 	}
-	if req.Gender != nil {
-		update["gender"] = req.Gender.Value
+	if req.CoverURL != nil {
+		update["cover_url"] = req.CoverURL.Value
 	}
-	if req.Level != nil {
-		update["level"] = req.Level.Value
-	}
-	if req.Birth != nil {
-		update["birth_time"] = time.UnixMilli(req.Birth.Value)
+	if req.About != nil {
+		update["about"] = req.About.Value
 	}
 	if req.AllowAddFriend != nil {
 		update["allow_add_friend"] = req.AllowAddFriend.Value
@@ -65,9 +55,9 @@ func ToDBAttributeUpdate(req *chat.UpdateUserInfoReq) (map[string]any, error) {
 	if req.GlobalRecvMsgOpt != nil {
 		update["global_recv_msg_opt"] = req.GlobalRecvMsgOpt.Value
 	}
-	//if len(update) == 0 {
-	//	return nil, errs.ErrArgs.WrapMsg("no update info")
-	//}
+	if len(update) == 0 {
+		return nil, errs.ErrArgs.WrapMsg("no update info")
+	}
 	return update, nil
 }
 
@@ -85,37 +75,6 @@ func ToDBCredentialUpdate(req *chat.UpdateUserInfoReq, allowChange bool) ([]*cha
 				UserID:      req.UserID,
 				Account:     req.Account.GetValue(),
 				Type:        constant.CredentialAccount,
-				AllowChange: allowChange,
-			})
-		}
-	}
-
-	if req.Email != nil {
-		if req.Email.GetValue() == "" {
-			del = append(del, &chatdb.Credential{
-				UserID: req.UserID,
-				Type:   constant.CredentialEmail,
-			})
-		} else {
-			update = append(update, &chatdb.Credential{
-				UserID:      req.UserID,
-				Account:     req.Email.GetValue(),
-				Type:        constant.CredentialEmail,
-				AllowChange: allowChange,
-			})
-		}
-	}
-	if req.PhoneNumber != nil {
-		if req.PhoneNumber.GetValue() == "" {
-			del = append(del, &chatdb.Credential{
-				UserID: req.UserID,
-				Type:   constant.CredentialPhone,
-			})
-		} else {
-			update = append(update, &chatdb.Credential{
-				UserID:      req.UserID,
-				Account:     BuildCredentialPhone(req.AreaCode.GetValue(), req.PhoneNumber.GetValue()),
-				Type:        constant.CredentialPhone,
 				AllowChange: allowChange,
 			})
 		}

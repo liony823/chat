@@ -117,3 +117,68 @@ const (
 	CredentialPhone
 	CredentialEmail
 )
+
+const (
+	Follow    = 0
+	Subscribe = 1
+	Reply     = 2
+	Like      = 3
+	Collect   = 4
+)
+
+const (
+	NotAllow = 0
+	Allow    = 1
+)
+
+const (
+	NotLiked = 0
+	Liked    = 1
+)
+
+const (
+	NotCollected = 0
+	Collected    = 1
+)
+
+const (
+	NotForwarded = 0
+	Forwarded    = 1
+)
+
+const (
+	NotCommented = 0
+	Commented    = 1
+)
+
+const (
+	NotFollowed = 0
+	Followed    = 1
+)
+
+const (
+	NotSubscribed = 0
+	Subscribed    = 1
+)
+
+const (
+	PostMediaTypePicture = 0
+	PostMediaTypeVideo   = 1
+)
+
+const (
+	Pinned   = 1
+	UnPinned = 0
+)
+
+const (
+	SendPrivateRedPacket   = 1000 //聊发送红包
+	SendLuckRedPacket      = 1001 //群聊拼手气红包
+	SendExclusiveRedPacket = 1002 //群聊用户专属红包
+
+	ReceivePrivateRedPacket   = 1003 //领取聊发送红包
+	ReceiveLuckRedPacket      = 1004 //领取群聊拼手气红包
+	ReceiveExclusiveRedPacket = 1005 //领取群聊用户专属红包
+
+	RefundRedPacket = 1005 //退款
+)

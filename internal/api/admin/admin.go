@@ -27,7 +27,7 @@ import (
 	"github.com/openimsdk/tools/errs"
 	"github.com/openimsdk/tools/log"
 	"github.com/openimsdk/tools/utils/datautil"
-	"github.com/openimsdk/tools/utils/encrypt"
+	// "github.com/openimsdk/tools/utils/encrypt"
 )
 
 func New(chatClient chat.ChatClient, adminClient admin.AdminClient, imApiCaller imapi.CallerInterface, api *util.Api) *Api {
@@ -475,18 +475,18 @@ func (o *Api) xlsx2user(users []model.User) ([]*chat.RegisterUserInfo, error) {
 		if _, err := strconv.ParseUint(info.AreaCode[1:], 10, 16); err != nil {
 			return nil, errs.ErrArgs.WrapMsg("areaCode format error")
 		}
-		gender, _ := strconv.Atoi(info.Gender)
+		// gender, _ := strconv.Atoi(info.Gender)
 		chatUsers[i] = &chat.RegisterUserInfo{
 			UserID:      info.UserID,
 			Nickname:    info.Nickname,
 			FaceURL:     info.FaceURL,
-			Birth:       o.xlsxBirth(info.Birth).UnixMilli(),
-			Gender:      int32(gender),
-			AreaCode:    info.AreaCode,
-			PhoneNumber: info.PhoneNumber,
-			Email:       info.Email,
+			// Birth:       o.xlsxBirth(info.Birth).UnixMilli(),
+			// Gender:      int32(gender),
+			// AreaCode:    info.AreaCode,
+			// PhoneNumber: info.PhoneNumber,
+			// Email:       info.Email,
 			Account:     info.Account,
-			Password:    encrypt.Md5(info.Password),
+			// Password:    encrypt.Md5(info.Password),
 		}
 	}
 	return chatUsers, nil

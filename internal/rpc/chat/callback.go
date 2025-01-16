@@ -19,9 +19,12 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/openimsdk/chat/pkg/common/apistruct"
 	"github.com/openimsdk/chat/pkg/common/constant"
 	"github.com/openimsdk/chat/pkg/eerrs"
 	"github.com/openimsdk/chat/pkg/protocol/chat"
+	"github.com/openimsdk/chat/pkg/redpacket"
+	"github.com/openimsdk/chat/pkg/redpacket/servererrs"
 	constantpb "github.com/openimsdk/protocol/constant"
 	"github.com/openimsdk/tools/errs"
 )
@@ -41,21 +44,168 @@ func (c CallbackCommand) GetCallbackCommand() string {
 }
 
 func (o *chatSvr) OpenIMCallback(ctx context.Context, req *chat.OpenIMCallbackReq) (*chat.OpenIMCallbackResp, error) {
+	var result *chat.OpenIMCallbackResp
+	var err error
+
 	switch req.Command {
 	case constantpb.CallbackBeforeAddFriendCommand:
-		var data CallbackBeforeAddFriendReq
-		if err := json.Unmarshal([]byte(req.Body), &data); err != nil {
-			return nil, errs.Wrap(err)
-		}
-		user, err := o.Database.TakeAttributeByUserID(ctx, data.ToUserID)
-		if err != nil {
-			return nil, err
-		}
-		if user.AllowAddFriend != constant.OrdinaryUserAddFriendEnable {
-			return nil, eerrs.ErrRefuseFriend.WrapMsg(fmt.Sprintf("state %d", user.AllowAddFriend))
-		}
-		return &chat.OpenIMCallbackResp{}, nil
+		result, err = o.handleCallbackBeforeAddFriend(ctx, req)
+	case constantpb.CallbackBeforeSendSingleMsgCommand:
+		result, err = o.handleCallbackBeforeMsg(ctx, req)
+	case constantpb.CallbackBeforeSendGroupMsgCommand:
+		result, err = o.handleCallbackBeforeMsg(ctx, req)
 	default:
 		return nil, errs.ErrArgs.WrapMsg(fmt.Sprintf("invalid command %s", req.Command))
 	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}
+
+func (o *chatSvr) handleCallbackBeforeMsg(ctx context.Context, req *chat.OpenIMCallbackReq) (*chat.OpenIMCallbackResp, error) {
+	var data apistruct.CommonCallbackReq
+	if err := json.Unmarshal([]byte(req.Body), &data); err != nil {
+		return nil, errs.Wrap(err)
+	}
+	if data.MsgFrom == constantpb.UserMsgType && data.ContentType == constantpb.Custom {
+		var content map[string]interface{}
+		if err := json.Unmarshal([]byte(data.Content), &content); err != nil {
+			return nil, errs.Wrap(err)
+		}
+		var data1 map[string]interface{}
+		if err := json.Unmarshal([]byte(content["data"].(string)), &data1); err != nil {
+			return nil, errs.Wrap(err)
+		}
+		if customType, ok := data1["customType"].(float64); ok {
+			intCustomType := int32(customType)
+			if intCustomType >= constant.SendPrivateRedPacket {
+				if intCustomType <= constant.SendExclusiveRedPacket {
+					return o.SendRedPacket(ctx, &data)
+				}
+				if intCustomType <= constant.ReceiveExclusiveRedPacket {
+					return o.ReceiveRedPacket(ctx, &data)
+				}
+			}
+		}
+	}
+	return &chat.OpenIMCallbackResp{
+		ActionCode: 0,
+		NextCode:   0,
+	}, nil
+}
+
+func (o *chatSvr) handleCallbackBeforeAddFriend(ctx context.Context, req *chat.OpenIMCallbackReq) (*chat.OpenIMCallbackResp, error) {
+	var data CallbackBeforeAddFriendReq
+	if err := json.Unmarshal([]byte(req.Body), &data); err != nil {
+		return nil, errs.Wrap(err)
+	}
+	user, err := o.Database.GetAttribute(ctx, data.ToUserID)
+	if err != nil {
+		return nil, err
+	}
+	if user.AllowAddFriend != constant.OrdinaryUserAddFriendEnable {
+		return nil, eerrs.ErrRefuseFriend.WrapMsg(fmt.Sprintf("state %d", user.AllowAddFriend))
+	}
+	return &chat.OpenIMCallbackResp{
+		ActionCode: 0,
+		NextCode:   0,
+	}, nil
+}
+
+// 发送红包
+func (o *chatSvr) SendRedPacket(ctx context.Context, msgData *apistruct.CommonCallbackReq) (*chat.OpenIMCallbackResp, error) {
+	var content map[string]interface{}
+	if err := json.Unmarshal([]byte(msgData.Content), &content); err != nil {
+		return nil, errs.Wrap(err)
+	}
+
+	var contentData map[string]interface{}
+	if err := json.Unmarshal([]byte(content["data"].(string)), &contentData); err != nil {
+		return nil, errs.Wrap(err)
+	}
+
+	if params, ok := contentData["data"].(map[string]interface{}); ok {
+		redpacketResp := &redpacket.Response{}
+		params["clientMsgID"] = msgData.ClientMsgID
+		if err := o.RedPacketClient.SyncPost(ctx, msgData.SendID, "/redPacket/send", params, redpacketResp, &o.Share.RedPacket); err != nil {
+			return &chat.OpenIMCallbackResp{
+				ActionCode: 0,
+				NextCode:   1,
+				ErrDlt:     err.Error(),
+			}, nil
+		}
+
+		if redpacketResp.Code == redpacket.SuccessCode {
+			return &chat.OpenIMCallbackResp{
+				ActionCode: 0,
+				NextCode:   0,
+			}, nil
+		} else {
+			return &chat.OpenIMCallbackResp{
+				ActionCode: 0,
+				NextCode:   1,
+				ErrDlt:     redpacketResp.Msg,
+				ErrMsg:     redpacketResp.Msg,
+				ErrCode:    servererrs.ServerInternalError,
+			}, nil
+		}
+	}
+
+	return &chat.OpenIMCallbackResp{
+		ActionCode: 0,
+		NextCode:   0,
+	}, nil
+}
+
+// 领取红包
+func (o *chatSvr) ReceiveRedPacket(ctx context.Context, msgData *apistruct.CommonCallbackReq) (*chat.OpenIMCallbackResp, error) {
+	var content map[string]interface{}
+	if err := json.Unmarshal([]byte(msgData.Content), &content); err != nil {
+		return nil, errs.Wrap(err)
+	}
+
+	resp := &chat.OpenIMCallbackResp{
+		ActionCode: 0,
+		NextCode:   0,
+	}
+
+	if contentData, ok := content["data"].(string); ok {
+		var innerData map[string]interface{}
+		if err := json.Unmarshal([]byte(contentData), &innerData); err != nil {
+			return nil, errs.Wrap(err)
+		}
+		if data, ok := innerData["data"].(map[string]interface{}); ok {
+			if redPacketId, ok := data["redPacketId"].(string); ok {
+				// 获取领取红包参数
+				receiveParams := map[string]interface{}{"redPacketId": redPacketId}
+				redpacketResp := &redpacket.Response{}
+				if err := o.RedPacketClient.SyncPost(ctx, msgData.SendID, "/redPacket/receive", receiveParams, redpacketResp, &o.Share.RedPacket); err != nil {
+					return &chat.OpenIMCallbackResp{
+						ActionCode: 1,
+						ErrDlt:     err.Error(),
+					}, nil
+				}
+
+				if redpacketResp.Code == redpacket.SuccessCode {
+					return &chat.OpenIMCallbackResp{
+						ActionCode: 0,
+						NextCode:   0,
+					}, nil
+				} else {
+					return &chat.OpenIMCallbackResp{
+						ActionCode: 0,
+						NextCode:   1,
+						ErrDlt:     redpacketResp.Msg,
+						ErrMsg:     redpacketResp.Msg,
+						ErrCode:    servererrs.ServerInternalError,
+					}, nil
+				}
+			}
+		}
+	}
+
+	return resp, nil
 }

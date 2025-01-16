@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/openimsdk/chat/internal/rpc/chat"
 	"github.com/openimsdk/chat/pkg/common/config"
 	"github.com/openimsdk/chat/pkg/common/constant"
 	table "github.com/openimsdk/chat/pkg/common/db/table/chat"
@@ -96,14 +95,14 @@ func doAttributeToCredential() error {
 			}
 			credentials := make([]*table.Credential, 0, pageNum*3)
 			for _, attr := range attrs {
-				if attr.Email != "" {
-					credentials = append(credentials, &table.Credential{
-						UserID:      attr.UserID,
-						Account:     attr.Email,
-						Type:        constant.CredentialEmail,
-						AllowChange: true,
-					})
-				}
+				// if attr.Email != "" {
+				// 	credentials = append(credentials, &table.Credential{
+				// 		UserID:      attr.UserID,
+				// 		Account:     attr.Email,
+				// 		Type:        constant.CredentialEmail,
+				// 		AllowChange: true,
+				// 	})
+				// }
 				if attr.Account != "" {
 					credentials = append(credentials, &table.Credential{
 						UserID:      attr.UserID,
@@ -112,14 +111,14 @@ func doAttributeToCredential() error {
 						AllowChange: true,
 					})
 				}
-				if attr.PhoneNumber != "" && attr.AreaCode != "" {
-					credentials = append(credentials, &table.Credential{
-						UserID:      attr.UserID,
-						Account:     chat.BuildCredentialPhone(attr.AreaCode, attr.PhoneNumber),
-						Type:        constant.CredentialPhone,
-						AllowChange: true,
-					})
-				}
+				// if attr.PhoneNumber != "" && attr.AreaCode != "" {
+				// 	credentials = append(credentials, &table.Credential{
+				// 		UserID:      attr.UserID,
+				// 		Account:     chat.BuildCredentialPhone(attr.AreaCode, attr.PhoneNumber),
+				// 		Type:        constant.CredentialPhone,
+				// 		AllowChange: true,
+				// 	})
+				// }
 
 			}
 			for _, credential := range credentials {

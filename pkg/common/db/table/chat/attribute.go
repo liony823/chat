@@ -8,23 +8,28 @@ import (
 )
 
 type Attribute struct {
-	UserID           string    `bson:"user_id"`
-	Account          string    `bson:"account"`
-	PhoneNumber      string    `bson:"phone_number"`
-	AreaCode         string    `bson:"area_code"`
-	Email            string    `bson:"email"`
-	Nickname         string    `bson:"nickname"`
-	FaceURL          string    `bson:"face_url"`
-	Gender           int32     `bson:"gender"`
-	CreateTime       time.Time `bson:"create_time"`
-	ChangeTime       time.Time `bson:"change_time"`
-	BirthTime        time.Time `bson:"birth_time"`
-	Level            int32     `bson:"level"`
-	AllowVibration   int32     `bson:"allow_vibration"`
-	AllowBeep        int32     `bson:"allow_beep"`
-	AllowAddFriend   int32     `bson:"allow_add_friend"`
-	GlobalRecvMsgOpt int32     `bson:"global_recv_msg_opt"`
-	RegisterType     int32     `bson:"register_type"`
+	UserID    string `bson:"user_id"`
+	Account   string `bson:"account"`
+	Address   string `bson:"address"`
+	PublicKey string `bson:"public_key"`
+	About     string `bson:"about"`
+	CoverURL  string `bson:"cover_url"`
+	// PhoneNumber      string    `bson:"phone_number"`
+	// AreaCode         string    `bson:"area_code"`
+	// Email            string    `bson:"email"`
+	Nickname string `bson:"nickname"`
+	FaceURL  string `bson:"face_url"`
+	// Gender           int32     `bson:"gender"`
+	CreateTime        time.Time `bson:"create_time"`
+	ChangeTime        time.Time `bson:"change_time"`
+	ChangeAccountTime time.Time `bson:"change_account_time"`
+	// BirthTime        time.Time `bson:"birth_time"`
+	Level            int32 `bson:"level"`
+	AllowVibration   int32 `bson:"allow_vibration"`
+	AllowBeep        int32 `bson:"allow_beep"`
+	AllowAddFriend   int32 `bson:"allow_add_friend"`
+	GlobalRecvMsgOpt int32 `bson:"global_recv_msg_opt"`
+	RegisterType     int32 `bson:"register_type"`
 }
 
 func (Attribute) TableName() string {
@@ -45,4 +50,7 @@ type AttributeInterface interface {
 	SearchNormalUser(ctx context.Context, keyword string, forbiddenID []string, gender int32, pagination pagination.Pagination) (int64, []*Attribute, error)
 	SearchUser(ctx context.Context, keyword string, userIDs []string, genders []int32, pagination pagination.Pagination) (int64, []*Attribute, error)
 	Delete(ctx context.Context, userIDs []string) error
+
+	// OWL 新加
+	TakeByAddress(ctx context.Context, address string) (*Attribute, error)
 }

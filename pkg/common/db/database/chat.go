@@ -37,6 +37,7 @@ type ChatDatabaseInterface interface {
 	TakeAttributeByPhone(ctx context.Context, areaCode string, phoneNumber string) (*chatdb.Attribute, error)
 	TakeAttributeByEmail(ctx context.Context, Email string) (*chatdb.Attribute, error)
 	TakeAttributeByAccount(ctx context.Context, account string) (*chatdb.Attribute, error)
+	TakeAttributeByAddress(ctx context.Context, address string) (*chatdb.Attribute, error)
 	TakeAttributeByUserID(ctx context.Context, userID string) (*chatdb.Attribute, error)
 	TakeAccount(ctx context.Context, userID string) (*chatdb.Account, error)
 	TakeCredentialByAccount(ctx context.Context, account string) (*chatdb.Credential, error)
@@ -56,6 +57,42 @@ type ChatDatabaseInterface interface {
 	UserLoginCountTotal(ctx context.Context, before *time.Time) (int64, error)
 	UserLoginCountRangeEverydayTotal(ctx context.Context, start *time.Time, end *time.Time) (map[string]int64, int64, error)
 	DelUserAccount(ctx context.Context, userIDs []string) error
+
+	// OWL 新加
+
+	// ########## User ##########
+	GetAllUserID(ctx context.Context, pagination pagination.Pagination) (int64, []string, error)
+	GetAccount(ctx context.Context, userID string) (*chatdb.Account, error)
+	GetAttribute(ctx context.Context, userID string) (*chatdb.Attribute, error)
+	GetAttributeByAccount(ctx context.Context, account string) (*chatdb.Attribute, error)
+
+	// ########## Group ##########
+	GetGroupFromContact(ctx context.Context, userID string) (*chatdb.Contact, error)
+	DeleteGroupFromContact(ctx context.Context, userID string, groupIDs []string) error
+	SaveGroupToContact(ctx context.Context, userID string, groupIDs []string) error
+
+	// ########## Post ##########
+	CreatePost(ctx context.Context, post []*chatdb.PostDB) error
+	UpdatePost(ctx context.Context, postID string, data map[string]any) error
+	DeletePost(ctx context.Context, postIDs []string) error
+	GetCommentPostIDsByUser(ctx context.Context, userID string) ([]string, error)
+	GetFollowedUserIDs(ctx context.Context, userID string) ([]string, error)
+	GetSubscriberUserIDs(ctx context.Context, userID string) ([]string, error)
+	GetPostByForwardPostID(ctx context.Context, userID, forwardPostID string) (*chatdb.Post, error)
+	GetCommentPostsByPostID(ctx context.Context, cursor int64, postID string, count int64) ([]*chatdb.Post, string, error)
+	GetPostsByCursorAndUserIDs(ctx context.Context, cursor int64, userIDs []string, count int64) ([]*chatdb.Post, string, error)
+	GetPostsByCursorAndUser(ctx context.Context, cursor int64, userID string, count int64) ([]*chatdb.Post, string, error)
+	GetPostByID(ctx context.Context, postID string) (*chatdb.Post, error)
+
+	// ########## UserPostRelation ##########
+	GetUserPostRelation(ctx context.Context, userID, postID string) (*chatdb.UserPostRelation, error)
+	CreateUserPostRelation(ctx context.Context, relations []*chatdb.UserPostRelation) error
+	UpdateUserPostRelation(ctx context.Context, userID, postID string, data map[string]any) error
+	DeleteUserPostRelation(ctx context.Context, userID, postID string) error
+	GetPostIDsByLike(ctx context.Context, userID string) ([]string, error)
+	GetPostIDsByCollect(ctx context.Context, userID string) ([]string, error)
+	GetPinnedPostByUserID(ctx context.Context, userID string) (*chatdb.Post, error)
+	GetPostsByCursorAndPostIDs(ctx context.Context, cursor int64, postIDs []string, count int64) ([]*chatdb.Post, string, error)
 }
 
 func NewChatDatabase(cli *mongoutil.Client) (ChatDatabaseInterface, error) {
@@ -87,6 +124,22 @@ func NewChatDatabase(cli *mongoutil.Client) (ChatDatabaseInterface, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	post, err := chat.NewPost(cli.GetDB())
+	if err != nil {
+		return nil, err
+	}
+
+	userPostRelation, err := chat.NewUserPostRelation(cli.GetDB())
+	if err != nil {
+		return nil, err
+	}
+
+	contact, err := chat.NewContact(cli.GetDB())
+	if err != nil {
+		return nil, err
+	}
+
 	return &ChatDatabase{
 		tx:               cli.GetTx(),
 		register:         register,
@@ -96,6 +149,10 @@ func NewChatDatabase(cli *mongoutil.Client) (ChatDatabaseInterface, error) {
 		userLoginRecord:  userLoginRecord,
 		verifyCode:       verifyCode,
 		forbiddenAccount: forbiddenAccount,
+
+		post:             post,
+		userPostRelation: userPostRelation,
+		contact:          contact,
 	}, nil
 }
 
@@ -104,10 +161,14 @@ type ChatDatabase struct {
 	register         chatdb.RegisterInterface
 	account          chatdb.AccountInterface
 	attribute        chatdb.AttributeInterface
+	contact          chatdb.ContactInterface
 	credential       chatdb.CredentialInterface
 	userLoginRecord  chatdb.UserLoginRecordInterface
 	verifyCode       chatdb.VerifyCodeInterface
 	forbiddenAccount admin.ForbiddenAccountInterface
+
+	post             chatdb.PostInterface
+	userPostRelation chatdb.UserPostRelationInterface
 }
 
 func (o *ChatDatabase) GetUser(ctx context.Context, userID string) (account *chatdb.Account, err error) {
@@ -290,4 +351,121 @@ func (o *ChatDatabase) DelUserAccount(ctx context.Context, userIDs []string) err
 		}
 		return nil
 	})
+}
+
+/* OWL 新加 */
+
+// ########## User ##########
+func (o *ChatDatabase) GetAllUserID(ctx context.Context, pagination pagination.Pagination) (int64, []string, error) {
+	return o.account.GetAllUserID(ctx, pagination)
+}
+
+func (o *ChatDatabase) GetAccount(ctx context.Context, userID string) (*chatdb.Account, error) {
+	return o.account.Take(ctx, userID)
+}
+
+func (o *ChatDatabase) GetAttribute(ctx context.Context, userID string) (*chatdb.Attribute, error) {
+	return o.attribute.Take(ctx, userID)
+}
+
+func (o *ChatDatabase) GetAttributeByAccount(ctx context.Context, account string) (*chatdb.Attribute, error) {
+	return o.attribute.TakeAccount(ctx, account)
+}
+
+func (o *ChatDatabase) TakeAttributeByAddress(ctx context.Context, address string) (*chatdb.Attribute, error) {
+	return o.attribute.TakeByAddress(ctx, address)
+}
+
+// ########## Group ##########
+func (o *ChatDatabase) DeleteGroupFromContact(ctx context.Context, userID string, groupIDs []string) error {
+	return o.contact.DeleteGroup(ctx, userID, groupIDs)
+}
+
+// SaveGroupToContact implements ChatDatabaseInterface.
+func (o *ChatDatabase) SaveGroupToContact(ctx context.Context, userID string, groupIDs []string) error {
+	return o.contact.AddGroup(ctx, userID, groupIDs)
+}
+
+// GetGroupFromContact implements ChatDatabaseInterface.
+func (o *ChatDatabase) GetGroupFromContact(ctx context.Context, userID string) (*chatdb.Contact, error) {
+	return o.contact.TakeGroups(ctx, userID)
+}
+
+// ########## Post ##########
+func (o *ChatDatabase) DeletePost(ctx context.Context, postIDs []string) error {
+	return o.post.Delete(ctx, postIDs)
+}
+
+func (o *ChatDatabase) GetFollowedUserIDs(ctx context.Context, userID string) ([]string, error) {
+	return o.post.GetFollowedUserIDs(ctx, userID)
+}
+
+func (o *ChatDatabase) GetSubscriberUserIDs(ctx context.Context, userID string) ([]string, error) {
+	return o.post.GetSubscriberUserIDs(ctx, userID)
+}
+
+func (o *ChatDatabase) GetPostByForwardPostID(ctx context.Context, userID, forwardPostID string) (*chatdb.Post, error) {
+	return o.post.GetPostByForwardPostID(ctx, userID, forwardPostID)
+}
+
+func (o *ChatDatabase) GetCommentPostsByPostID(ctx context.Context, cursor int64, postID string, count int64) ([]*chatdb.Post, string, error) {
+	return o.post.GetCommentPostsByPostID(ctx, cursor, postID, count)
+}
+
+func (o *ChatDatabase) GetPostsByCursorAndUserIDs(ctx context.Context, cursor int64, userIDs []string, count int64) ([]*chatdb.Post, string, error) {
+	return o.post.GetPostsByCursorAndUserIDs(ctx, cursor, userIDs, count)
+}
+
+func (o *ChatDatabase) GetPostsByCursorAndUser(ctx context.Context, cursor int64, userID string, count int64) ([]*chatdb.Post, string, error) {
+	return o.post.GetPostsByCursorAndUser(ctx, cursor, userID, count)
+}
+
+func (o *ChatDatabase) GetPostByID(ctx context.Context, postID string) (*chatdb.Post, error) {
+	return o.post.Take(ctx, postID)
+}
+
+func (o *ChatDatabase) CreatePost(ctx context.Context, posts []*chatdb.PostDB) error {
+	return o.post.Create(ctx, posts)
+}
+
+func (o *ChatDatabase) UpdatePost(ctx context.Context, postID string, data map[string]any) error {
+	return o.post.UpdateByMap(ctx, postID, data)
+}
+
+func (o *ChatDatabase) GetCommentPostIDsByUser(ctx context.Context, userID string) ([]string, error) {
+	return o.post.GetCommentPostIDsByUser(ctx, userID)
+}
+
+// ########## UserPostRelation ##########
+
+func (o *ChatDatabase) GetUserPostRelation(ctx context.Context, userID, postID string) (*chatdb.UserPostRelation, error) {
+	return o.userPostRelation.Take(ctx, userID, postID)
+}
+
+func (o *ChatDatabase) CreateUserPostRelation(ctx context.Context, relations []*chatdb.UserPostRelation) error {
+	return o.userPostRelation.Create(ctx, relations)
+}
+
+func (o *ChatDatabase) UpdateUserPostRelation(ctx context.Context, userID, postID string, data map[string]any) error {
+	return o.userPostRelation.UpdateByMap(ctx, userID, postID, data)
+}
+
+func (o *ChatDatabase) DeleteUserPostRelation(ctx context.Context, userID, postID string) error {
+	return o.userPostRelation.Delete(ctx, userID, postID)
+}
+
+func (o *ChatDatabase) GetPostIDsByLike(ctx context.Context, userID string) ([]string, error) {
+	return o.userPostRelation.GetLikedPostIDs(ctx, userID)
+}
+
+func (o *ChatDatabase) GetPostIDsByCollect(ctx context.Context, userID string) ([]string, error) {
+	return o.userPostRelation.GetCollectedPostIDs(ctx, userID)
+}
+
+func (o *ChatDatabase) GetPinnedPostByUserID(ctx context.Context, userID string) (*chatdb.Post, error) {
+	return o.post.GetPinnedPostByUserID(ctx, userID)
+}
+
+func (o *ChatDatabase) GetPostsByCursorAndPostIDs(ctx context.Context, cursor int64, postIDs []string, count int64) ([]*chatdb.Post, string, error) {
+	return o.post.GetPostsByCursorAndPostIDs(ctx, cursor, postIDs, count)
 }
