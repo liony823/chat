@@ -138,10 +138,22 @@ func (o *chatSvr) SendRedPacket(ctx context.Context, msgData *apistruct.CommonCa
 			}, nil
 		}
 
-		if redpacketResp.Code == redpacket.SuccessCode {
+		if redpacketResp.Code == redpacket.SuccessCode && redpacketResp.Data != nil {
+			// 检查响应数据中是否包含redPacketId
+			if respData, ok := redpacketResp.Data.(map[string]interface{}); ok {
+				if _, ok := respData["redPacketId"]; ok {
+					return &chat.OpenIMCallbackResp{
+						ActionCode: 0,
+						NextCode:   0,
+					}, nil
+				}
+			}
 			return &chat.OpenIMCallbackResp{
 				ActionCode: 0,
-				NextCode:   0,
+				NextCode:   1,
+				ErrDlt:     "response data missing redPacketId",
+				ErrMsg:     "response data missing redPacketId",
+				ErrCode:    servererrs.ServerInternalError,
 			}, nil
 		} else {
 			return &chat.OpenIMCallbackResp{

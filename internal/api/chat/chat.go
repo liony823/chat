@@ -16,6 +16,7 @@ package chat
 
 import (
 	"io"
+	"net/http"
 	"time"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -336,11 +337,12 @@ func (o *Api) OpenIMCallback(c *gin.Context) {
 		Command: c.Param(constantpb.CallbackCommand),
 		Body:    string(body),
 	}
-	if _, err := o.chatClient.OpenIMCallback(c, req); err != nil {
+	resp, err := o.chatClient.OpenIMCallback(c, req)
+	if err != nil {
 		apiresp.GinError(c, err)
 		return
 	}
-	apiresp.GinSuccess(c, nil)
+	c.JSON(http.StatusOK, resp)
 }
 
 func (o *Api) SearchFriend(c *gin.Context) {
