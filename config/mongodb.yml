@@ -1,5 +1,5 @@
 # URI for database connection, leave empty if using address and credential settings directly
-uri: "mongodb://stealthX:stealthX123@mongo:27017/stealthX_v1?authSource=stealthX_v1&directConnection=true&maxPoolSize=100"
+uri: 
 # List of MongoDB server addresses
 address: [mongo:27017]
 # Name of the database
