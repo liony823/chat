@@ -1,7 +1,7 @@
 enable: "etcd"
 etcd:
   rootDirectory: openim
-  address: [localhost:12379]
+  address: [ 43.163.80.39:12379 ]
   username: ""
   password: ""
 
