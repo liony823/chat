@@ -17,7 +17,7 @@ package admin
 import (
 	"context"
 
-	"github.com/liony823/tools/errs"
+	"github.com/openimsdk/tools/errs"
 
 	"github.com/openimsdk/chat/pkg/common/mctx"
 	"github.com/openimsdk/chat/pkg/protocol/admin"

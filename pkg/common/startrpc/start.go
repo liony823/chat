@@ -11,19 +11,19 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/liony823/tools/discovery/etcd"
-	"github.com/liony823/tools/utils/datautil"
-	"github.com/liony823/tools/utils/runtimeenv"
 	"github.com/openimsdk/chat/pkg/common/config"
 	"github.com/openimsdk/chat/pkg/common/kdisc"
 	disetcd "github.com/openimsdk/chat/pkg/common/kdisc/etcd"
+	"github.com/openimsdk/tools/discovery/etcd"
+	"github.com/openimsdk/tools/utils/datautil"
+	"github.com/openimsdk/tools/utils/runtimeenv"
 
-	"github.com/liony823/tools/discovery"
-	"github.com/liony823/tools/errs"
-	"github.com/liony823/tools/log"
-	"github.com/liony823/tools/mw"
-	"github.com/liony823/tools/system/program"
-	"github.com/liony823/tools/utils/network"
+	"github.com/openimsdk/tools/discovery"
+	"github.com/openimsdk/tools/errs"
+	"github.com/openimsdk/tools/log"
+	"github.com/openimsdk/tools/mw"
+	"github.com/openimsdk/tools/system/program"
+	"github.com/openimsdk/tools/utils/network"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -31,7 +31,7 @@ import (
 // Start rpc server.
 func Start[T any](ctx context.Context, discovery *config.Discovery, listenIP,
 	registerIP string, rpcPorts []int, index int, rpcRegisterName string, share *config.Share, config T,
-	watchConfigNames []string,
+	watchConfigNames []string, watchServiceNames []string,
 	rpcFn func(ctx context.Context, config T, client discovery.SvcDiscoveryRegistry, server *grpc.Server) error, options ...grpc.ServerOption) error {
 
 	runtimeEnv := runtimeenv.PrintRuntimeEnvironment()
@@ -51,7 +51,7 @@ func Start[T any](ctx context.Context, discovery *config.Discovery, listenIP,
 	}
 
 	defer listener.Close()
-	client, err := kdisc.NewDiscoveryRegister(discovery, runtimeEnv)
+	client, err := kdisc.NewDiscoveryRegister(discovery, runtimeEnv, watchServiceNames)
 	if err != nil {
 		return err
 	}

@@ -17,10 +17,10 @@ package kdisc
 import (
 	"time"
 
-	"github.com/liony823/tools/discovery"
-	"github.com/liony823/tools/discovery/etcd"
-	"github.com/liony823/tools/discovery/kubernetes"
-	"github.com/liony823/tools/errs"
+	"github.com/openimsdk/tools/discovery"
+	"github.com/openimsdk/tools/discovery/etcd"
+	"github.com/openimsdk/tools/discovery/kubernetes"
+	"github.com/openimsdk/tools/errs"
 
 	"github.com/openimsdk/chat/pkg/common/config"
 )
@@ -32,7 +32,7 @@ const (
 )
 
 // NewDiscoveryRegister creates a new service discovery and registry client based on the provided environment type.
-func NewDiscoveryRegister(discovery *config.Discovery, runtimeEnv string) (discovery.SvcDiscoveryRegistry, error) {
+func NewDiscoveryRegister(discovery *config.Discovery, runtimeEnv string, watchNames []string) (discovery.SvcDiscoveryRegistry, error) {
 	if runtimeEnv == KUBERNETESCONST {
 		return kubernetes.NewKubernetesConnManager(discovery.Kubernetes.Namespace)
 	}
@@ -42,6 +42,7 @@ func NewDiscoveryRegister(discovery *config.Discovery, runtimeEnv string) (disco
 		return etcd.NewSvcDiscoveryRegistry(
 			discovery.Etcd.RootDirectory,
 			discovery.Etcd.Address,
+			watchNames,
 			etcd.WithDialTimeout(60*time.Second),
 			etcd.WithMaxCallSendMsgSize(20*1024*1024),
 			etcd.WithUsernameAndPassword(discovery.Etcd.Username, discovery.Etcd.Password))

@@ -6,8 +6,8 @@ import (
 	"net"
 
 	"github.com/gin-gonic/gin"
-	"github.com/liony823/tools/errs"
 	"github.com/openimsdk/chat/pkg/common/mctx"
+	"github.com/openimsdk/tools/errs"
 )
 
 type Api struct {

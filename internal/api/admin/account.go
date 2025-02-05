@@ -2,13 +2,13 @@ package admin
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/liony823/tools/a2r"
-	"github.com/liony823/tools/apiresp"
-	"github.com/liony823/tools/log"
-	"github.com/liony823/tools/utils/datautil"
 	"github.com/openimsdk/chat/pkg/common/apistruct"
 	"github.com/openimsdk/chat/pkg/common/mctx"
 	"github.com/openimsdk/chat/pkg/protocol/admin"
+	"github.com/openimsdk/tools/a2r"
+	"github.com/openimsdk/tools/apiresp"
+	"github.com/openimsdk/tools/log"
+	"github.com/openimsdk/tools/utils/datautil"
 )
 
 // @Summary		管理员登录

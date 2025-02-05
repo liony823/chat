@@ -19,16 +19,16 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/liony823/tools/discovery/etcd"
 	"github.com/openimsdk/chat/pkg/common/config"
 	"github.com/openimsdk/chat/pkg/common/kdisc"
 	disetcd "github.com/openimsdk/chat/pkg/common/kdisc/etcd"
 	"github.com/openimsdk/chat/version"
+	"github.com/openimsdk/tools/discovery/etcd"
 	clientv3 "go.etcd.io/etcd/client/v3"
 
-	"github.com/liony823/tools/errs"
-	"github.com/liony823/tools/log"
-	"github.com/liony823/tools/utils/runtimeenv"
+	"github.com/openimsdk/tools/errs"
+	"github.com/openimsdk/tools/log"
+	"github.com/openimsdk/tools/utils/runtimeenv"
 
 	"github.com/spf13/cobra"
 )
@@ -99,7 +99,7 @@ func (r *RootCmd) initEtcd() error {
 		return err
 	}
 	if disConfig.Enable == kdisc.ETCDCONST {
-		discov, _ := kdisc.NewDiscoveryRegister(&disConfig, env)
+		discov, _ := kdisc.NewDiscoveryRegister(&disConfig, env,nil)
 		r.etcdClient = discov.(*etcd.SvcDiscoveryRegistryImpl).GetClient()
 	}
 	return nil

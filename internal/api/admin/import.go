@@ -9,15 +9,15 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/liony823/tools/a2r"
-	"github.com/liony823/tools/apiresp"
-	"github.com/liony823/tools/errs"
-	"github.com/liony823/tools/utils/encrypt"
 	"github.com/openimsdk/chat/pkg/common/config"
 	"github.com/openimsdk/chat/pkg/common/mctx"
 	"github.com/openimsdk/chat/pkg/common/xlsx"
 	"github.com/openimsdk/chat/pkg/common/xlsx/model"
 	"github.com/openimsdk/chat/pkg/protocol/chat"
+	"github.com/openimsdk/tools/a2r"
+	"github.com/openimsdk/tools/apiresp"
+	"github.com/openimsdk/tools/errs"
+	"github.com/openimsdk/tools/utils/encrypt"
 )
 
 // @Summary		通过Excel导入用户

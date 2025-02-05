@@ -4,14 +4,14 @@ import (
 	"context"
 
 	"github.com/gin-gonic/gin"
-	"github.com/liony823/tools/a2r"
-	"github.com/liony823/tools/apiresp"
-	"github.com/liony823/tools/errs"
 	"github.com/openimsdk/chat/pkg/common/mctx"
 	"github.com/openimsdk/chat/pkg/protocol/admin"
 	"github.com/openimsdk/chat/pkg/protocol/chat"
 	"github.com/openimsdk/protocol/constant"
 	"github.com/openimsdk/protocol/sdkws"
+	"github.com/openimsdk/tools/a2r"
+	"github.com/openimsdk/tools/apiresp"
+	"github.com/openimsdk/tools/errs"
 )
 
 // @Summary		添加用户账户

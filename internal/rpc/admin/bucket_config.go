@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/liony823/tools/errs"
 	"github.com/openimsdk/chat/pkg/protocol/admin"
+	"github.com/openimsdk/tools/errs"
 )
 
 func (o *adminServer) GetBucketConfig(ctx context.Context, req *admin.GetBucketConfigReq) (*admin.GetBucketConfigResp, error) {

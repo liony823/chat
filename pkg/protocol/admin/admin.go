@@ -15,10 +15,10 @@
 package admin
 
 import (
-	"github.com/liony823/tools/errs"
-	"github.com/liony823/tools/utils/datautil"
-	"github.com/liony823/tools/utils/pwdutil"
 	"github.com/openimsdk/chat/pkg/common/constant"
+	"github.com/openimsdk/tools/errs"
+	"github.com/openimsdk/tools/utils/datautil"
+	"github.com/openimsdk/tools/utils/pwdutil"
 )
 
 func (x *AssignAdminUserMenuReq) Check() error {

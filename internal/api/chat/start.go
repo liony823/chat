@@ -11,12 +11,6 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/liony823/tools/discovery/etcd"
-	"github.com/liony823/tools/errs"
-	"github.com/liony823/tools/mw"
-	"github.com/liony823/tools/system/program"
-	"github.com/liony823/tools/utils/datautil"
-	"github.com/liony823/tools/utils/runtimeenv"
 	chatmw "github.com/openimsdk/chat/internal/api/mw"
 	"github.com/openimsdk/chat/internal/api/util"
 	"github.com/openimsdk/chat/pkg/common/config"
@@ -25,6 +19,12 @@ import (
 	disetcd "github.com/openimsdk/chat/pkg/common/kdisc/etcd"
 	adminclient "github.com/openimsdk/chat/pkg/protocol/admin"
 	chatclient "github.com/openimsdk/chat/pkg/protocol/chat"
+	"github.com/openimsdk/tools/discovery/etcd"
+	"github.com/openimsdk/tools/errs"
+	"github.com/openimsdk/tools/mw"
+	"github.com/openimsdk/tools/system/program"
+	"github.com/openimsdk/tools/utils/datautil"
+	"github.com/openimsdk/tools/utils/runtimeenv"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -47,7 +47,7 @@ func Start(ctx context.Context, index int, cfg *Config) error {
 	if err != nil {
 		return err
 	}
-	client, err := kdisc.NewDiscoveryRegister(&cfg.Discovery, cfg.RuntimeEnv)
+	client, err := kdisc.NewDiscoveryRegister(&cfg.Discovery, cfg.RuntimeEnv,nil)
 	if err != nil {
 		return err
 	}

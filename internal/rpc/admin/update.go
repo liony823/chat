@@ -20,7 +20,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/liony823/tools/errs"
+	"github.com/openimsdk/tools/errs"
 
 	admindb "github.com/openimsdk/chat/pkg/common/db/table/admin"
 	"github.com/openimsdk/chat/pkg/protocol/admin"

@@ -5,12 +5,12 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/liony823/tools/errs"
-	"github.com/liony823/tools/utils/datautil"
 	"github.com/openimsdk/chat/pkg/common/convert"
 	admindb "github.com/openimsdk/chat/pkg/common/db/table/admin"
 	"github.com/openimsdk/chat/pkg/common/mctx"
 	adminpb "github.com/openimsdk/chat/pkg/protocol/admin"
+	"github.com/openimsdk/tools/errs"
+	"github.com/openimsdk/tools/utils/datautil"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 

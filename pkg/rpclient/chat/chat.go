@@ -17,10 +17,10 @@ package chat
 import (
 	"context"
 
-	"github.com/liony823/tools/errs"
-	"github.com/liony823/tools/utils/datautil"
 	"github.com/openimsdk/chat/pkg/protocol/chat"
 	"github.com/openimsdk/chat/pkg/protocol/common"
+	"github.com/openimsdk/tools/errs"
+	"github.com/openimsdk/tools/utils/datautil"
 )
 
 func NewChatClient(client chat.ChatClient) *ChatClient {

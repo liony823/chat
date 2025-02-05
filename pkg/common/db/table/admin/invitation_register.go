@@ -18,7 +18,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/liony823/tools/db/pagination"
+	"github.com/openimsdk/tools/db/pagination"
 )
 
 type InvitationRegister struct {

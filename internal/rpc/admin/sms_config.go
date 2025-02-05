@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/liony823/tools/errs"
 	"github.com/openimsdk/chat/pkg/protocol/admin"
+	"github.com/openimsdk/tools/errs"
 )
 
 func (o *adminServer) GetSmsConfig(ctx context.Context, req *admin.GetSmsConfigReq) (*admin.GetSmsConfigResp, error) {

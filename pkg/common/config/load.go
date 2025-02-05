@@ -5,9 +5,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/liony823/tools/errs"
 	"github.com/mitchellh/mapstructure"
 	"github.com/openimsdk/chat/pkg/common/constant"
+	"github.com/openimsdk/tools/errs"
 	"github.com/spf13/viper"
 )
 

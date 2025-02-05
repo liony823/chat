@@ -15,8 +15,8 @@
 package main
 
 import (
-	"github.com/liony823/tools/system/program"
 	"github.com/openimsdk/chat/pkg/common/cmd"
+	"github.com/openimsdk/tools/system/program"
 )
 
 // @title          飞宏IM后台管理接口

@@ -19,11 +19,11 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/liony823/tools/errs"
 	"github.com/openimsdk/chat/pkg/common/constant"
 	"github.com/openimsdk/chat/pkg/eerrs"
 	"github.com/openimsdk/chat/pkg/protocol/chat"
 	constantpb "github.com/openimsdk/protocol/constant"
+	"github.com/openimsdk/tools/errs"
 )
 
 type CallbackBeforeAddFriendReq struct {

@@ -11,13 +11,6 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/liony823/tools/discovery"
-	"github.com/liony823/tools/discovery/etcd"
-	"github.com/liony823/tools/errs"
-	"github.com/liony823/tools/mw"
-	"github.com/liony823/tools/system/program"
-	"github.com/liony823/tools/utils/datautil"
-	"github.com/liony823/tools/utils/runtimeenv"
 	_ "github.com/openimsdk/chat/cmd/api/admin-api/docs" // 导入swagger docs
 	chatmw "github.com/openimsdk/chat/internal/api/mw"
 	"github.com/openimsdk/chat/internal/api/util"
@@ -27,6 +20,13 @@ import (
 	disetcd "github.com/openimsdk/chat/pkg/common/kdisc/etcd"
 	adminclient "github.com/openimsdk/chat/pkg/protocol/admin"
 	chatclient "github.com/openimsdk/chat/pkg/protocol/chat"
+	"github.com/openimsdk/tools/discovery"
+	"github.com/openimsdk/tools/discovery/etcd"
+	"github.com/openimsdk/tools/errs"
+	"github.com/openimsdk/tools/mw"
+	"github.com/openimsdk/tools/system/program"
+	"github.com/openimsdk/tools/utils/datautil"
+	"github.com/openimsdk/tools/utils/runtimeenv"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	clientv3 "go.etcd.io/etcd/client/v3"
@@ -51,7 +51,7 @@ func Start(ctx context.Context, index int, config *Config) error {
 	if err != nil {
 		return err
 	}
-	client, err := kdisc.NewDiscoveryRegister(&config.Discovery, config.RuntimeEnv)
+	client, err := kdisc.NewDiscoveryRegister(&config.Discovery, config.RuntimeEnv,nil)
 	if err != nil {
 		return err
 	}

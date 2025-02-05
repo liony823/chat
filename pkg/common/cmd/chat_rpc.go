@@ -17,10 +17,10 @@ package cmd
 import (
 	"context"
 
-	"github.com/liony823/tools/system/program"
 	"github.com/openimsdk/chat/internal/rpc/chat"
 	"github.com/openimsdk/chat/pkg/common/config"
 	"github.com/openimsdk/chat/pkg/common/startrpc"
+	"github.com/openimsdk/tools/system/program"
 	"github.com/spf13/cobra"
 )
 
@@ -62,6 +62,7 @@ func (a *ChatRpcCmd) runE() error {
 			config.DiscoveryConfigFileName,
 			config.MongodbConfigFileName,
 			config.ShareFileName,
-		},
+			config.LogConfigFileName,
+		}, nil,
 		chat.Start)
 }

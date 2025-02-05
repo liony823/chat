@@ -2,12 +2,12 @@ package admin
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/liony823/tools/apiresp"
-	_ "github.com/liony823/tools/apiresp"
 	"github.com/openimsdk/chat/internal/api/util"
 	"github.com/openimsdk/chat/pkg/common/imapi"
 	"github.com/openimsdk/chat/pkg/protocol/admin"
 	"github.com/openimsdk/chat/pkg/protocol/chat"
+	"github.com/openimsdk/tools/apiresp"
+	_ "github.com/openimsdk/tools/apiresp"
 )
 
 type Api struct {

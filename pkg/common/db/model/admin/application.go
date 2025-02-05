@@ -3,10 +3,10 @@ package admin
 import (
 	"context"
 
-	"github.com/liony823/tools/db/mongoutil"
-	"github.com/liony823/tools/db/pagination"
 	"github.com/openimsdk/chat/pkg/common/db/table/admin"
 	admindb "github.com/openimsdk/chat/pkg/common/db/table/admin"
+	"github.com/openimsdk/tools/db/mongoutil"
+	"github.com/openimsdk/tools/db/pagination"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"

@@ -19,9 +19,9 @@ import (
 
 	"time"
 
-	"github.com/liony823/tools/utils/stringutil"
+	"github.com/openimsdk/tools/utils/stringutil"
 
-	"github.com/liony823/tools/errs"
+	"github.com/openimsdk/tools/errs"
 	"github.com/redis/go-redis/v9"
 )
 

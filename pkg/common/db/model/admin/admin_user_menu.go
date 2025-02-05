@@ -3,9 +3,9 @@ package admin
 import (
 	"context"
 
-	"github.com/liony823/tools/db/mongoutil"
-	"github.com/liony823/tools/errs"
 	"github.com/openimsdk/chat/pkg/common/db/table/admin"
+	"github.com/openimsdk/tools/db/mongoutil"
+	"github.com/openimsdk/tools/errs"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )

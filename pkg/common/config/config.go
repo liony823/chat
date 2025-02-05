@@ -3,8 +3,8 @@ package config
 import (
 	_ "embed"
 
-	"github.com/liony823/tools/db/mongoutil"
-	"github.com/liony823/tools/db/redisutil"
+	"github.com/openimsdk/tools/db/mongoutil"
+	"github.com/openimsdk/tools/db/redisutil"
 )
 
 var (

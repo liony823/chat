@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/liony823/tools/errs"
+	"github.com/openimsdk/tools/errs"
 	"gopkg.in/gomail.v2"
 )
 

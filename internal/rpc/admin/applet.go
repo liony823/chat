@@ -19,10 +19,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/liony823/tools/utils/datautil"
+	"github.com/openimsdk/tools/utils/datautil"
 
 	"github.com/google/uuid"
-	"github.com/liony823/tools/errs"
+	"github.com/openimsdk/tools/errs"
 
 	"github.com/openimsdk/chat/pkg/common/constant"
 	admindb "github.com/openimsdk/chat/pkg/common/db/table/admin"

@@ -19,7 +19,7 @@ import (
 	"math/rand"
 	"strings"
 
-	"github.com/liony823/tools/log"
+	"github.com/openimsdk/tools/log"
 	"google.golang.org/grpc/resolver"
 )
 

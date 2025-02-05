@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/liony823/tools/log"
+	"github.com/openimsdk/tools/log"
 
 	"github.com/openimsdk/chat/pkg/eerrs"
 	"github.com/openimsdk/protocol/auth"
