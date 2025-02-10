@@ -187,8 +187,8 @@ github.com/lestrrat-go/strftime v1.0.6 h1:CFGsDEt1pOpFNU+TJB0nhz9jl+K0hZSLE205Ah
 github.com/lestrrat-go/strftime v1.0.6/go.mod h1:f7jQKgV5nnJpYgdEasS+/y7EsTb8ykN2z68n3TtcTaw=
 github.com/liony823/protocol v0.0.1-feihong h1:y1/0fmAtAcTEXOEyweWxk+a9AuXLY3FGXT78kQvz3bk=
 github.com/liony823/protocol v0.0.1-feihong/go.mod h1:WF7EuE55vQvpyUAzDXcqg+B+446xQyEba0X35lTINmw=
-github.com/liony823/tools v0.0.1-feihong h1:i1IEN/rMsgzSya74ci1YWQx6CIhjWTl/tLU407pvFpQ=
-github.com/liony823/tools v0.0.1-feihong/go.mod h1:B+oqV0zdewN7OiEHYJm+hW+8/Te7B8tHHgD8rK5ZLZk=
+github.com/liony823/tools v0.0.1-alpha.1-feihong h1:8dIxPrPDORNwl7pYfwqj2lfVgk9W8bbmjS86F39lPWg=
+github.com/liony823/tools v0.0.1-alpha.1-feihong/go.mod h1:B+oqV0zdewN7OiEHYJm+hW+8/Te7B8tHHgD8rK5ZLZk=
 github.com/lithammer/shortuuid/v4 v4.0.0 h1:QRbbVkfgNippHOS8PXDkti4NaWeyYfcBTHtw7k08o4c=
 github.com/lithammer/shortuuid/v4 v4.0.0/go.mod h1:Zs8puNcrvf2rV9rTH51ZLLcj7ZXqQI3lv67aw4KiB1Y=
 github.com/livekit/mageutil v0.0.0-20230125210925-54e8a70427c1 h1:jm09419p0lqTkDaKb5iXdynYrzB84ErPPO4LbRASk58=

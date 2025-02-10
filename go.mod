@@ -39,7 +39,7 @@ require (
 
 replace github.com/openimsdk/protocol => github.com/liony823/protocol v0.0.1-feihong
 
-replace github.com/openimsdk/tools => github.com/liony823/tools v0.0.1-feihong
+replace github.com/openimsdk/tools => github.com/liony823/tools v0.0.1-alpha.1-feihong
 
 require (
 	github.com/swaggo/files v1.0.1

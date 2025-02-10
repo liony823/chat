@@ -19,6 +19,7 @@ import (
 	disetcd "github.com/openimsdk/chat/pkg/common/kdisc/etcd"
 	adminclient "github.com/openimsdk/chat/pkg/protocol/admin"
 	chatclient "github.com/openimsdk/chat/pkg/protocol/chat"
+	"github.com/openimsdk/tools/apiresp"
 	"github.com/openimsdk/tools/discovery/etcd"
 	"github.com/openimsdk/tools/errs"
 	"github.com/openimsdk/tools/mw"
@@ -47,7 +48,7 @@ func Start(ctx context.Context, index int, cfg *Config) error {
 	if err != nil {
 		return err
 	}
-	client, err := kdisc.NewDiscoveryRegister(&cfg.Discovery, cfg.RuntimeEnv,nil)
+	client, err := kdisc.NewDiscoveryRegister(&cfg.Discovery, cfg.RuntimeEnv, nil)
 	if err != nil {
 		return err
 	}
@@ -124,6 +125,10 @@ func Start(ctx context.Context, index int, cfg *Config) error {
 }
 
 func SetChatRoute(router gin.IRouter, chat *Api, mw *chatmw.MW) {
+
+	router.GET("/ping", func(c *gin.Context) {
+		apiresp.GinSuccess(c, "pong")
+	})
 
 	account := router.Group("/account")
 	account.POST("/code/send", chat.SendVerifyCode)                      // Send verification code

@@ -162,6 +162,12 @@ func (o *Api) Login(c *gin.Context) {
 		apiresp.GinError(c, err)
 		return
 	}
+	ip, err := o.GetClientIP(c)
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+	req.Ip = ip
 	resp, err := o.chatClient.Login(c, req)
 	if err != nil {
 		apiresp.GinError(c, err)

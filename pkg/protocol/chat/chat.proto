@@ -151,6 +151,7 @@ message LoginReq {
   string email = 8;
   string deviceName = 9;
   int32 RegisterType = 10;
+  string ip = 11;
 }
 
 message ResetPasswordReq {

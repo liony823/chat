@@ -4,14 +4,12 @@ import (
 	"context"
 	"fmt"
 	"math/rand"
-	"net/http"
 	"strconv"
 	"strings"
 	"time"
 
 	constantpb "github.com/openimsdk/protocol/constant"
 	"github.com/openimsdk/tools/utils/datautil"
-	"github.com/openimsdk/tools/utils/network"
 	"github.com/openimsdk/tools/utils/pwdutil"
 
 	"github.com/openimsdk/tools/errs"
@@ -456,10 +454,7 @@ func (o *chatSvr) Login(ctx context.Context, req *chat.LoginReq) (*chat.LoginRes
 		}
 		return nil, err
 	}
-	// 获取 Request
-	request := ctx.Value("request").(*http.Request)
-	remoteIp := network.RemoteIP(request)
-	if err := o.Admin.CheckLogin(ctx, credential.UserID, remoteIp); err != nil {
+	if err := o.Admin.CheckLogin(ctx, credential.UserID, req.Ip); err != nil {
 		return nil, err
 	}
 	var verifyCodeID *string
@@ -494,7 +489,7 @@ func (o *chatSvr) Login(ctx context.Context, req *chat.LoginReq) (*chat.LoginRes
 	record := &chatdb.UserLoginRecord{
 		UserID:     credential.UserID,
 		LoginTime:  time.Now(),
-		IP:         remoteIp,
+		IP:         req.Ip,
 		DeviceID:   req.DeviceID,
 		DeviceName: req.DeviceName,
 		Platform:   constantpb.PlatformIDToName(int(req.Platform)),
