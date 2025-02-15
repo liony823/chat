@@ -62,23 +62,47 @@ message AppletInfo  {
   string appID = 3;
   string icon = 4;
   string url = 5;
-  string md5 = 6;
-  int64 size = 7;
-  string version = 8;
   uint32 priority = 9;
   uint32 status = 10;
-  int64 createTime = 11;
+  uint32 isDefault = 11;
+  int64 createTime = 12;
 }
 
-message LogInfo{
-  string userID=1;
-  int32 platform=2;
-  string url=3;
-  int64 createTime=4;
-  string nickname=5;
-  string logID=6;
-  string filename=7;
-  string systemType=8;
-  string ex=9;
-  string version=10;
+message ApplicationVersion {
+  string id = 1;
+  string platform = 2;
+  string version = 3;
+  string url = 4;
+  string text = 5;
+  bool force = 6;
+  bool latest = 7;
+  bool hot = 8;
+  int64 createTime = 9;
+}
+
+message AdminMenu {
+  string key = 1;
+  string name = 2;
+  string path = 3;
+  string component = 4;
+  string icon = 5;
+  int32 sort = 6;
+  string parent = 7;
+  bool layout = 8;
+  bool hiddenInMenu = 9;
+  string redirect = 10;
+}
+
+message OperationLog {
+  string operationID = 1;
+  string adminID = 2;
+  string adminAccount = 3;
+  string adminName = 4;
+  string module = 5;
+  string operation = 6;
+  string method = 7;
+  string path = 8;
+  string IP = 9;
+  string requestData = 10;
+  int64 createTime = 11;
 }

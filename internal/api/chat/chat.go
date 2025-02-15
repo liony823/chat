@@ -289,6 +289,10 @@ func (o *Api) FindApplet(c *gin.Context) {
 	a2r.Call(c, admin.AdminClient.FindApplet, o.adminClient)
 }
 
+func (o *Api) GetApplet(c *gin.Context) {
+	a2r.Call(c, admin.AdminClient.GetApplet, o.adminClient)
+}
+
 // ################## CONFIG ##################
 
 func (o *Api) GetClientConfig(c *gin.Context) {

@@ -59,6 +59,9 @@ const (
 const (
 	StatusOnShelf = 1 // OnShelf
 	StatusUnShelf = 2 // UnShelf
+
+	StatusOnDefault  = 1 // Default
+	StatusOffDefault = 2 // Not default
 )
 
 const (

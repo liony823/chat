@@ -101,7 +101,7 @@ message GetAdminInfoResp {
   bool enableGoogleAuth = 5;
   int32 level = 6;
   int64 createTime = 7;
-  repeated AdminMenu menus = 8;
+  repeated openim.chat.common.AdminMenu menus = 8;
 }
 
 // ################### Default Friend ###################
@@ -417,12 +417,9 @@ message AddAppletReq {
   string appID = 3;
   string icon = 4;
   string url = 5;
-  string md5 = 6;
-  int64 size = 7;
-  string version = 8;
-  uint32 priority = 9;
-  uint32 status = 10;
-  int64 createTime = 11;
+  uint32 priority = 6;
+  uint32 status = 7;
+  int64 createTime = 8;
 }
 
 message AddAppletResp {}
@@ -439,12 +436,9 @@ message UpdateAppletReq {
   openim.protobuf.StringValue appID = 3;
   openim.protobuf.StringValue icon = 4;
   openim.protobuf.StringValue url = 5;
-  openim.protobuf.StringValue md5 = 6;
-  openim.protobuf.Int64Value size = 7;
-  openim.protobuf.StringValue version = 8;
-  openim.protobuf.UInt32Value priority = 9;
-  openim.protobuf.UInt32Value status = 10;
-  openim.protobuf.Int64Value createTime = 11;
+  openim.protobuf.UInt32Value priority = 6;
+  openim.protobuf.UInt32Value status = 7;
+  openim.protobuf.Int64Value createTime = 8;
 }
 
 message UpdateAppletResp {}
@@ -463,6 +457,23 @@ message SearchAppletReq {
 message SearchAppletResp {
   uint32 total = 1;
   repeated openim.chat.common.AppletInfo applets = 2;
+}
+
+message SetDefaultAppletReq {
+  string appID = 1;
+  uint32 isDefault = 2;
+}
+
+message SetDefaultAppletResp {
+  uint32 isDefault = 1;
+}
+
+message GetAppletReq {
+  string appID = 1;
+}
+
+message GetAppletResp {
+  openim.chat.common.AppletInfo applet = 1;
 }
 
 message SetClientConfigReq {
@@ -512,26 +523,13 @@ message GetUserTokenResp {
   map<string, int32> tokensMap = 1;
 }
 
-
-message ApplicationVersion {
-  string id = 1;
-  string platform = 2;
-  string version = 3;
-  string url = 4;
-  string text = 5;
-  bool force = 6;
-  bool latest = 7;
-  bool hot = 8;
-  int64 createTime = 9;
-}
-
 message LatestApplicationVersionReq {
   string platform = 2;
   string version = 3;
 }
 
 message LatestApplicationVersionResp {
-  ApplicationVersion version = 1;
+  openim.chat.common.ApplicationVersion version = 1;
 }
 
 message AddApplicationVersionReq {
@@ -578,7 +576,7 @@ message PageApplicationVersionReq {
 
 message PageApplicationVersionResp {
   int64 total = 1;
-  repeated ApplicationVersion versions = 2;
+  repeated openim.chat.common.ApplicationVersion versions = 2;
 }
 
 message GetGoogleAuthReq {
@@ -667,23 +665,10 @@ message GetSigninConfigResp {
   SigninConfig config = 1;
 }
 
-message AdminMenu {
-  string key = 1;
-  string name = 2;
-  string path = 3;
-  string component = 4;
-  string icon = 5;
-  int32 sort = 6;
-  string parent = 7;
-  bool layout = 8;
-  bool hiddenInMenu = 9;
-  string redirect = 10;
-}
-
 message GetAdminMenuReq {}
 
 message GetAdminMenuResp {
-  repeated AdminMenu menus = 1;
+  repeated openim.chat.common.AdminMenu menus = 1;
 }
 
 message CreateAdminMenuReq {
@@ -726,7 +711,7 @@ message TakeAdminMenuReq {
 }
 
 message TakeAdminMenuResp {
-  AdminMenu menu = 1;
+  openim.chat.common.AdminMenu menu = 1;
 }
 
 message ListAdminMenuReq {
@@ -734,7 +719,7 @@ message ListAdminMenuReq {
 }
 
 message ListAdminMenuResp {
-  repeated AdminMenu menus = 1;
+  repeated openim.chat.common.AdminMenu menus = 1;
 }
 
 message ListAdminUserMenuReq {
@@ -742,7 +727,7 @@ message ListAdminUserMenuReq {
 }
 
 message ListAdminUserMenuResp {
-  repeated AdminMenu menus = 1;
+  repeated openim.chat.common.AdminMenu menus = 1;
 }
 
 message GetAdminUserMenuReq {
@@ -750,7 +735,7 @@ message GetAdminUserMenuReq {
 }
 
 message GetAdminUserMenuResp {
-  repeated AdminMenu menus = 1;
+  repeated openim.chat.common.AdminMenu menus = 1;
 }
 
 message AssignAdminUserMenuReq {
@@ -763,20 +748,6 @@ message AssignAdminUserMenuResp {}
 
 // ################### operation log ###################
 
-message OperationLog {
-  string operationID = 1;
-  string adminID = 2;
-  string adminAccount = 3;
-  string adminName = 4;
-  string module = 5;
-  string operation = 6;
-  string method = 7;
-  string path = 8;
-  string IP = 9;
-  string requestData = 10;
-  int64 createTime = 11;
-}
-
 message SearchOperationLogReq {
   string keyword = 1;
   openim.sdkws.RequestPagination pagination = 2;
@@ -784,7 +755,7 @@ message SearchOperationLogReq {
 
 message SearchOperationLogResp {
   int64 total = 1;
-  repeated OperationLog logs = 2;
+  repeated openim.chat.common.OperationLog logs = 2;
 }
 
 message GetOperationLogReq {
@@ -792,17 +763,7 @@ message GetOperationLogReq {
 }
 
 message GetOperationLogResp {
-  string operationID = 1;
-  string adminID = 2;
-  string adminAccount = 3;
-  string adminName = 4;
-  string module = 5;
-  string operation = 6;
-  string method = 7;
-  string path = 8;
-  string IP = 9;
-  string requestData = 10;
-  int64 createTime = 11;
+  openim.chat.common.OperationLog log = 1;
 }
 
 message DeleteOperationLogReq {
@@ -890,6 +851,8 @@ service admin {
   rpc UpdateApplet(UpdateAppletReq) returns (UpdateAppletResp);
   rpc FindApplet(FindAppletReq) returns (FindAppletResp);
   rpc SearchApplet(SearchAppletReq) returns (SearchAppletResp);
+  rpc SetDefaultApplet(SetDefaultAppletReq) returns (SetDefaultAppletResp);
+  rpc GetApplet(GetAppletReq) returns (GetAppletResp);
 
   // Client Configuration
   rpc GetClientConfig(GetClientConfigReq) returns (GetClientConfigResp);

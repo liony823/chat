@@ -75,6 +75,8 @@ const (
 	Admin_UpdateApplet_FullMethodName             = "/openim.admin.admin/UpdateApplet"
 	Admin_FindApplet_FullMethodName               = "/openim.admin.admin/FindApplet"
 	Admin_SearchApplet_FullMethodName             = "/openim.admin.admin/SearchApplet"
+	Admin_SetDefaultApplet_FullMethodName         = "/openim.admin.admin/SetDefaultApplet"
+	Admin_GetApplet_FullMethodName                = "/openim.admin.admin/GetApplet"
 	Admin_GetClientConfig_FullMethodName          = "/openim.admin.admin/GetClientConfig"
 	Admin_GetListClientConfig_FullMethodName      = "/openim.admin.admin/GetListClientConfig"
 	Admin_SetClientConfig_FullMethodName          = "/openim.admin.admin/SetClientConfig"
@@ -165,6 +167,8 @@ type AdminClient interface {
 	UpdateApplet(ctx context.Context, in *UpdateAppletReq, opts ...grpc.CallOption) (*UpdateAppletResp, error)
 	FindApplet(ctx context.Context, in *FindAppletReq, opts ...grpc.CallOption) (*FindAppletResp, error)
 	SearchApplet(ctx context.Context, in *SearchAppletReq, opts ...grpc.CallOption) (*SearchAppletResp, error)
+	SetDefaultApplet(ctx context.Context, in *SetDefaultAppletReq, opts ...grpc.CallOption) (*SetDefaultAppletResp, error)
+	GetApplet(ctx context.Context, in *GetAppletReq, opts ...grpc.CallOption) (*GetAppletResp, error)
 	// Client Configuration
 	GetClientConfig(ctx context.Context, in *GetClientConfigReq, opts ...grpc.CallOption) (*GetClientConfigResp, error)
 	GetListClientConfig(ctx context.Context, in *GetListClientConfigReq, opts ...grpc.CallOption) (*GetListClientConfigResp, error)
@@ -634,6 +638,26 @@ func (c *adminClient) SearchApplet(ctx context.Context, in *SearchAppletReq, opt
 	return out, nil
 }
 
+func (c *adminClient) SetDefaultApplet(ctx context.Context, in *SetDefaultAppletReq, opts ...grpc.CallOption) (*SetDefaultAppletResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SetDefaultAppletResp)
+	err := c.cc.Invoke(ctx, Admin_SetDefaultApplet_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminClient) GetApplet(ctx context.Context, in *GetAppletReq, opts ...grpc.CallOption) (*GetAppletResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetAppletResp)
+	err := c.cc.Invoke(ctx, Admin_GetApplet_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *adminClient) GetClientConfig(ctx context.Context, in *GetClientConfigReq, opts ...grpc.CallOption) (*GetClientConfigResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetClientConfigResp)
@@ -1010,6 +1034,8 @@ type AdminServer interface {
 	UpdateApplet(context.Context, *UpdateAppletReq) (*UpdateAppletResp, error)
 	FindApplet(context.Context, *FindAppletReq) (*FindAppletResp, error)
 	SearchApplet(context.Context, *SearchAppletReq) (*SearchAppletResp, error)
+	SetDefaultApplet(context.Context, *SetDefaultAppletReq) (*SetDefaultAppletResp, error)
+	GetApplet(context.Context, *GetAppletReq) (*GetAppletResp, error)
 	// Client Configuration
 	GetClientConfig(context.Context, *GetClientConfigReq) (*GetClientConfigResp, error)
 	GetListClientConfig(context.Context, *GetListClientConfigReq) (*GetListClientConfigResp, error)
@@ -1184,6 +1210,12 @@ func (UnimplementedAdminServer) FindApplet(context.Context, *FindAppletReq) (*Fi
 }
 func (UnimplementedAdminServer) SearchApplet(context.Context, *SearchAppletReq) (*SearchAppletResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SearchApplet not implemented")
+}
+func (UnimplementedAdminServer) SetDefaultApplet(context.Context, *SetDefaultAppletReq) (*SetDefaultAppletResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetDefaultApplet not implemented")
+}
+func (UnimplementedAdminServer) GetApplet(context.Context, *GetAppletReq) (*GetAppletResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetApplet not implemented")
 }
 func (UnimplementedAdminServer) GetClientConfig(context.Context, *GetClientConfigReq) (*GetClientConfigResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetClientConfig not implemented")
@@ -2058,6 +2090,42 @@ func _Admin_SearchApplet_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Admin_SetDefaultApplet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetDefaultAppletReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).SetDefaultApplet(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_SetDefaultApplet_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).SetDefaultApplet(ctx, req.(*SetDefaultAppletReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Admin_GetApplet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAppletReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).GetApplet(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_GetApplet_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).GetApplet(ctx, req.(*GetAppletReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Admin_GetClientConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetClientConfigReq)
 	if err := dec(in); err != nil {
@@ -2808,6 +2876,14 @@ var Admin_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SearchApplet",
 			Handler:    _Admin_SearchApplet_Handler,
+		},
+		{
+			MethodName: "SetDefaultApplet",
+			Handler:    _Admin_SetDefaultApplet_Handler,
+		},
+		{
+			MethodName: "GetApplet",
+			Handler:    _Admin_GetApplet_Handler,
 		},
 		{
 			MethodName: "GetClientConfig",

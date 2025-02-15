@@ -5,7 +5,7 @@ import (
 	"time"
 
 	admindb "github.com/openimsdk/chat/pkg/common/db/table/admin"
-	adminpb "github.com/openimsdk/chat/pkg/protocol/admin"
+	adminpb "github.com/openimsdk/chat/pkg/protocol/common"
 )
 
 func OperationLogDB2PB(ctx context.Context, log *admindb.OperationLog) (*adminpb.OperationLog, error) {

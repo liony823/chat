@@ -57,3 +57,17 @@ func (o *Api) UpdateApplet(c *gin.Context) {
 func (o *Api) SearchApplet(c *gin.Context) {
 	a2r.Call(c, admin.AdminClient.SearchApplet, o.adminClient)
 }
+
+
+// @Summary		设置默认小程序
+// @Description	设置默认小程序
+// @Tags			applet
+// @Id	setDefaultApplet
+// @Accept			json
+// @Produce		json
+// @Param			data	body		admin.SetDefaultAppletReq	true	"要设置的默认小程序ID"
+// @Success		200		{object}	apiresp.ApiResponse{data=admin.SetDefaultAppletResp}
+// @Router			/applet/setDefault [post]
+func (o *Api) SetDefaultApplet(c *gin.Context) {
+	a2r.Call(c, admin.AdminClient.SetDefaultApplet, o.adminClient)
+}

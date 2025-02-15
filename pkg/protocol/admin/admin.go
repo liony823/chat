@@ -331,15 +331,6 @@ func (x *AddAppletReq) Check() error {
 	if x.Url == "" {
 		return errs.ErrArgs.WrapMsg("url is empty")
 	}
-	if x.Md5 == "" {
-		return errs.ErrArgs.WrapMsg("md5 is empty")
-	}
-	if x.Size <= 0 {
-		return errs.ErrArgs.WrapMsg("size is invalid")
-	}
-	if x.Version == "" {
-		return errs.ErrArgs.WrapMsg("version is empty")
-	}
 	if x.Status < constant.StatusOnShelf || x.Status > constant.StatusUnShelf {
 		return errs.ErrArgs.WrapMsg("status is invalid")
 	}

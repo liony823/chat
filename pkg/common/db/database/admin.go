@@ -21,6 +21,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
+	chatConstant "github.com/openimsdk/chat/pkg/common/constant"
 	"github.com/openimsdk/chat/pkg/common/db/cache"
 	"github.com/openimsdk/protocol/constant"
 	"github.com/openimsdk/tools/db/mongoutil"
@@ -45,10 +46,12 @@ type AdminDatabaseInterface interface {
 	CreateApplet(ctx context.Context, applets []*admindb.Applet) error
 	DelApplet(ctx context.Context, appletIDs []string) error
 	GetApplet(ctx context.Context, appletID string) (*admindb.Applet, error)
+	GetAppletByAppID(ctx context.Context, appletAppID string) (*admindb.Applet, error)
 	FindApplet(ctx context.Context, appletIDs []string) ([]*admindb.Applet, error)
 	SearchApplet(ctx context.Context, keyword string, pagination pagination.Pagination) (int64, []*admindb.Applet, error)
 	FindOnShelf(ctx context.Context) ([]*admindb.Applet, error)
 	UpdateApplet(ctx context.Context, appletID string, update map[string]any) error
+	SetDefaultApplet(ctx context.Context, appletID string, isDefault uint32) error
 	GetConfig(ctx context.Context) (map[string]string, error)
 	GetListClientConfig(ctx context.Context) ([]*admindb.ClientConfig, error)
 	SetConfig(ctx context.Context, cs map[string]string) error
@@ -289,6 +292,10 @@ func (o *AdminDatabase) GetApplet(ctx context.Context, appletID string) (*admind
 	return o.applet.Take(ctx, appletID)
 }
 
+func (o *AdminDatabase) GetAppletByAppID(ctx context.Context, appletAppID string) (*admindb.Applet, error) {
+	return o.applet.TakeByAppID(ctx, appletAppID)
+}
+
 func (o *AdminDatabase) FindApplet(ctx context.Context, appletIDs []string) ([]*admindb.Applet, error) {
 	return o.applet.FindID(ctx, appletIDs)
 }
@@ -303,6 +310,26 @@ func (o *AdminDatabase) FindOnShelf(ctx context.Context) ([]*admindb.Applet, err
 
 func (o *AdminDatabase) UpdateApplet(ctx context.Context, appletID string, update map[string]any) error {
 	return o.applet.Update(ctx, appletID, update)
+}
+
+func (o *AdminDatabase) SetDefaultApplet(ctx context.Context, appletID string, isDefault uint32) error {
+	return o.tx.Transaction(ctx, func(ctx context.Context) error {
+		if isDefault == chatConstant.StatusOnDefault {
+			applets, err := o.applet.FindOnDefault(ctx)
+			if err != nil {
+				return err
+			}
+			for _, applet := range applets {
+				if applet.ID == appletID || applet.IsDefault == chatConstant.StatusOffDefault {
+					continue
+				}
+				if err = o.applet.Update(ctx, applet.ID, map[string]any{"is_default": chatConstant.StatusOffDefault}); err != nil {
+					return err
+				}
+			}
+		}
+		return o.applet.Update(ctx, appletID, map[string]any{"is_default": isDefault})
+	})
 }
 
 func (o *AdminDatabase) GetConfig(ctx context.Context) (map[string]string, error) {

@@ -34,5 +34,7 @@ var (
 	ErrGoogleAuthCode           = errs.NewCodeError(20015, "GoogleAuthCodeError")
 	ErrGoogleAuthNotEnable      = errs.NewCodeError(20016, "GoogleAuthNotEnable")
 
+	ErrAppletNotOnShelf = errs.NewCodeError(20030, "AppletNotOnShelf")
+
 	ErrTokenNotExist = errs.NewCodeError(20101, "ErrTokenNotExist")
 )

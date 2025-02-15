@@ -148,7 +148,9 @@ func SetChatRoute(router gin.IRouter, chat *Api, mw *chatmw.MW) {
 
 	router.POST("/friend/search", mw.CheckToken, chat.SearchFriend)
 
-	router.Group("/applet").POST("/find", mw.CheckToken, chat.FindApplet) // Applet list
+	applet := router.Group("/applet")
+	applet.POST("/find", chat.FindApplet) // Applet list
+	applet.POST("/get",mw.CheckToken, chat.GetApplet)
 
 	router.Group("/client_config").POST("/get", chat.GetClientConfig) // Get client initialization configuration
 

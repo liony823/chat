@@ -893,6 +893,53 @@ const docTemplate = `{
                 }
             }
         },
+        "/applet/setDefault": {
+            "post": {
+                "description": "设置默认小程序",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "applet"
+                ],
+                "summary": "设置默认小程序",
+                "operationId": "setDefaultApplet",
+                "parameters": [
+                    {
+                        "description": "要设置的默认小程序ID",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SetDefaultAppletReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/apiresp.ApiResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SetDefaultAppletResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/applet/update": {
             "post": {
                 "description": "更新小程序配置信息",
@@ -2858,25 +2905,16 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "md5": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 },
                 "priority": {
                     "type": "integer"
                 },
-                "size": {
-                    "type": "integer"
-                },
                 "status": {
                     "type": "integer"
                 },
                 "url": {
-                    "type": "string"
-                },
-                "version": {
                     "type": "string"
                 }
             }
@@ -2962,41 +3000,6 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_openimsdk_chat_pkg_protocol_admin.AdminMenu": {
-            "type": "object",
-            "properties": {
-                "component": {
-                    "type": "string"
-                },
-                "hiddenInMenu": {
-                    "type": "boolean"
-                },
-                "icon": {
-                    "type": "string"
-                },
-                "key": {
-                    "type": "string"
-                },
-                "layout": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "parent": {
-                    "type": "string"
-                },
-                "path": {
-                    "type": "string"
-                },
-                "redirect": {
-                    "type": "string"
-                },
-                "sort": {
-                    "type": "integer"
-                }
-            }
-        },
         "github_com_openimsdk_chat_pkg_protocol_admin.AdminUpdateInfoReq": {
             "type": "object",
             "properties": {
@@ -3014,38 +3017,6 @@ const docTemplate = `{
                 },
                 "password": {
                     "$ref": "#/definitions/wrapperspb.StringValue"
-                }
-            }
-        },
-        "github_com_openimsdk_chat_pkg_protocol_admin.ApplicationVersion": {
-            "type": "object",
-            "properties": {
-                "createTime": {
-                    "type": "integer"
-                },
-                "force": {
-                    "type": "boolean"
-                },
-                "hot": {
-                    "type": "boolean"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "latest": {
-                    "type": "boolean"
-                },
-                "platform": {
-                    "type": "string"
-                },
-                "text": {
-                    "type": "string"
-                },
-                "url": {
-                    "type": "string"
-                },
-                "version": {
-                    "type": "string"
                 }
             }
         },
@@ -3410,7 +3381,7 @@ const docTemplate = `{
                 "menus": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.AdminMenu"
+                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_common.AdminMenu"
                     }
                 },
                 "nickname": {
@@ -3435,7 +3406,7 @@ const docTemplate = `{
                 "menus": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.AdminMenu"
+                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_common.AdminMenu"
                     }
                 }
             }
@@ -3495,38 +3466,8 @@ const docTemplate = `{
         "github_com_openimsdk_chat_pkg_protocol_admin.GetOperationLogResp": {
             "type": "object",
             "properties": {
-                "IP": {
-                    "type": "string"
-                },
-                "adminAccount": {
-                    "type": "string"
-                },
-                "adminID": {
-                    "type": "string"
-                },
-                "adminName": {
-                    "type": "string"
-                },
-                "createTime": {
-                    "type": "integer"
-                },
-                "method": {
-                    "type": "string"
-                },
-                "module": {
-                    "type": "string"
-                },
-                "operation": {
-                    "type": "string"
-                },
-                "operationID": {
-                    "type": "string"
-                },
-                "path": {
-                    "type": "string"
-                },
-                "requestData": {
-                    "type": "string"
+                "log": {
+                    "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_common.OperationLog"
                 }
             }
         },
@@ -3623,7 +3564,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "version": {
-                    "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ApplicationVersion"
+                    "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_common.ApplicationVersion"
                 }
             }
         },
@@ -3658,7 +3599,7 @@ const docTemplate = `{
                 "menus": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.AdminMenu"
+                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_common.AdminMenu"
                     }
                 }
             }
@@ -3669,7 +3610,7 @@ const docTemplate = `{
                 "menus": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.AdminMenu"
+                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_common.AdminMenu"
                     }
                 }
             }
@@ -3684,44 +3625,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "password": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_openimsdk_chat_pkg_protocol_admin.OperationLog": {
-            "type": "object",
-            "properties": {
-                "IP": {
-                    "type": "string"
-                },
-                "adminAccount": {
-                    "type": "string"
-                },
-                "adminID": {
-                    "type": "string"
-                },
-                "adminName": {
-                    "type": "string"
-                },
-                "createTime": {
-                    "type": "integer"
-                },
-                "method": {
-                    "type": "string"
-                },
-                "module": {
-                    "type": "string"
-                },
-                "operation": {
-                    "type": "string"
-                },
-                "operationID": {
-                    "type": "string"
-                },
-                "path": {
-                    "type": "string"
-                },
-                "requestData": {
                     "type": "string"
                 }
             }
@@ -3749,7 +3652,7 @@ const docTemplate = `{
                 "versions": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ApplicationVersion"
+                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_common.ApplicationVersion"
                     }
                 }
             }
@@ -3945,7 +3848,7 @@ const docTemplate = `{
                 "logs": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.OperationLog"
+                        "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_common.OperationLog"
                     }
                 },
                 "total": {
@@ -3997,6 +3900,25 @@ const docTemplate = `{
                     "additionalProperties": {
                         "type": "string"
                     }
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.SetDefaultAppletReq": {
+            "type": "object",
+            "properties": {
+                "appID": {
+                    "type": "string"
+                },
+                "isDefault": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_admin.SetDefaultAppletResp": {
+            "type": "object",
+            "properties": {
+                "isDefault": {
+                    "type": "integer"
                 }
             }
         },
@@ -4057,7 +3979,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "menu": {
-                    "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.AdminMenu"
+                    "$ref": "#/definitions/github_com_openimsdk_chat_pkg_protocol_common.AdminMenu"
                 }
             }
         },
@@ -4125,25 +4047,16 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "md5": {
-                    "$ref": "#/definitions/wrapperspb.StringValue"
-                },
                 "name": {
                     "$ref": "#/definitions/wrapperspb.StringValue"
                 },
                 "priority": {
                     "$ref": "#/definitions/wrapperspb.UInt32Value"
                 },
-                "size": {
-                    "$ref": "#/definitions/wrapperspb.Int64Value"
-                },
                 "status": {
                     "$ref": "#/definitions/wrapperspb.UInt32Value"
                 },
                 "url": {
-                    "$ref": "#/definitions/wrapperspb.StringValue"
-                },
-                "version": {
                     "$ref": "#/definitions/wrapperspb.StringValue"
                 }
             }
@@ -4335,6 +4248,41 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_openimsdk_chat_pkg_protocol_common.AdminMenu": {
+            "type": "object",
+            "properties": {
+                "component": {
+                    "type": "string"
+                },
+                "hiddenInMenu": {
+                    "type": "boolean"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "layout": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "parent": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "redirect": {
+                    "type": "string"
+                },
+                "sort": {
+                    "type": "integer"
+                }
+            }
+        },
         "github_com_openimsdk_chat_pkg_protocol_common.AppletInfo": {
             "type": "object",
             "properties": {
@@ -4350,8 +4298,8 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "md5": {
-                    "type": "string"
+                "isDefault": {
+                    "type": "integer"
                 },
                 "name": {
                     "type": "string"
@@ -4359,16 +4307,80 @@ const docTemplate = `{
                 "priority": {
                     "type": "integer"
                 },
-                "size": {
-                    "type": "integer"
-                },
                 "status": {
                     "type": "integer"
                 },
                 "url": {
                     "type": "string"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_common.ApplicationVersion": {
+            "type": "object",
+            "properties": {
+                "createTime": {
+                    "type": "integer"
+                },
+                "force": {
+                    "type": "boolean"
+                },
+                "hot": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "latest": {
+                    "type": "boolean"
+                },
+                "platform": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
                 },
                 "version": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_openimsdk_chat_pkg_protocol_common.OperationLog": {
+            "type": "object",
+            "properties": {
+                "IP": {
+                    "type": "string"
+                },
+                "adminAccount": {
+                    "type": "string"
+                },
+                "adminID": {
+                    "type": "string"
+                },
+                "adminName": {
+                    "type": "string"
+                },
+                "createTime": {
+                    "type": "integer"
+                },
+                "method": {
+                    "type": "string"
+                },
+                "module": {
+                    "type": "string"
+                },
+                "operation": {
+                    "type": "string"
+                },
+                "operationID": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "requestData": {
                     "type": "string"
                 }
             }

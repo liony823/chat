@@ -33,6 +33,7 @@ func NewApplet(db *mongo.Database) (admin.AppletInterface, error) {
 	_, err := coll.Indexes().CreateOne(context.Background(), mongo.IndexModel{
 		Keys: bson.D{
 			{Key: "id", Value: 1},
+			{Key: "app_id", Value: 2},
 		},
 		Options: options.Index().SetUnique(true),
 	})
@@ -70,6 +71,10 @@ func (o *Applet) Take(ctx context.Context, id string) (*admin.Applet, error) {
 	return mongoutil.FindOne[*admin.Applet](ctx, o.coll, bson.M{"id": id})
 }
 
+func (o *Applet) TakeByAppID(ctx context.Context, appID string) (*admin.Applet, error) {
+	return mongoutil.FindOne[*admin.Applet](ctx, o.coll, bson.M{"app_id": appID})
+}
+
 func (o *Applet) Search(ctx context.Context, keyword string, pagination pagination.Pagination) (int64, []*admin.Applet, error) {
 	filter := bson.M{}
 
@@ -79,7 +84,6 @@ func (o *Applet) Search(ctx context.Context, keyword string, pagination paginati
 				{"name": bson.M{"$regex": keyword, "$options": "i"}},
 				{"id": bson.M{"$regex": keyword, "$options": "i"}},
 				{"app_id": bson.M{"$regex": keyword, "$options": "i"}},
-				{"version": bson.M{"$regex": keyword, "$options": "i"}},
 			},
 		}
 	}
@@ -87,7 +91,12 @@ func (o *Applet) Search(ctx context.Context, keyword string, pagination paginati
 }
 
 func (o *Applet) FindOnShelf(ctx context.Context) ([]*admin.Applet, error) {
-	return mongoutil.Find[*admin.Applet](ctx, o.coll, bson.M{"status": constant.StatusOnShelf})
+	sort := bson.D{{Key: "priority", Value: -1}, {Key: "create_time", Value: -1}}
+	return mongoutil.Find[*admin.Applet](ctx, o.coll, bson.M{"status": constant.StatusOnShelf}, options.Find().SetSort(sort))
+}
+
+func (o *Applet) FindOnDefault(ctx context.Context) ([]*admin.Applet, error) {
+	return mongoutil.Find[*admin.Applet](ctx, o.coll, bson.M{"is_default": constant.StatusOnDefault})
 }
 
 func (o *Applet) FindID(ctx context.Context, ids []string) ([]*admin.Applet, error) {

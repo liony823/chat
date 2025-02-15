@@ -7,6 +7,7 @@ import (
 	admindb "github.com/openimsdk/chat/pkg/common/db/table/admin"
 	"github.com/openimsdk/chat/pkg/common/mctx"
 	"github.com/openimsdk/chat/pkg/protocol/admin"
+	"github.com/openimsdk/chat/pkg/protocol/common"
 	"github.com/openimsdk/tools/errs"
 	"github.com/openimsdk/tools/utils/datautil"
 	"github.com/redis/go-redis/v9"
@@ -23,8 +24,8 @@ func IsNotFound(err error) bool {
 	}
 }
 
-func (o *adminServer) db2pbApplication(val *admindb.Application) *admin.ApplicationVersion {
-	return &admin.ApplicationVersion{
+func (o *adminServer) db2pbApplication(val *admindb.Application) *common.ApplicationVersion {
+	return &common.ApplicationVersion{
 		Id:         val.ID.Hex(),
 		Platform:   val.Platform,
 		Version:    val.Version,

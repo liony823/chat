@@ -27,11 +27,9 @@ type Applet struct {
 	AppID      string    `bson:"app_id"`
 	Icon       string    `bson:"icon"`
 	URL        string    `bson:"url"`
-	MD5        string    `bson:"md5"`
-	Size       int64     `bson:"size"`
-	Version    string    `bson:"version"`
 	Priority   uint32    `bson:"priority"`
 	Status     uint8     `bson:"status"`
+	IsDefault  uint8     `bson:"is_default"`
 	CreateTime time.Time `bson:"create_time"`
 }
 
@@ -44,7 +42,9 @@ type AppletInterface interface {
 	Del(ctx context.Context, ids []string) error
 	Update(ctx context.Context, id string, data map[string]any) error
 	Take(ctx context.Context, id string) (*Applet, error)
+	TakeByAppID(ctx context.Context, appID string) (*Applet, error)
 	Search(ctx context.Context, keyword string, pagination pagination.Pagination) (int64, []*Applet, error)
 	FindOnShelf(ctx context.Context) ([]*Applet, error)
+	FindOnDefault(ctx context.Context) ([]*Applet, error)
 	FindID(ctx context.Context, ids []string) ([]*Applet, error)
 }

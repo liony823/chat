@@ -15,8 +15,6 @@
 package admin
 
 import (
-	"crypto/md5"
-	"encoding/hex"
 	"time"
 
 	"github.com/google/uuid"
@@ -100,24 +98,6 @@ func ToDBAppletUpdate(req *admin.UpdateAppletReq) (map[string]any, error) {
 			return nil, errs.ErrArgs.WrapMsg("url is empty")
 		}
 		update["url"] = req.Url.Value
-	}
-	if req.Md5 != nil {
-		if hash, _ := hex.DecodeString(req.Md5.Value); len(hash) != md5.Size {
-			return nil, errs.ErrArgs.WrapMsg("md5 is invalid")
-		}
-		update["md5"] = req.Md5.Value
-	}
-	if req.Size != nil {
-		if req.Size.Value <= 0 {
-			return nil, errs.ErrArgs.WrapMsg("size is invalid")
-		}
-		update["size"] = req.Size.Value
-	}
-	if req.Version != nil {
-		if req.Version.Value == "" {
-			return nil, errs.ErrArgs.WrapMsg("version is empty")
-		}
-		update["version"] = req.Version.Value
 	}
 	if req.Priority != nil {
 		update["priority"] = req.Priority.Value

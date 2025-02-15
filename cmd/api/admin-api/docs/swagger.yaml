@@ -59,19 +59,13 @@ definitions:
         type: string
       id:
         type: string
-      md5:
-        type: string
       name:
         type: string
       priority:
         type: integer
-      size:
-        type: integer
       status:
         type: integer
       url:
-        type: string
-      version:
         type: string
     type: object
   github_com_openimsdk_chat_pkg_protocol_admin.AddApplicationVersionReq:
@@ -126,29 +120,6 @@ definitions:
           $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.UserIPLimitLogin'
         type: array
     type: object
-  github_com_openimsdk_chat_pkg_protocol_admin.AdminMenu:
-    properties:
-      component:
-        type: string
-      hiddenInMenu:
-        type: boolean
-      icon:
-        type: string
-      key:
-        type: string
-      layout:
-        type: boolean
-      name:
-        type: string
-      parent:
-        type: string
-      path:
-        type: string
-      redirect:
-        type: string
-      sort:
-        type: integer
-    type: object
   github_com_openimsdk_chat_pkg_protocol_admin.AdminUpdateInfoReq:
     properties:
       account:
@@ -161,27 +132,6 @@ definitions:
         $ref: '#/definitions/wrapperspb.StringValue'
       password:
         $ref: '#/definitions/wrapperspb.StringValue'
-    type: object
-  github_com_openimsdk_chat_pkg_protocol_admin.ApplicationVersion:
-    properties:
-      createTime:
-        type: integer
-      force:
-        type: boolean
-      hot:
-        type: boolean
-      id:
-        type: string
-      latest:
-        type: boolean
-      platform:
-        type: string
-      text:
-        type: string
-      url:
-        type: string
-      version:
-        type: string
     type: object
   github_com_openimsdk_chat_pkg_protocol_admin.AssignAdminUserMenuReq:
     properties:
@@ -416,7 +366,7 @@ definitions:
         type: integer
       menus:
         items:
-          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.AdminMenu'
+          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_common.AdminMenu'
         type: array
       nickname:
         type: string
@@ -432,7 +382,7 @@ definitions:
     properties:
       menus:
         items:
-          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.AdminMenu'
+          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_common.AdminMenu'
         type: array
     type: object
   github_com_openimsdk_chat_pkg_protocol_admin.GetBucketConfigResp:
@@ -470,28 +420,8 @@ definitions:
     type: object
   github_com_openimsdk_chat_pkg_protocol_admin.GetOperationLogResp:
     properties:
-      IP:
-        type: string
-      adminAccount:
-        type: string
-      adminID:
-        type: string
-      adminName:
-        type: string
-      createTime:
-        type: integer
-      method:
-        type: string
-      module:
-        type: string
-      operation:
-        type: string
-      operationID:
-        type: string
-      path:
-        type: string
-      requestData:
-        type: string
+      log:
+        $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_common.OperationLog'
     type: object
   github_com_openimsdk_chat_pkg_protocol_admin.GetSigninConfigResp:
     properties:
@@ -553,7 +483,7 @@ definitions:
   github_com_openimsdk_chat_pkg_protocol_admin.LatestApplicationVersionResp:
     properties:
       version:
-        $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ApplicationVersion'
+        $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_common.ApplicationVersion'
     type: object
   github_com_openimsdk_chat_pkg_protocol_admin.LimitUserLoginIP:
     properties:
@@ -575,14 +505,14 @@ definitions:
     properties:
       menus:
         items:
-          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.AdminMenu'
+          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_common.AdminMenu'
         type: array
     type: object
   github_com_openimsdk_chat_pkg_protocol_admin.ListAdminUserMenuResp:
     properties:
       menus:
         items:
-          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.AdminMenu'
+          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_common.AdminMenu'
         type: array
     type: object
   github_com_openimsdk_chat_pkg_protocol_admin.LoginReq:
@@ -592,31 +522,6 @@ definitions:
       code:
         type: string
       password:
-        type: string
-    type: object
-  github_com_openimsdk_chat_pkg_protocol_admin.OperationLog:
-    properties:
-      IP:
-        type: string
-      adminAccount:
-        type: string
-      adminID:
-        type: string
-      adminName:
-        type: string
-      createTime:
-        type: integer
-      method:
-        type: string
-      module:
-        type: string
-      operation:
-        type: string
-      operationID:
-        type: string
-      path:
-        type: string
-      requestData:
         type: string
     type: object
   github_com_openimsdk_chat_pkg_protocol_admin.PageApplicationVersionReq:
@@ -634,7 +539,7 @@ definitions:
         type: integer
       versions:
         items:
-          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.ApplicationVersion'
+          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_common.ApplicationVersion'
         type: array
     type: object
   github_com_openimsdk_chat_pkg_protocol_admin.SearchAdminAccountReq:
@@ -760,7 +665,7 @@ definitions:
     properties:
       logs:
         items:
-          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.OperationLog'
+          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_common.OperationLog'
         type: array
       total:
         type: integer
@@ -794,6 +699,18 @@ definitions:
         additionalProperties:
           type: string
         type: object
+    type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.SetDefaultAppletReq:
+    properties:
+      appID:
+        type: string
+      isDefault:
+        type: integer
+    type: object
+  github_com_openimsdk_chat_pkg_protocol_admin.SetDefaultAppletResp:
+    properties:
+      isDefault:
+        type: integer
     type: object
   github_com_openimsdk_chat_pkg_protocol_admin.SetSigninConfigReq:
     properties:
@@ -832,7 +749,7 @@ definitions:
   github_com_openimsdk_chat_pkg_protocol_admin.TakeAdminMenuResp:
     properties:
       menu:
-        $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.AdminMenu'
+        $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_common.AdminMenu'
     type: object
   github_com_openimsdk_chat_pkg_protocol_admin.UnblockUserReq:
     properties:
@@ -876,19 +793,13 @@ definitions:
         $ref: '#/definitions/wrapperspb.StringValue'
       id:
         type: string
-      md5:
-        $ref: '#/definitions/wrapperspb.StringValue'
       name:
         $ref: '#/definitions/wrapperspb.StringValue'
       priority:
         $ref: '#/definitions/wrapperspb.UInt32Value'
-      size:
-        $ref: '#/definitions/wrapperspb.Int64Value'
       status:
         $ref: '#/definitions/wrapperspb.UInt32Value'
       url:
-        $ref: '#/definitions/wrapperspb.StringValue'
-      version:
         $ref: '#/definitions/wrapperspb.StringValue'
     type: object
   github_com_openimsdk_chat_pkg_protocol_admin.UpdateApplicationVersionReq:
@@ -1012,6 +923,29 @@ definitions:
       unloginCount:
         type: integer
     type: object
+  github_com_openimsdk_chat_pkg_protocol_common.AdminMenu:
+    properties:
+      component:
+        type: string
+      hiddenInMenu:
+        type: boolean
+      icon:
+        type: string
+      key:
+        type: string
+      layout:
+        type: boolean
+      name:
+        type: string
+      parent:
+        type: string
+      path:
+        type: string
+      redirect:
+        type: string
+      sort:
+        type: integer
+    type: object
   github_com_openimsdk_chat_pkg_protocol_common.AppletInfo:
     properties:
       appID:
@@ -1022,19 +956,61 @@ definitions:
         type: string
       id:
         type: string
-      md5:
-        type: string
+      isDefault:
+        type: integer
       name:
         type: string
       priority:
-        type: integer
-      size:
         type: integer
       status:
         type: integer
       url:
         type: string
+    type: object
+  github_com_openimsdk_chat_pkg_protocol_common.ApplicationVersion:
+    properties:
+      createTime:
+        type: integer
+      force:
+        type: boolean
+      hot:
+        type: boolean
+      id:
+        type: string
+      latest:
+        type: boolean
+      platform:
+        type: string
+      text:
+        type: string
+      url:
+        type: string
       version:
+        type: string
+    type: object
+  github_com_openimsdk_chat_pkg_protocol_common.OperationLog:
+    properties:
+      IP:
+        type: string
+      adminAccount:
+        type: string
+      adminID:
+        type: string
+      adminName:
+        type: string
+      createTime:
+        type: integer
+      method:
+        type: string
+      module:
+        type: string
+      operation:
+        type: string
+      operationID:
+        type: string
+      path:
+        type: string
+      requestData:
         type: string
     type: object
   github_com_openimsdk_chat_pkg_protocol_common.UserPublicInfo:
@@ -1641,6 +1617,34 @@ paths:
                   $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SearchAppletResp'
               type: object
       summary: 搜索小程序
+      tags:
+      - applet
+  /applet/setDefault:
+    post:
+      consumes:
+      - application/json
+      description: 设置默认小程序
+      operationId: setDefaultApplet
+      parameters:
+      - description: 要设置的默认小程序ID
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SetDefaultAppletReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/apiresp.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_openimsdk_chat_pkg_protocol_admin.SetDefaultAppletResp'
+              type: object
+      summary: 设置默认小程序
       tags:
       - applet
   /applet/update:

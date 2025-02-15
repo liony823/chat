@@ -26,17 +26,7 @@ func (s *adminServer) GetOperationLog(ctx context.Context, req *adminpb.GetOpera
 	}
 
 	return &adminpb.GetOperationLogResp{
-		OperationID:  logPb.OperationID,
-		AdminID:      logPb.AdminID,
-		AdminAccount: logPb.AdminAccount,
-		AdminName:    logPb.AdminName,
-		Module:       logPb.Module,
-		Operation:    logPb.Operation,
-		Method:       logPb.Method,
-		Path:         logPb.Path,
-		IP:           logPb.IP,
-		RequestData:  logPb.RequestData,
-		CreateTime:   logPb.CreateTime,
+		Log: logPb,
 	}, nil
 }
 

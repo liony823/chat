@@ -183,6 +183,7 @@ func SetAdminRoute(router gin.IRouter, admin *Api, mw *chatmw.MW, cfg *Config, c
 	appletRouterGroup.POST("/add", mw.OperationLog, admin.AddApplet)
 	appletRouterGroup.POST("/del", mw.OperationLog, admin.DelApplet)
 	appletRouterGroup.POST("/update", mw.OperationLog, admin.UpdateApplet)
+	appletRouterGroup.POST("/setDefault", mw.OperationLog, admin.SetDefaultApplet)
 	appletRouterGroup.POST("/search", admin.SearchApplet)
 
 	blockRouter := router.Group("/block", mw.CheckAdmin)

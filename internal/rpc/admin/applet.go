@@ -27,6 +27,7 @@ import (
 	"github.com/openimsdk/chat/pkg/common/constant"
 	admindb "github.com/openimsdk/chat/pkg/common/db/table/admin"
 	"github.com/openimsdk/chat/pkg/common/mctx"
+	"github.com/openimsdk/chat/pkg/eerrs"
 	"github.com/openimsdk/chat/pkg/protocol/admin"
 	"github.com/openimsdk/chat/pkg/protocol/common"
 )
@@ -50,10 +51,8 @@ func (o *adminServer) AddApplet(ctx context.Context, req *admin.AddAppletReq) (*
 		AppID:      req.AppID,
 		Icon:       req.Icon,
 		URL:        req.Url,
-		MD5:        req.Md5,
-		Size:       req.Size,
-		Version:    req.Version,
 		Priority:   req.Priority,
+		IsDefault:  constant.StatusOffDefault,
 		Status:     uint8(req.Status),
 		CreateTime: time.Now(),
 	}
@@ -105,9 +104,6 @@ func (o *adminServer) UpdateApplet(ctx context.Context, req *admin.UpdateAppletR
 }
 
 func (o *adminServer) FindApplet(ctx context.Context, req *admin.FindAppletReq) (*admin.FindAppletResp, error) {
-	if _, _, err := mctx.Check(ctx); err != nil {
-		return nil, err
-	}
 	applets, err := o.Database.FindOnShelf(ctx)
 	if err != nil {
 		return nil, err
@@ -120,10 +116,8 @@ func (o *adminServer) FindApplet(ctx context.Context, req *admin.FindAppletReq) 
 			AppID:      applet.AppID,
 			Icon:       applet.Icon,
 			Url:        applet.URL,
-			Md5:        applet.MD5,
-			Size:       applet.Size,
-			Version:    applet.Version,
 			Priority:   applet.Priority,
+			IsDefault:  uint32(applet.IsDefault),
 			Status:     uint32(applet.Status),
 			CreateTime: applet.CreateTime.UnixMilli(),
 		})
@@ -147,13 +141,69 @@ func (o *adminServer) SearchApplet(ctx context.Context, req *admin.SearchAppletR
 			AppID:      applet.AppID,
 			Icon:       applet.Icon,
 			Url:        applet.URL,
-			Md5:        applet.MD5,
-			Size:       applet.Size,
-			Version:    applet.Version,
 			Priority:   applet.Priority,
+			IsDefault:  uint32(applet.IsDefault),
 			Status:     uint32(applet.Status),
 			CreateTime: applet.CreateTime.UnixMilli(),
 		})
 	}
 	return resp, nil
+}
+
+func (o *adminServer) SetDefaultApplet(ctx context.Context, req *admin.SetDefaultAppletReq) (*admin.SetDefaultAppletResp, error) {
+	if _, err := mctx.CheckAdmin(ctx); err != nil {
+		return nil, err
+	}
+	if req.AppID == "" {
+		return nil, errs.ErrArgs.WrapMsg("AppID empty")
+	}
+	if !(req.IsDefault == constant.StatusOnDefault || req.IsDefault == constant.StatusOffDefault) {
+		return nil, errs.ErrArgs.WrapMsg("invalid status")
+	}
+	applet, err := o.Database.GetAppletByAppID(ctx, req.AppID)
+	if err != nil {
+		return nil, err
+	}
+
+	if applet.IsDefault == uint8(req.IsDefault) {
+		return &admin.SetDefaultAppletResp{
+			IsDefault: uint32(applet.IsDefault),
+		}, nil
+	}
+
+	if req.IsDefault == constant.StatusOnDefault && applet.Status != constant.StatusOnShelf {
+		return nil, eerrs.ErrAppletNotOnShelf.WrapMsg("applet not on shelf")
+	}
+
+	if err := o.Database.SetDefaultApplet(ctx, applet.ID, req.IsDefault); err != nil {
+		return nil, err
+	}
+
+	return &admin.SetDefaultAppletResp{
+		IsDefault: uint32(req.IsDefault),
+	}, nil
+}
+
+func (o *adminServer) GetApplet(ctx context.Context, req *admin.GetAppletReq) (*admin.GetAppletResp, error) {
+	if _, _, err := mctx.Check(ctx); err != nil {
+		return nil, err
+	}
+	applet, err := o.Database.GetAppletByAppID(ctx, req.AppID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &admin.GetAppletResp{
+		Applet: &common.AppletInfo{
+			Id:         applet.ID,
+			Name:       applet.Name,
+			AppID:      applet.AppID,
+			Icon:       applet.Icon,
+			Url:        applet.URL,
+			Priority:   applet.Priority,
+			IsDefault:  uint32(applet.IsDefault),
+			Status:     uint32(applet.Status),
+			CreateTime: applet.CreateTime.UnixMilli(),
+		},
+	}, nil
 }

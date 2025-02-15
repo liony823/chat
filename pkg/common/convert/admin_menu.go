@@ -4,7 +4,7 @@ import (
 	"context"
 
 	admindb "github.com/openimsdk/chat/pkg/common/db/table/admin"
-	adminpb "github.com/openimsdk/chat/pkg/protocol/admin"
+	adminpb "github.com/openimsdk/chat/pkg/protocol/common"
 )
 
 func AdminMenuDB2PB(ctx context.Context, menus []*admindb.AdminMenu) (adminMenuPbs []*adminpb.AdminMenu, err error) {
