@@ -18,6 +18,7 @@ import (
 	"context"
 
 	"github.com/openimsdk/tools/errs"
+	"github.com/openimsdk/tools/utils/pwdutil"
 
 	"github.com/openimsdk/chat/pkg/common/constant"
 	"github.com/openimsdk/chat/pkg/common/mctx"
@@ -54,7 +55,11 @@ func (o *chatSvr) ResetPassword(ctx context.Context, req *chat.ResetPasswordReq)
 	if err != nil {
 		return nil, err
 	}
-	err = o.Database.UpdatePasswordAndDeleteVerifyCode(ctx, cred.UserID, req.Password, verifyCodeID)
+	hashPassword, err := pwdutil.EncryptPassword(req.Password)
+	if err != nil {
+		return nil, err
+	}
+	err = o.Database.UpdatePasswordAndDeleteVerifyCode(ctx, cred.UserID, hashPassword, verifyCodeID)
 	if err != nil {
 		return nil, err
 	}
@@ -97,7 +102,11 @@ func (o *chatSvr) ChangePassword(ctx context.Context, req *chat.ChangePasswordRe
 		}
 	}
 	if user.Password != req.NewPassword {
-		if err := o.Database.UpdatePassword(ctx, req.UserID, req.NewPassword); err != nil {
+		hashPassword, err := pwdutil.EncryptPassword(req.NewPassword)
+		if err != nil {
+			return nil, err
+		}
+		if err := o.Database.UpdatePassword(ctx, req.UserID, hashPassword); err != nil {
 			return nil, err
 		}
 	}

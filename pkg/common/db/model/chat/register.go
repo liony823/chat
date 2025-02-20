@@ -23,6 +23,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
+	"github.com/openimsdk/chat/pkg/common/constant"
 	"github.com/openimsdk/chat/pkg/common/db/table/chat"
 	"github.com/openimsdk/tools/errs"
 )
@@ -64,4 +65,9 @@ func (o *Register) Delete(ctx context.Context, userIDs []string) error {
 		return nil
 	}
 	return mongoutil.DeleteMany(ctx, o.coll, bson.M{"user_id": bson.M{"$in": userIDs}})
+}
+
+func (o *Register) TakeByAuto(ctx context.Context, deviceID string) (*chat.Register, error) {
+	filter := bson.M{"device_id": deviceID, "account_type": constant.AutoDevice}
+	return mongoutil.FindOne[*chat.Register](ctx, o.coll, filter)
 }

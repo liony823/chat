@@ -210,7 +210,7 @@ func (o *chatSvr) genAccount() string {
 	rand.Read(data)
 	chars := []byte("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	for i := 0; i < len(data); i++ {
-		data[i] = chars[data[i]%10]
+		data[i] = chars[data[i]%uint8(len(chars))]
 	}
 	return string(data)
 }
@@ -258,16 +258,26 @@ func (o *chatSvr) RegisterUser(ctx context.Context, req *chat.RegisterUserReq) (
 				return nil, err
 			}
 		}
-		// if req.User.Email == "" {
-		// 	if _, err := o.verifyCode(ctx, o.verifyCodeJoin(req.User.AreaCode, req.User.PhoneNumber), req.VerifyCode); err != nil {
-		// 		return nil, err
-		// 	}
-		// } else {
-		// 	if _, err := o.verifyCode(ctx, req.User.Email, req.VerifyCode); err != nil {
-		// 		return nil, err
-		// 	}
-		// }
 	}
+
+	if req.DeviceID != "" && req.User.RegisterType == constant.AutoDeviceRegister {
+		autoRegisterInfo, err := o.Database.TakeRegisterByAuto(ctx, req.DeviceID)
+		if err != nil {
+			return nil, err
+		}
+		if autoRegisterInfo != nil {
+
+			attribute, err := o.Database.TakeAttributeByUserID(ctx, autoRegisterInfo.UserID)
+			if err != nil {
+				return nil, err
+			}
+			req.User.UserID = attribute.UserID
+			req.User.Account = attribute.Account
+			req.User.Nickname = attribute.Nickname
+			req.User.FaceURL = attribute.FaceURL
+		}
+	}
+
 	if req.User.UserID == "" {
 		for i := 0; i < 20; i++ {
 			userID := o.genUserID()
@@ -308,13 +318,13 @@ func (o *chatSvr) RegisterUser(ctx context.Context, req *chat.RegisterUserReq) (
 	}
 
 	if req.User.Account != "" {
+		registerType = constant.AccountRegister
 		credentials = append(credentials, &chatdb.Credential{
 			UserID:      req.User.UserID,
 			Account:     req.User.Account,
 			Type:        constant.CredentialAccount,
 			AllowChange: true,
 		})
-		registerType = constant.AccountRegister
 	} else {
 		for i := 0; i < 20; i++ {
 			account := o.genAccount()
@@ -356,10 +366,12 @@ func (o *chatSvr) RegisterUser(ctx context.Context, req *chat.RegisterUserReq) (
 	} else {
 		accountType = constant.Account
 	}
-
-	hashedPassword, err := pwdutil.EncryptPassword(req.User.Password)
-	if err != nil {
-		return nil, err
+	var hashedPassword string
+	if registerType != constant.AutoDeviceRegister {
+		hashedPassword, err = pwdutil.EncryptPassword(req.User.Password)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	register := &chatdb.Register{
@@ -409,6 +421,17 @@ func (o *chatSvr) RegisterUser(ctx context.Context, req *chat.RegisterUserReq) (
 		chatToken, err := o.Admin.CreateToken(ctx, req.User.UserID, constant.NormalUser)
 		if err == nil {
 			resp.ChatToken = chatToken.Token
+			record := &chatdb.UserLoginRecord{
+				UserID:     req.User.UserID,
+				LoginTime:  time.Now(),
+				IP:         req.Ip,
+				DeviceID:   req.DeviceID,
+				DeviceName: req.DeviceName,
+				Platform:   constantpb.PlatformIDToName(int(req.Platform)),
+			}
+			if err := o.Database.LoginRecord(ctx, record, nil); err != nil {
+				return nil, err
+			}
 		} else {
 			log.ZError(ctx, "Admin CreateToken Failed", err, "userID", req.User.UserID, "platform", req.Platform)
 		}
@@ -419,8 +442,9 @@ func (o *chatSvr) RegisterUser(ctx context.Context, req *chat.RegisterUserReq) (
 
 func (o *chatSvr) Login(ctx context.Context, req *chat.LoginReq) (*chat.LoginResp, error) {
 	resp := &chat.LoginResp{}
-	if req.Password == "" && req.VerifyCode == "" {
-		return nil, errs.ErrArgs.WrapMsg("password or code must be set")
+	// 密码必须设置 除非是自动设备登录
+	if req.Password == "" && req.LoginType != constant.AutoDeviceLogin {
+		return nil, errs.ErrArgs.WrapMsg("password be set")
 	}
 	var (
 		err        error
@@ -429,9 +453,22 @@ func (o *chatSvr) Login(ctx context.Context, req *chat.LoginReq) (*chat.LoginRes
 	)
 
 	switch {
-	case req.Account != "":
+	case req.LoginType == constant.AutoDeviceLogin:
+		register, err := o.Database.TakeRegisterByAuto(ctx, req.DeviceID)
+		if err != nil {
+			return nil, err
+		}
+		if register == nil {
+			return nil, errs.ErrArgs.WrapMsg("auto device not register")
+		}
+		attribute, err := o.Database.TakeAttributeByUserID(ctx, register.UserID)
+		if err != nil {
+			return nil, err
+		}
+		acc = attribute.Account
+	case req.LoginType == constant.AccountLogin:
 		acc = req.Account
-	case req.PhoneNumber != "":
+	case req.LoginType == constant.PhoneLogin:
 		if req.AreaCode == "" {
 			return nil, errs.ErrArgs.WrapMsg("area code must")
 		}
@@ -442,10 +479,8 @@ func (o *chatSvr) Login(ctx context.Context, req *chat.LoginReq) (*chat.LoginRes
 			return nil, errs.ErrArgs.WrapMsg("area code must be number")
 		}
 		acc = BuildCredentialPhone(req.AreaCode, req.PhoneNumber)
-	case req.Email != "":
-		acc = req.Email
 	default:
-		return nil, errs.ErrArgs.WrapMsg("account or phone number or email must be set")
+		return nil, errs.ErrArgs.WrapMsg("account or phone number must be set")
 	}
 	credential, err = o.Database.TakeCredentialByAccount(ctx, acc)
 	if err != nil {
@@ -458,26 +493,12 @@ func (o *chatSvr) Login(ctx context.Context, req *chat.LoginReq) (*chat.LoginRes
 		return nil, err
 	}
 	var verifyCodeID *string
-	if req.Password == "" {
-		var account string
-		if req.Email == "" {
-			account = o.verifyCodeJoin(req.AreaCode, req.PhoneNumber)
-		} else {
-			account = req.Email
-		}
-		id, err := o.verifyCode(ctx, account, req.VerifyCode)
-		if err != nil {
-			return nil, err
-		}
-		if id != "" {
-			verifyCodeID = &id
-		}
-	} else {
+	if req.LoginType != constant.AutoDeviceLogin {
 		account, err := o.Database.TakeAccount(ctx, credential.UserID)
 		if err != nil {
 			return nil, err
 		}
-		if !pwdutil.VerifyPassword(account.Password, req.Password) {
+		if !pwdutil.VerifyPassword(req.Password, account.Password) {
 			return nil, eerrs.ErrPassword.Wrap()
 		}
 	}

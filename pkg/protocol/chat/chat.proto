@@ -123,7 +123,8 @@ message RegisterUserReq {
   string deviceID = 4;
   int32 platform = 5;
   bool autoLogin = 7;
-  RegisterUserInfo user = 8;
+  string deviceName = 8;
+  RegisterUserInfo user = 9;
 }
 
 message RegisterUserResp {
@@ -150,7 +151,7 @@ message LoginReq {
   string deviceID = 7;
   string email = 8;
   string deviceName = 9;
-  int32 RegisterType = 10;
+  int32 LoginType = 10;
   string ip = 11;
 }
 

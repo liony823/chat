@@ -38,4 +38,5 @@ type RegisterInterface interface {
 	Create(ctx context.Context, registers ...*Register) error
 	CountTotal(ctx context.Context, before *time.Time) (int64, error)
 	Delete(ctx context.Context, userIDs []string) error
+	TakeByAuto(ctx context.Context, deviceID string) (*Register, error)
 }

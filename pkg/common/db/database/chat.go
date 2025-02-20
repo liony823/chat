@@ -57,6 +57,7 @@ type ChatDatabaseInterface interface {
 	UserLoginCountTotal(ctx context.Context, before *time.Time) (int64, error)
 	UserLoginCountRangeEverydayTotal(ctx context.Context, start *time.Time, end *time.Time) (map[string]int64, int64, error)
 	DelUserAccount(ctx context.Context, userIDs []string) error
+	TakeRegisterByAuto(ctx context.Context, deviceID string) (*chatdb.Register, error)
 }
 
 func NewChatDatabase(cli *mongoutil.Client) (ChatDatabaseInterface, error) {
@@ -295,4 +296,8 @@ func (o *ChatDatabase) DelUserAccount(ctx context.Context, userIDs []string) err
 		}
 		return nil
 	})
+}
+
+func (o *ChatDatabase) TakeRegisterByAuto(ctx context.Context, deviceID string) (*chatdb.Register, error) {
+	return o.register.TakeByAuto(ctx, deviceID)
 }

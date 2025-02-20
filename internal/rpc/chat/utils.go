@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/openimsdk/chat/pkg/common/constant"
 	"github.com/openimsdk/chat/pkg/common/db/dbutil"
 	table "github.com/openimsdk/chat/pkg/common/db/table/chat"
 	"github.com/openimsdk/chat/pkg/eerrs"
@@ -67,7 +68,7 @@ func (o *chatSvr) checkRegisterInfo(ctx context.Context, user *chat.RegisterUser
 	if user == nil {
 		return errs.ErrArgs.WrapMsg("user is nil")
 	}
-	if !(user.PhoneNumber != "" && user.AreaCode != "") && user.Account == "" {
+	if !(user.PhoneNumber != "" && user.AreaCode != "") && (user.Account == "" && user.RegisterType != constant.AutoDeviceRegister) {
 		return errs.ErrArgs.WrapMsg("at least one valid account is required")
 	}
 	if user.PhoneNumber != "" {

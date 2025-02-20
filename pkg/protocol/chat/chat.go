@@ -165,7 +165,7 @@ func (x *LoginReq) Check() error {
 		return errs.ErrArgs.WrapMsg("platform is invalid")
 	}
 
-	if x.RegisterType == constant.PhoneRegister {
+	if x.LoginType == constant.PhoneLogin {
 		if x.AreaCode == "" {
 			return errs.ErrArgs.WrapMsg("AreaCode is empty")
 		} else if err := AreaCodeCheck(x.AreaCode); err != nil {
@@ -176,11 +176,11 @@ func (x *LoginReq) Check() error {
 		} else if err := PhoneNumberCheck(x.PhoneNumber); err != nil {
 			return err
 		}
-	} else if x.RegisterType == constant.AutoDeviceRegister {
+	} else if x.LoginType == constant.AutoDeviceLogin {
 		if x.DeviceID == "" {
 			return errs.ErrArgs.WrapMsg("DeviceID is empty")
 		}
-	} else if x.RegisterType == constant.AccountRegister {
+	} else if x.LoginType == constant.AccountLogin {
 		if x.Account == "" {
 			return errs.ErrArgs.WrapMsg("Account is empty")
 		}

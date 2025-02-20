@@ -59,5 +59,6 @@ func (o *OperationLogMgo) Search(ctx context.Context, keyword string, pagination
 			bson.M{"method": bson.M{"$regex": keyword}},
 		}
 	}
-	return mongoutil.FindPage[*admindb.OperationLog](ctx, o.coll, filter, pagination)
+	opts := options.Find().SetSort(bson.M{"create_time": -1})
+	return mongoutil.FindPage[*admindb.OperationLog](ctx, o.coll, filter, pagination, opts)
 }

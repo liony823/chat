@@ -27,7 +27,7 @@ const (
 const (
 	Phone      = "phone"
 	Account    = "account"
-	AutoDevice = "auto_device"
+	AutoDevice = "auto"
 )
 
 // Mode.
@@ -106,7 +106,12 @@ const (
 	AccountRegister = iota
 	PhoneRegister
 	AutoDeviceRegister
-	EmailRegister
+)
+
+const (
+	AccountLogin = iota
+	PhoneLogin
+	AutoDeviceLogin
 )
 
 const (
