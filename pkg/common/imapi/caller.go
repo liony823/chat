@@ -5,13 +5,13 @@ import (
 	"sync"
 	"time"
 
+	"github.com/openimsdk/protocol/constant"
 	"github.com/openimsdk/protocol/msggateway"
 	"github.com/openimsdk/tools/log"
 
 	"github.com/openimsdk/chat/pkg/eerrs"
 	chatpb "github.com/openimsdk/chat/pkg/protocol/chat"
 	"github.com/openimsdk/protocol/auth"
-	"github.com/openimsdk/protocol/constant"
 	constantpb "github.com/openimsdk/protocol/constant"
 	"github.com/openimsdk/protocol/group"
 	"github.com/openimsdk/protocol/relation"
@@ -25,7 +25,8 @@ type CallerInterface interface {
 	GetUserToken(ctx context.Context, userID string, platform int32) (string, error)
 	GetAdminTokenCache(ctx context.Context, userID string) (string, error)
 	InviteToGroup(ctx context.Context, userID string, groupIDs []string) error
-	UpdateUserInfo(ctx context.Context, userID string, nickName string, faceURL string) error
+	UpdateUserInfo(ctx context.Context, userID string, nickName string, faceURL string, account string) error
+	UpdateUserInfoEx(ctx context.Context, userInfo *sdkws.UserInfoWithEx) error
 	ForceOffLine(ctx context.Context, userID string) error
 	RegisterUser(ctx context.Context, users []*sdkws.UserInfo) error
 	FindGroupInfo(ctx context.Context, groupIDs []string) ([]*sdkws.GroupInfo, error)
@@ -131,15 +132,20 @@ func (c *Caller) InviteToGroup(ctx context.Context, userID string, groupIDs []st
 	return nil
 }
 
-func (c *Caller) UpdateUserInfo(ctx context.Context, userID string, nickName string, faceURL string) error {
+func (c *Caller) UpdateUserInfo(ctx context.Context, userID string, nickName string, faceURL string, account string) error {
 	_, err := updateUserInfo.Call(ctx, c.imApi, &user.UpdateUserInfoReq{UserInfo: &sdkws.UserInfo{
 		UserID:   userID,
 		Nickname: nickName,
 		FaceURL:  faceURL,
+		Account:  account,
 	}})
 	return err
 }
 
+func (c *Caller) UpdateUserInfoEx(ctx context.Context, userInfo *sdkws.UserInfoWithEx) error {
+	_, err := updateUserInfoEx.Call(ctx, c.imApi, &user.UpdateUserInfoExReq{UserInfo: userInfo})
+	return err
+}
 func (c *Caller) RegisterUser(ctx context.Context, users []*sdkws.UserInfo) error {
 	_, err := registerUser.Call(ctx, c.imApi, &user.UserRegisterReq{
 		Users: users,

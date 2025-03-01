@@ -135,6 +135,7 @@ func SetChatRoute(router gin.IRouter, chat *Api, mw *chatmw.MW) {
 
 	user := router.Group("/user", mw.CheckToken)
 	user.POST("/update", chat.UpdateUserInfo)          // Edit personal information
+	user.POST("/update_ex", chat.UpdateUserInfoEx)     // Edit personal information
 	user.POST("/find/public", chat.FindUserPublicInfo) // Get user's public information
 	user.POST("/find/full", chat.FindUserFullInfo)     // Get all information of the user
 	user.POST("/search/full", chat.SearchUserFullInfo) // Search user's public information
@@ -160,8 +161,8 @@ func SetChatRoute(router gin.IRouter, chat *Api, mw *chatmw.MW) {
 	user.POST("/online_time", chat.GetUsersOnlineTime)                          // Get users' online time
 
 	group := router.Group("/group", mw.CheckToken)
-	group.POST("/contact/get", chat.GetGroupFromContact) // Get group from contact
-	group.POST("/contact/save", chat.SaveGroupToContact) // Save group to contact
+	group.POST("/contact/get", chat.GetGroupFromContact)       // Get group from contact
+	group.POST("/contact/save", chat.SaveGroupToContact)       // Save group to contact
 	group.POST("/contact/delete", chat.DeleteGroupFromContact) // Delete group from contact
 
 	post := router.Group("/post", mw.CheckToken)

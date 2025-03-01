@@ -274,6 +274,7 @@ func (o *Api) UpdateUserInfo(c *gin.Context) {
 	var (
 		nickName string
 		faceURL  string
+		account  string
 	)
 	if req.Nickname != nil {
 		nickName = req.Nickname.Value
@@ -285,7 +286,33 @@ func (o *Api) UpdateUserInfo(c *gin.Context) {
 	} else {
 		faceURL = respUpdate.FaceUrl
 	}
-	err = o.imApiCaller.UpdateUserInfo(mctx.WithApiToken(c, imToken), req.UserID, nickName, faceURL)
+
+	if req.Account != nil {
+		account = req.Account.Value
+	}
+
+	err = o.imApiCaller.UpdateUserInfo(mctx.WithApiToken(c, imToken), req.UserID, nickName, faceURL, account)
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+	apiresp.GinSuccess(c, apistruct.UpdateUserInfoResp{})
+}
+
+func (o *Api) UpdateUserInfoEx(c *gin.Context) {
+	req, err := a2r.ParseRequest[sdkws.UserInfoWithEx](c)
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+	var imToken string
+	imToken, err = o.imApiCaller.ImAdminTokenWithDefaultAdmin(c)
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+
+	err = o.imApiCaller.UpdateUserInfoEx(mctx.WithApiToken(c, imToken), req)
 	if err != nil {
 		apiresp.GinError(c, err)
 		return

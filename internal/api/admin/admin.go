@@ -118,7 +118,7 @@ func (o *Api) AdminUpdateInfo(c *gin.Context) {
 		log.ZError(c, "AdminUpdateInfo ImAdminTokenWithDefaultAdmin", err, "imAdminUserID", imAdminUserID)
 		return
 	}
-	if err := o.imApiCaller.UpdateUserInfo(mctx.WithApiToken(c, imToken), imAdminUserID, resp.Nickname, resp.FaceURL); err != nil {
+	if err := o.imApiCaller.UpdateUserInfo(mctx.WithApiToken(c, imToken), imAdminUserID, resp.Nickname, resp.FaceURL, req.Account.Value); err != nil {
 		log.ZError(c, "AdminUpdateInfo UpdateUserInfo", err, "userID", resp.UserID, "nickName", resp.Nickname, "faceURL", resp.FaceURL)
 	}
 	apiresp.GinSuccess(c, nil)
@@ -477,15 +477,15 @@ func (o *Api) xlsx2user(users []model.User) ([]*chat.RegisterUserInfo, error) {
 		}
 		// gender, _ := strconv.Atoi(info.Gender)
 		chatUsers[i] = &chat.RegisterUserInfo{
-			UserID:      info.UserID,
-			Nickname:    info.Nickname,
-			FaceURL:     info.FaceURL,
+			UserID:   info.UserID,
+			Nickname: info.Nickname,
+			FaceURL:  info.FaceURL,
 			// Birth:       o.xlsxBirth(info.Birth).UnixMilli(),
 			// Gender:      int32(gender),
 			// AreaCode:    info.AreaCode,
 			// PhoneNumber: info.PhoneNumber,
 			// Email:       info.Email,
-			Account:     info.Account,
+			Account: info.Account,
 			// Password:    encrypt.Md5(info.Password),
 		}
 	}
