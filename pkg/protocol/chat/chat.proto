@@ -526,6 +526,13 @@ message PinPostReq {
 message PinPostResp {
 }
 
+message SetStealthUserReq {
+  string userID = 1;
+  int32 stealth = 2;
+}
+
+message SetStealthUserResp {
+}
 
 
 service chat {
@@ -612,4 +619,8 @@ service chat {
     rpc CommentPost(CommentPostReq) returns (CommentPostResp);
     // 引用帖子
     rpc ReferencePost(ReferencePostReq) returns (ReferencePostResp);
+
+
+    // 设置隐身状态
+    rpc SetStealthUser(SetStealthUserReq) returns (SetStealthUserResp);
 }

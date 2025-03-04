@@ -9,6 +9,7 @@ import (
 	"github.com/openimsdk/chat/pkg/protocol/admin"
 	"github.com/openimsdk/chat/pkg/protocol/chat"
 	"github.com/openimsdk/tools/db/mongoutil"
+	"github.com/openimsdk/tools/db/redisutil"
 	"github.com/openimsdk/tools/db/tx"
 	"github.com/openimsdk/tools/discovery"
 	"github.com/openimsdk/tools/errs"
@@ -36,6 +37,10 @@ func Start(ctx context.Context, config *Config, client discovery.SvcDiscoveryReg
 	if len(config.Share.ChatAdmin) == 0 {
 		return errs.New("share chat admin not configured")
 	}
+	rdb, err := redisutil.NewRedisClient(ctx, config.RedisConfig.Build())
+	if err != nil {
+		return err
+	}
 	mgocli, err := mongoutil.NewMongoDB(ctx, config.MongodbConfig.Build())
 	if err != nil {
 		return err
@@ -52,7 +57,7 @@ func Start(ctx context.Context, config *Config, client discovery.SvcDiscoveryReg
 	if mail := config.RpcConfig.VerifyCode.Mail; mail.Enable {
 		srv.Mail = email.NewMail(mail.SMTPAddr, mail.SMTPPort, mail.SenderMail, mail.SenderAuthorizationCode, mail.Title)
 	}
-	srv.Database, err = database.NewChatDatabase(mgocli)
+	srv.Database, err = database.NewChatDatabase(mgocli, rdb)
 	if err != nil {
 		return err
 	}

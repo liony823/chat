@@ -25,7 +25,7 @@ type CallerInterface interface {
 	GetUserToken(ctx context.Context, userID string, platform int32) (string, error)
 	GetAdminTokenCache(ctx context.Context, userID string) (string, error)
 	InviteToGroup(ctx context.Context, userID string, groupIDs []string) error
-	UpdateUserInfo(ctx context.Context, userID string, nickName string, faceURL string, account string) error
+	UpdateUserInfo(ctx context.Context, userID string, nickName string, faceURL string) error
 	UpdateUserInfoEx(ctx context.Context, userInfo *sdkws.UserInfoWithEx) error
 	ForceOffLine(ctx context.Context, userID string) error
 	RegisterUser(ctx context.Context, users []*sdkws.UserInfo) error
@@ -132,12 +132,11 @@ func (c *Caller) InviteToGroup(ctx context.Context, userID string, groupIDs []st
 	return nil
 }
 
-func (c *Caller) UpdateUserInfo(ctx context.Context, userID string, nickName string, faceURL string, account string) error {
+func (c *Caller) UpdateUserInfo(ctx context.Context, userID string, nickName string, faceURL string) error {
 	_, err := updateUserInfo.Call(ctx, c.imApi, &user.UpdateUserInfoReq{UserInfo: &sdkws.UserInfo{
 		UserID:   userID,
 		Nickname: nickName,
 		FaceURL:  faceURL,
-		Account:  account,
 	}})
 	return err
 }

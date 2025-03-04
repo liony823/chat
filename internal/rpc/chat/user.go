@@ -426,3 +426,15 @@ func (o *chatSvr) GetAllUserIDs(ctx context.Context, req *chat.GetAllUserIDsReq)
 
 	return &chat.GetAllUserIDsResp{UserIDs: userIDs}, nil
 }
+
+
+func (o *chatSvr) SetStealthUser(ctx context.Context, req *chat.SetStealthUserReq) (*chat.SetStealthUserResp, error) {
+	if _, _, err := mctx.CheckAdminOrUser(ctx); err != nil {
+		return nil, err
+	}
+
+	if err := o.Database.SetStealthUser(ctx, req.UserID, int64(req.Stealth)); err != nil {
+		return nil, err
+	}
+	return &chat.SetStealthUserResp{}, nil
+}

@@ -21,8 +21,10 @@ import (
 	"github.com/openimsdk/tools/db/mongoutil"
 	"github.com/openimsdk/tools/db/pagination"
 	"github.com/openimsdk/tools/db/tx"
+	"github.com/redis/go-redis/v9"
 
 	"github.com/openimsdk/chat/pkg/common/constant"
+	"github.com/openimsdk/chat/pkg/common/db/cache"
 	admindb "github.com/openimsdk/chat/pkg/common/db/model/admin"
 	"github.com/openimsdk/chat/pkg/common/db/model/chat"
 	"github.com/openimsdk/chat/pkg/common/db/table/admin"
@@ -93,9 +95,14 @@ type ChatDatabaseInterface interface {
 	GetPostIDsByCollect(ctx context.Context, userID string) ([]string, error)
 	GetPinnedPostByUserID(ctx context.Context, userID string) (*chatdb.Post, error)
 	GetPostsByCursorAndPostIDs(ctx context.Context, cursor int64, postIDs []string, count int64) ([]*chatdb.Post, string, error)
+
+	// ########## Stealth ##########
+	SetStealthUser(ctx context.Context, userID string, stealth int64) error
+	GetStealthUser(ctx context.Context, userID string) (int64, error)
+	DelStealthUser(ctx context.Context, userID string) error
 }
 
-func NewChatDatabase(cli *mongoutil.Client) (ChatDatabaseInterface, error) {
+func NewChatDatabase(cli *mongoutil.Client, rdb redis.UniversalClient) (ChatDatabaseInterface, error) {
 	register, err := chat.NewRegister(cli.GetDB())
 	if err != nil {
 		return nil, err
@@ -153,6 +160,7 @@ func NewChatDatabase(cli *mongoutil.Client) (ChatDatabaseInterface, error) {
 		post:             post,
 		userPostRelation: userPostRelation,
 		contact:          contact,
+		userCache:        cache.NewUserCacheRedis(rdb),
 	}, nil
 }
 
@@ -169,6 +177,20 @@ type ChatDatabase struct {
 
 	post             chatdb.PostInterface
 	userPostRelation chatdb.UserPostRelationInterface
+
+	userCache cache.UserCacheInterface
+}
+
+func (o *ChatDatabase) SetStealthUser(ctx context.Context, userID string, stealth int64) error {
+	return o.userCache.SetStealthUser(ctx, userID, stealth)
+}
+
+func (o *ChatDatabase) GetStealthUser(ctx context.Context, userID string) (int64, error) {
+	return o.userCache.GetStealthUser(ctx, userID)
+}
+
+func (o *ChatDatabase) DelStealthUser(ctx context.Context, userID string) error {
+	return o.userCache.DelStealthUser(ctx, userID)
 }
 
 func (o *ChatDatabase) GetUser(ctx context.Context, userID string) (account *chatdb.Account, err error) {

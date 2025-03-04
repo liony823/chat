@@ -274,7 +274,6 @@ func (o *Api) UpdateUserInfo(c *gin.Context) {
 	var (
 		nickName string
 		faceURL  string
-		account  string
 	)
 	if req.Nickname != nil {
 		nickName = req.Nickname.Value
@@ -287,11 +286,7 @@ func (o *Api) UpdateUserInfo(c *gin.Context) {
 		faceURL = respUpdate.FaceUrl
 	}
 
-	if req.Account != nil {
-		account = req.Account.Value
-	}
-
-	err = o.imApiCaller.UpdateUserInfo(mctx.WithApiToken(c, imToken), req.UserID, nickName, faceURL, account)
+	err = o.imApiCaller.UpdateUserInfo(mctx.WithApiToken(c, imToken), req.UserID, nickName, faceURL)
 	if err != nil {
 		apiresp.GinError(c, err)
 		return
@@ -318,6 +313,10 @@ func (o *Api) UpdateUserInfoEx(c *gin.Context) {
 		return
 	}
 	apiresp.GinSuccess(c, apistruct.UpdateUserInfoResp{})
+}
+
+func (o *Api) SetStealthUser(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.SetStealthUser, o.chatClient)
 }
 
 func (o *Api) FindUserPublicInfo(c *gin.Context) {

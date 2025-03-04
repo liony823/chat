@@ -23,6 +23,16 @@ import (
 	"github.com/openimsdk/tools/errs"
 )
 
+func (x *SetStealthUserReq) Check() error {
+	if x.UserID == "" {
+		return errs.ErrArgs.WrapMsg("userID is empty")
+	}
+	if x.Stealth != constant.StealthUser && x.Stealth != constant.NotStealthUser {
+		return errs.ErrArgs.WrapMsg("stealth is invalid")
+	}
+	return nil
+}
+
 func (x *UpdateUserInfoReq) Check() error {
 	if x.UserID == "" {
 		return errs.ErrArgs.WrapMsg("userID is empty")

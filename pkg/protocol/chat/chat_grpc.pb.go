@@ -75,6 +75,7 @@ const (
 	Chat_ForwardPost_FullMethodName                = "/openim.chat.chat/ForwardPost"
 	Chat_CommentPost_FullMethodName                = "/openim.chat.chat/CommentPost"
 	Chat_ReferencePost_FullMethodName              = "/openim.chat.chat/ReferencePost"
+	Chat_SetStealthUser_FullMethodName             = "/openim.chat.chat/SetStealthUser"
 )
 
 // ChatClient is the client API for Chat service.
@@ -148,6 +149,8 @@ type ChatClient interface {
 	CommentPost(ctx context.Context, in *CommentPostReq, opts ...grpc.CallOption) (*CommentPostResp, error)
 	// 引用帖子
 	ReferencePost(ctx context.Context, in *ReferencePostReq, opts ...grpc.CallOption) (*ReferencePostResp, error)
+	// 设置隐身状态
+	SetStealthUser(ctx context.Context, in *SetStealthUserReq, opts ...grpc.CallOption) (*SetStealthUserResp, error)
 }
 
 type chatClient struct {
@@ -578,6 +581,16 @@ func (c *chatClient) ReferencePost(ctx context.Context, in *ReferencePostReq, op
 	return out, nil
 }
 
+func (c *chatClient) SetStealthUser(ctx context.Context, in *SetStealthUserReq, opts ...grpc.CallOption) (*SetStealthUserResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SetStealthUserResp)
+	err := c.cc.Invoke(ctx, Chat_SetStealthUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ChatServer is the server API for Chat service.
 // All implementations must embed UnimplementedChatServer
 // for forward compatibility.
@@ -649,6 +662,8 @@ type ChatServer interface {
 	CommentPost(context.Context, *CommentPostReq) (*CommentPostResp, error)
 	// 引用帖子
 	ReferencePost(context.Context, *ReferencePostReq) (*ReferencePostResp, error)
+	// 设置隐身状态
+	SetStealthUser(context.Context, *SetStealthUserReq) (*SetStealthUserResp, error)
 	mustEmbedUnimplementedChatServer()
 }
 
@@ -784,6 +799,9 @@ func (UnimplementedChatServer) CommentPost(context.Context, *CommentPostReq) (*C
 }
 func (UnimplementedChatServer) ReferencePost(context.Context, *ReferencePostReq) (*ReferencePostResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReferencePost not implemented")
+}
+func (UnimplementedChatServer) SetStealthUser(context.Context, *SetStealthUserReq) (*SetStealthUserResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetStealthUser not implemented")
 }
 func (UnimplementedChatServer) mustEmbedUnimplementedChatServer() {}
 func (UnimplementedChatServer) testEmbeddedByValue()              {}
@@ -1562,6 +1580,24 @@ func _Chat_ReferencePost_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Chat_SetStealthUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetStealthUserReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServer).SetStealthUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Chat_SetStealthUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServer).SetStealthUser(ctx, req.(*SetStealthUserReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Chat_ServiceDesc is the grpc.ServiceDesc for Chat service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1736,6 +1772,10 @@ var Chat_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ReferencePost",
 			Handler:    _Chat_ReferencePost_Handler,
+		},
+		{
+			MethodName: "SetStealthUser",
+			Handler:    _Chat_SetStealthUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

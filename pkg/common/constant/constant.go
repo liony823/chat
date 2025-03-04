@@ -182,3 +182,8 @@ const (
 
 	RefundRedPacket = 1005 //退款
 )
+
+const (
+	StealthUser    = 1
+	NotStealthUser = 0
+)
