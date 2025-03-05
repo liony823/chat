@@ -382,6 +382,7 @@ func (o *chatSvr) RegisterUser(ctx context.Context, req *chat.RegisterUserReq) (
 		Nickname:  req.User.Nickname,
 		FaceURL:   req.User.FaceURL,
 		Address:   req.User.Address,
+		About:     req.User.About,
 		PublicKey: req.User.PublicKey,
 		// Gender:         req.User.Gender,
 		// BirthTime:      time.UnixMilli(req.User.Birth),

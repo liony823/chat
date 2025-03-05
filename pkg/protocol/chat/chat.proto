@@ -104,8 +104,9 @@ message RegisterUserInfo {
   string faceURL = 3;
   string account = 4;
   string publicKey = 5;
-  string Address = 6;
-  int32 RegisterType = 7;
+  string address = 6;
+  string about = 7;
+  int32 registerType = 8;
 }
 
 message RegisterUserReq {
