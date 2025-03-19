@@ -74,6 +74,7 @@ func (o *Api) SendVerifyCode(c *gin.Context) {
 
 func (o *Api) VerifyCode(c *gin.Context) {
 	a2r.Call(c, chatpb.ChatClient.VerifyCode, o.chatClient)
+	a2r.Call(c, chatpb.ChatClient.VerifyCode, o.chatClient)
 }
 
 func (o *Api) RegisterUser(c *gin.Context) {
@@ -194,6 +195,7 @@ func (o *Api) Login(c *gin.Context) {
 
 func (o *Api) ResetPassword(c *gin.Context) {
 	a2r.Call(c, chatpb.ChatClient.ResetPassword, o.chatClient)
+	a2r.Call(c, chatpb.ChatClient.ResetPassword, o.chatClient)
 }
 
 func (o *Api) ChangePassword(c *gin.Context) {
@@ -265,21 +267,26 @@ func (o *Api) UpdateUserInfo(c *gin.Context) {
 
 func (o *Api) FindUserPublicInfo(c *gin.Context) {
 	a2r.Call(c, chatpb.ChatClient.FindUserPublicInfo, o.chatClient)
+	a2r.Call(c, chatpb.ChatClient.FindUserPublicInfo, o.chatClient)
 }
 
 func (o *Api) FindUserFullInfo(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.FindUserFullInfo, o.chatClient)
 	a2r.Call(c, chatpb.ChatClient.FindUserFullInfo, o.chatClient)
 }
 
 func (o *Api) SearchUserFullInfo(c *gin.Context) {
 	a2r.Call(c, chatpb.ChatClient.SearchUserFullInfo, o.chatClient)
+	a2r.Call(c, chatpb.ChatClient.SearchUserFullInfo, o.chatClient)
 }
 
 func (o *Api) SearchUserPublicInfo(c *gin.Context) {
 	a2r.Call(c, chatpb.ChatClient.SearchUserPublicInfo, o.chatClient)
+	a2r.Call(c, chatpb.ChatClient.SearchUserPublicInfo, o.chatClient)
 }
 
 func (o *Api) GetTokenForVideoMeeting(c *gin.Context) {
+	a2r.Call(c, chatpb.ChatClient.GetTokenForVideoMeeting, o.chatClient)
 	a2r.Call(c, chatpb.ChatClient.GetTokenForVideoMeeting, o.chatClient)
 }
 
@@ -296,6 +303,7 @@ func (o *Api) GetApplet(c *gin.Context) {
 // ################## CONFIG ##################
 
 func (o *Api) GetClientConfig(c *gin.Context) {
+	a2r.Call(c, admin.AdminClient.GetClientConfig, o.adminClient)
 	a2r.Call(c, admin.AdminClient.GetClientConfig, o.adminClient)
 }
 
@@ -355,8 +363,10 @@ func (o *Api) SearchFriend(c *gin.Context) {
 
 func (o *Api) LatestApplicationVersion(c *gin.Context) {
 	a2r.Call(c, admin.AdminClient.LatestApplicationVersion, o.adminClient)
+	a2r.Call(c, admin.AdminClient.LatestApplicationVersion, o.adminClient)
 }
 
 func (o *Api) PageApplicationVersion(c *gin.Context) {
+	a2r.Call(c, admin.AdminClient.PageApplicationVersion, o.adminClient)
 	a2r.Call(c, admin.AdminClient.PageApplicationVersion, o.adminClient)
 }

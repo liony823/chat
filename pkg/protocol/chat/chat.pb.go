@@ -1615,7 +1615,7 @@ func (x *FindUserAccountReq) GetUserIDs() []string {
 
 type FindUserAccountResp struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	UserAccountMap map[string]string      `protobuf:"bytes,1,rep,name=userAccountMap,proto3" json:"userAccountMap" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // userID  account
+	UserAccountMap map[string]string      `protobuf:"bytes,1,rep,name=userAccountMap,proto3" json:"userAccountMap,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // userID  account
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1703,7 +1703,7 @@ func (x *FindAccountUserReq) GetAccounts() []string {
 
 type FindAccountUserResp struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	AccountUserMap map[string]string      `protobuf:"bytes,1,rep,name=accountUserMap,proto3" json:"accountUserMap" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // account  userID
+	AccountUserMap map[string]string      `protobuf:"bytes,1,rep,name=accountUserMap,proto3" json:"accountUserMap,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // account  userID
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -2157,7 +2157,7 @@ type UserLoginCountResp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	LoginCount    int64                  `protobuf:"varint,1,opt,name=loginCount,proto3" json:"loginCount"`
 	UnloginCount  int64                  `protobuf:"varint,2,opt,name=unloginCount,proto3" json:"unloginCount"`
-	Count         map[string]int64       `protobuf:"bytes,3,rep,name=count,proto3" json:"count" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"varint,2,opt,name=value"`
+	Count         map[string]int64       `protobuf:"bytes,3,rep,name=count,proto3" json:"count,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"varint,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

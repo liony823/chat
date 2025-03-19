@@ -37,9 +37,9 @@ func (o *chatSvr) ResetPassword(ctx context.Context, req *chat.ResetPasswordReq)
 	var verifyCodeID string
 	var err error
 	if req.Email == "" {
-		verifyCodeID, err = o.verifyCode(ctx, o.verifyCodeJoin(req.AreaCode, req.PhoneNumber), req.VerifyCode)
+		verifyCodeID, err = o.verifyCode(ctx, o.verifyCodeJoin(req.AreaCode, req.PhoneNumber), req.VerifyCode, phone)
 	} else {
-		verifyCodeID, err = o.verifyCode(ctx, req.Email, req.VerifyCode)
+		verifyCodeID, err = o.verifyCode(ctx, req.Email, req.VerifyCode, mail)
 	}
 
 	if err != nil {

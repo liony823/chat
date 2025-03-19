@@ -15,8 +15,14 @@ import (
 	"github.com/openimsdk/tools/apiresp"
 	"github.com/openimsdk/tools/errs"
 	"github.com/openimsdk/tools/log"
+	"github.com/openimsdk/tools/utils/datautil"
 	"github.com/openimsdk/tools/utils/runtimeenv"
 	clientv3 "go.etcd.io/etcd/client/v3"
+)
+
+const (
+	// wait for Restart http call return
+	waitHttp = time.Millisecond * 200
 )
 
 type ConfigManager struct {
@@ -104,6 +110,84 @@ func (cm *ConfigManager) SetConfig(c *gin.Context) {
 	apiresp.GinSuccess(c, nil)
 }
 
+func (cm *ConfigManager) SetConfigs(c *gin.Context) {
+	if cm.config.Discovery.Enable != kdisc.ETCDCONST {
+		apiresp.GinError(c, errs.New("only etcd support set config").Wrap())
+		return
+	}
+	var req apistruct.SetConfigsReq
+	if err := c.BindJSON(&req); err != nil {
+		apiresp.GinError(c, errs.ErrArgs.WithDetail(err.Error()).Wrap())
+		return
+	}
+	var (
+		err error
+		ops []*clientv3.Op
+	)
+
+	for _, cf := range req.Configs {
+		var op *clientv3.Op
+		switch cf.ConfigName {
+		case config.DiscoveryConfigFileName:
+			op, err = compareAndOp[config.Discovery](c, cm.config.Name2Config(cf.ConfigName), &cf, cm.client)
+		case config.LogConfigFileName:
+			op, err = compareAndOp[config.Log](c, cm.config.Name2Config(cf.ConfigName), &cf, cm.client)
+		case config.MongodbConfigFileName:
+			op, err = compareAndOp[config.Mongo](c, cm.config.Name2Config(cf.ConfigName), &cf, cm.client)
+		case config.ChatAPIAdminCfgFileName:
+			op, err = compareAndOp[config.API](c, cm.config.Name2Config(cf.ConfigName), &cf, cm.client)
+		case config.ChatAPIChatCfgFileName:
+			op, err = compareAndOp[config.API](c, cm.config.Name2Config(cf.ConfigName), &cf, cm.client)
+		case config.ChatRPCAdminCfgFileName:
+			op, err = compareAndOp[config.Admin](c, cm.config.Name2Config(cf.ConfigName), &cf, cm.client)
+		case config.ChatRPCChatCfgFileName:
+			op, err = compareAndOp[config.Chat](c, cm.config.Name2Config(cf.ConfigName), &cf, cm.client)
+		case config.ShareFileName:
+			op, err = compareAndOp[config.Share](c, cm.config.Name2Config(cf.ConfigName), &cf, cm.client)
+		case config.RedisConfigFileName:
+			op, err = compareAndOp[config.Redis](c, cm.config.Name2Config(cf.ConfigName), &cf, cm.client)
+		default:
+			apiresp.GinError(c, errs.ErrArgs.Wrap())
+			return
+		}
+		if err != nil {
+			apiresp.GinError(c, errs.ErrArgs.WithDetail(err.Error()).Wrap())
+			return
+		}
+		if op != nil {
+			ops = append(ops, op)
+		}
+	}
+	if len(ops) > 0 {
+		tx := cm.client.Txn(c)
+		if _, err = tx.Then(datautil.Batch(func(op *clientv3.Op) clientv3.Op { return *op }, ops)...).Commit(); err != nil {
+			apiresp.GinError(c, errs.WrapMsg(err, "save to etcd failed"))
+			return
+		}
+
+	}
+
+	apiresp.GinSuccess(c, nil)
+}
+
+func compareAndOp[T any](c *gin.Context, old any, req *apistruct.SetConfigReq, client *clientv3.Client) (*clientv3.Op, error) {
+	conf := new(T)
+	err := json.Unmarshal([]byte(req.Data), &conf)
+	if err != nil {
+		return nil, errs.ErrArgs.WithDetail(err.Error()).Wrap()
+	}
+	eq := reflect.DeepEqual(old, conf)
+	if eq {
+		return nil, nil
+	}
+	data, err := json.Marshal(conf)
+	if err != nil {
+		return nil, errs.ErrArgs.WithDetail(err.Error()).Wrap()
+	}
+	op := clientv3.OpPut(etcd.BuildKey(req.ConfigName), string(data))
+	return &op, nil
+}
+
 func compareAndSave[T any](c *gin.Context, old any, req *apistruct.SetConfigReq, client *clientv3.Client) error {
 	conf := new(T)
 	err := json.Unmarshal([]byte(req.Data), &conf)
@@ -126,16 +210,19 @@ func compareAndSave[T any](c *gin.Context, old any, req *apistruct.SetConfigReq,
 }
 
 func (cm *ConfigManager) ResetConfig(c *gin.Context) {
-	go cm.resetConfig(c)
+	go func() {
+		if err := cm.resetConfig(c, true); err != nil {
+			log.ZError(c, "reset config err", err)
+		}
+	}()
 	apiresp.GinSuccess(c, nil)
 }
 
-func (cm *ConfigManager) resetConfig(c *gin.Context) {
+func (cm *ConfigManager) resetConfig(c *gin.Context, checkChange bool, ops ...clientv3.Op) error {
 	txn := cm.client.Txn(c)
 	type initConf struct {
-		old       any
-		new       any
-		isChanged bool
+		old any
+		new any
 	}
 	configMap := map[string]*initConf{
 		config.DiscoveryConfigFileName: {old: &cm.config.Discovery, new: new(config.Discovery)},
@@ -162,13 +249,12 @@ func (cm *ConfigManager) resetConfig(c *gin.Context) {
 			log.ZError(c, "load config failed", err)
 			continue
 		}
-		v.isChanged = reflect.DeepEqual(v.old, v.new)
-		if !v.isChanged {
+		equal := reflect.DeepEqual(v.old, v.new)
+		if !checkChange || !equal {
 			changedKeys = append(changedKeys, k)
 		}
 	}
 
-	ops := make([]clientv3.Op, 0)
 	for _, k := range changedKeys {
 		data, err := json.Marshal(configMap[k].new)
 		if err != nil {
@@ -181,10 +267,10 @@ func (cm *ConfigManager) resetConfig(c *gin.Context) {
 		txn.Then(ops...)
 		_, err := txn.Commit()
 		if err != nil {
-			log.ZError(c, "commit etcd txn failed", err)
-			return
+			return errs.WrapMsg(err, "commit etcd txn failed")
 		}
 	}
+	return nil
 }
 
 func (cm *ConfigManager) Restart(c *gin.Context) {
@@ -193,10 +279,59 @@ func (cm *ConfigManager) Restart(c *gin.Context) {
 }
 
 func (cm *ConfigManager) restart(c *gin.Context) {
-	time.Sleep(time.Millisecond * 200) // wait for Restart http call return
+	time.Sleep(waitHttp) // wait for Restart http call return
 	t := time.Now().Unix()
 	_, err := cm.client.Put(c, etcd.BuildKey(etcd.RestartKey), strconv.Itoa(int(t)))
 	if err != nil {
 		log.ZError(c, "restart etcd put key failed", err)
 	}
+}
+
+func (cm *ConfigManager) SetEnableConfigManager(c *gin.Context) {
+	var req apistruct.SetEnableConfigManagerReq
+	if err := c.BindJSON(&req); err != nil {
+		apiresp.GinError(c, errs.ErrArgs.WithDetail(err.Error()).Wrap())
+		return
+	}
+	var enableStr string
+	if req.Enable {
+		enableStr = etcd.Enable
+	} else {
+		enableStr = etcd.Disable
+	}
+	resp, err := cm.client.Get(c, etcd.BuildKey(etcd.EnableConfigCenterKey))
+	if err != nil {
+		apiresp.GinError(c, errs.WrapMsg(err, "getEnableConfigManager failed"))
+		return
+	}
+	if !(resp.Count > 0 && string(resp.Kvs[0].Value) == etcd.Enable) && req.Enable {
+		go func() {
+			time.Sleep(waitHttp) // wait for Restart http call return
+			err := cm.resetConfig(c, false, clientv3.OpPut(etcd.BuildKey(etcd.EnableConfigCenterKey), enableStr))
+			if err != nil {
+				log.ZError(c, "writeAllConfig failed", err)
+			}
+		}()
+	} else {
+		_, err = cm.client.Put(c, etcd.BuildKey(etcd.EnableConfigCenterKey), enableStr)
+		if err != nil {
+			apiresp.GinError(c, errs.WrapMsg(err, "setEnableConfigManager failed"))
+			return
+		}
+	}
+
+	apiresp.GinSuccess(c, nil)
+}
+
+func (cm *ConfigManager) GetEnableConfigManager(c *gin.Context) {
+	resp, err := cm.client.Get(c, etcd.BuildKey(etcd.EnableConfigCenterKey))
+	if err != nil {
+		apiresp.GinError(c, errs.WrapMsg(err, "getEnableConfigManager failed"))
+		return
+	}
+	var enable bool
+	if resp.Count > 0 && string(resp.Kvs[0].Value) == etcd.Enable {
+		enable = true
+	}
+	apiresp.GinSuccess(c, &apistruct.GetEnableConfigManagerResp{Enable: enable})
 }

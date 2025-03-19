@@ -28,6 +28,7 @@ const (
 	Phone      = "phone"
 	Account    = "account"
 	AutoDevice = "auto"
+	Email      = "email"
 )
 
 // Mode.
@@ -126,4 +127,11 @@ const (
 	CredentialPhone
 	CredentialAutoDevice
 	CredentialEmail
+)
+
+// verifyCode use
+const (
+	VerifySuperCode = "supercode"
+	VerifyALi       = "ali"
+	VerifyMail      = "mail"
 )
