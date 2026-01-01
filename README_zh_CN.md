@@ -1,18 +1,6 @@
 # openim-chat
 
-## 📄 源代码的许可选项
 
-您可以在以下两种许可选项之一下使用 OpenIM 源代码来创建非 OpenIM 原始生产的编译版本：
-
-### 1. 通用公共许可证 v3.0 (GPLv3) 🆓
-
-+ 该选项受自由软件基金会的 [GPL v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html) 管理。
-+ 使用受此政策概述的某些例外的约束。
-
-### 2. 商业许可 💼
-
-+ 通过联系 OpenIM 获得商业许可。
-+ 有关详细信息和许可查询，请通过电子邮件 📧 [contact@openim.io](mailto:contact@openim.io)。
 
 ## 🧩 功能简介
 
@@ -23,9 +11,9 @@
 
 ## :busts_in_silhouette: 社区
 
-+ 💬 [关注我们的 Twitter 账户](https://twitter.com/founder_im63606)
-+ 🚀 [加入我们的 Slack 社区](https://join.slack.com/t/openimsdk/shared_invite/zt-2hljfom5u-9ZuzP3NfEKW~BJKbpLm0Hw)
-+ :eyes: [加入我们的微信群](https://openim-1253691595.cos.ap-nanjing.myqcloud.com/WechatIMG20.jpeg)
+- 💬 [关注我们的 Twitter 账户](https://twitter.com/founder_im63606)
+- 🚀 [加入我们的 Slack 社区](https://join.slack.com/t/openimsdk/shared_invite/zt-2ijy1ys1f-O0aEDCr7ExRZ7mwsHAVg9A)
+- :eyes: [加入我们的微信群](https://openim-1253691595.cos.ap-nanjing.myqcloud.com/WechatIMG20.jpeg)
 
 ## 🛫 快速开始
 
@@ -98,4 +86,4 @@ mage stop
 
 ## 🚨 许可
 
-:scroll: chat 根据 [GPL-3.0 license](https://github.com/openimsdk/chat#GPL-3.0-1-ov-file) 许可证授权。查看 [LICENSE](https://github.com/openimsdk/chat/tree/main/LICENSE) 获取完整的许可证文本。
+This software is licensed under the Apache License 2.0

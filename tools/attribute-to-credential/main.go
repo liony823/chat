@@ -89,7 +89,7 @@ func doAttributeToCredential() error {
 	tx := mgocli.GetTx()
 	if err = tx.Transaction(ctx, func(ctx context.Context) error {
 		for {
-			total, attrs, err := pageGetAttribute(ctx, attrColl, pagination)
+			_, attrs, err := pageGetAttribute(ctx, attrColl, pagination)
 			if err != nil {
 				return err
 			}
@@ -134,7 +134,7 @@ func doAttributeToCredential() error {
 			}
 
 			pagination.PageNumber++
-			if total < pageNum {
+			if len(attrs) < pageNum {
 				break
 			}
 		}

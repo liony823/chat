@@ -33,6 +33,7 @@ type Config struct {
 	ApiConfig config.API
 	Discovery config.Discovery
 	Share     config.Share
+	Redis     config.Redis
 
 	RuntimeEnv string
 }
