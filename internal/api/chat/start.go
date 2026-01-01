@@ -39,7 +39,7 @@ type Config struct {
 }
 
 func Start(ctx context.Context, index int, cfg *Config) error {
-	cfg.RuntimeEnv = runtimeenv.PrintRuntimeEnvironment()
+	cfg.RuntimeEnv = runtimeenv.RuntimeEnvironment()
 
 	if len(cfg.Share.ChatAdmin) == 0 {
 		return errs.New("share chat admin not configured")
@@ -137,7 +137,7 @@ func SetChatRoute(router gin.IRouter, chat *Api, mw *chatmw.MW) {
 	user := router.Group("/user", mw.CheckToken)
 	user.POST("/update", chat.UpdateUserInfo)          // Edit personal information
 	user.POST("/update_ex", chat.UpdateUserInfoEx)     // Edit personal information
-	user.POST("/update/stealth", chat.SetStealthUser)           // Stealth user
+	user.POST("/update/stealth", chat.SetStealthUser)  // Stealth user
 	user.POST("/find/public", chat.FindUserPublicInfo) // Get user's public information
 	user.POST("/find/full", chat.FindUserFullInfo)     // Get all information of the user
 	user.POST("/search/full", chat.SearchUserFullInfo) // Search user's public information
@@ -153,6 +153,9 @@ func SetChatRoute(router gin.IRouter, chat *Api, mw *chatmw.MW) {
 	applicationGroup := router.Group("application")
 	applicationGroup.POST("/latest_version", chat.LatestApplicationVersion)
 	applicationGroup.POST("/page_versions", chat.PageApplicationVersion)
+
+	announcementGroup := router.Group("/announcement", mw.CheckToken)
+	announcementGroup.POST("/latest", chat.LatestAnnouncement)
 
 	router.Group("/callback").POST("/:command", chat.OpenIMCallback) // Callback
 

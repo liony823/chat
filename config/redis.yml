@@ -1,14 +1,14 @@
-# List of Redis server addresses
-address: [ redis:6379 ]
-# Username for Redis authentication (leave blank if not used)
-username: ''
-# Password for Redis authentication
-password: stealthX123
-# Enable or disable pipeline processing
-enablePipeline: false
-# Enable or disable cluster mode
-clusterMode: false
-# Database index to be used
+address: [localhost:16379]
+username:
+password: openIM123
+# redis Mode, including "standalone","cluster","sentinel"
+redisMode: "standalone"
 db: 0
-# Maximum number of retry attempts for a failed connection
 maxRetry: 10
+poolSize: 100
+# Sentinel configuration (only used when redisMode is "sentinel")
+sentinelMode:
+  masterName: "redis-master"
+  sentinelsAddrs: ["127.0.0.1:26379", "127.0.0.1:26380", "127.0.0.1:26381"]
+  routeByLatency: true
+  routeRandomly: true

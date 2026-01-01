@@ -100,6 +100,7 @@ type chatSvr struct {
 	ChatAdminUserID string
 	AllowRegister   bool
 	Share           config.Share
+	conf            config.VerifyCode
 	chat.UnimplementedChatServer
 }
 

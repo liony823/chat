@@ -187,3 +187,10 @@ const (
 	StealthUser    = 1
 	NotStealthUser = 0
 )
+
+// verifyCode use
+const (
+	VerifySuperCode = "supercode"
+	VerifyALi       = "ali"
+	VerifyMail      = "mail"
+)

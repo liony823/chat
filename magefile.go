@@ -5,7 +5,14 @@ package main
 
 import (
 	"flag"
+	"fmt"
+	"go/build"
+	"log"
 	"os"
+	"os/exec"
+	"path/filepath"
+	"regexp"
+	"strings"
 
 	"github.com/openimsdk/gomake/mageutil"
 )
@@ -180,7 +187,7 @@ func GenGo() error {
 			"--proto_path=./pkg/protocol",
 			"--proto_path=./",
 			fmt.Sprintf("--proto_path=%s/pkg/mod", build.Default.GOPATH),
-			fmt.Sprintf("--proto_path=%s/pkg/mod/github.com/liony823/protocol@%s", build.Default.GOPATH, "v0.0.1-owl-fix"),
+			fmt.Sprintf("--proto_path=%s/pkg/mod/github.com/liony823/protocol@%s", build.Default.GOPATH, "v0.0.4-stealthx"),
 			"--go_out=" + filepath.Join("./pkg/protocol", module),
 			"--go-grpc_out=" + filepath.Join("./pkg/protocol", module),
 			"--go_opt=module=github.com/openimsdk/chat/pkg/protocol/" + strings.Join([]string{module}, "/"),

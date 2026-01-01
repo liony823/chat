@@ -94,6 +94,7 @@ func (o *chatSvr) SendVerifyCode(ctx context.Context, req *chat.SendVerifyCodeRe
 	if o.SMS == nil && o.Mail == nil {
 		return &chat.SendVerifyCodeResp{}, nil // super code
 	}
+
 	if req.Email != "" {
 		switch o.conf.Mail.Use {
 		case constant.VerifySuperCode:

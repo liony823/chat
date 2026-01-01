@@ -9,10 +9,6 @@ import (
 	"github.com/openimsdk/protocol/msggateway"
 	"github.com/openimsdk/tools/log"
 
-	"github.com/openimsdk/protocol/constant"
-	"github.com/openimsdk/protocol/msggateway"
-	"github.com/openimsdk/tools/log"
-
 	"github.com/openimsdk/chat/pkg/botstruct"
 	"github.com/openimsdk/chat/pkg/eerrs"
 	chatpb "github.com/openimsdk/chat/pkg/protocol/chat"
@@ -22,7 +18,6 @@ import (
 	"github.com/openimsdk/protocol/sdkws"
 	"github.com/openimsdk/protocol/user"
 	"github.com/openimsdk/tools/errs"
-	"github.com/openimsdk/tools/log"
 )
 
 type CallerInterface interface {
@@ -153,27 +148,6 @@ func (c *Caller) UpdateUserInfo(ctx context.Context, userID string, nickName str
 		FaceURL:  faceURL,
 	}})
 	return err
-}
-
-func (c *Caller) GetUserInfo(ctx context.Context, userID string) (*sdkws.UserInfo, error) {
-	resp, err := c.GetUsersInfo(ctx, []string{userID})
-	if err != nil {
-		return nil, err
-	}
-	if len(resp) == 0 {
-		return nil, errs.ErrRecordNotFound.WrapMsg("record not found")
-	}
-	return resp[0], nil
-}
-
-func (c *Caller) GetUsersInfo(ctx context.Context, userIDs []string) ([]*sdkws.UserInfo, error) {
-	resp, err := getUserInfo.Call(ctx, c.imApi, &user.GetDesignateUsersReq{
-		UserIDs: userIDs,
-	})
-	if err != nil {
-		return nil, err
-	}
-	return resp.UsersInfo, nil
 }
 
 func (c *Caller) GetUserInfo(ctx context.Context, userID string) (*sdkws.UserInfo, error) {

@@ -387,3 +387,55 @@ func (x *SearchAdminAccountReq) Check() error {
 	}
 	return nil
 }
+
+func (x *PublishAnnouncementReq) Check() error {
+	if x.AnnouncementID == "" {
+		return errs.ErrArgs.WrapMsg("id is empty")
+	}
+	return nil
+}
+
+func (x *CreateAnnouncementReq) Check() error {
+	if x.Title == "" {
+		return errs.ErrArgs.WrapMsg("title is empty")
+	}
+	if len(x.Title) > 40 {
+		return errs.ErrArgs.WrapMsg("标题不能大于40个字符")
+	}
+	if x.Content == "" {
+		return errs.ErrArgs.WrapMsg("content is empty")
+	}
+	if x.AppVersion == "" {
+		return errs.ErrArgs.WrapMsg("appVersion is empty")
+	}
+	if x.AppLang == "" {
+		return errs.ErrArgs.WrapMsg("appLang is empty")
+	}
+	return nil
+}
+
+func (x *UpdateAnnouncementReq) Check() error {
+	if x.AnnouncementID == "" {
+		return errs.ErrArgs.WrapMsg("id is empty")
+	}
+	if x.Title == "" {
+		return errs.ErrArgs.WrapMsg("title is empty")
+	}
+	if x.Content == "" {
+		return errs.ErrArgs.WrapMsg("content is empty")
+	}
+	if x.AppVersion == "" {
+		return errs.ErrArgs.WrapMsg("appVersion is empty")
+	}
+	if x.AppLang == "" {
+		return errs.ErrArgs.WrapMsg("appLang is empty")
+	}
+	return nil
+}
+
+func (x *DeleteAnnouncementReq) Check() error {
+	if x.Ids == nil {
+		return errs.ErrArgs.WrapMsg("ids is empty")
+	}
+	return nil
+}

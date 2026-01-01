@@ -23,6 +23,7 @@ import (
 	"github.com/openimsdk/tools/errs"
 	"github.com/openimsdk/tools/mcontext"
 	"github.com/openimsdk/tools/utils/datautil"
+	"github.com/openimsdk/tools/utils/pwdutil"
 
 	"github.com/openimsdk/chat/pkg/common/constant"
 	"github.com/openimsdk/chat/pkg/common/db/dbutil"
@@ -58,11 +59,15 @@ func (o *adminServer) ChangeAdminPassword(ctx context.Context, req *admin.Change
 		return nil, err
 	}
 
-	if user.Password != req.CurrentPassword {
-		return nil, errs.ErrInternalServer.WrapMsg("password error")
+	if !pwdutil.VerifyPassword(req.CurrentPassword, user.Password) {
+		return nil, eerrs.ErrPassword.Wrap()
+	}
+	hashedPassword, err := pwdutil.EncryptPassword(req.NewPassword)
+	if err != nil {
+		return nil, err
 	}
 
-	if err := o.Database.ChangePassword(ctx, req.UserID, req.NewPassword); err != nil {
+	if err := o.Database.ChangePassword(ctx, req.UserID, hashedPassword); err != nil {
 		return nil, err
 	}
 	return &admin.ChangeAdminPasswordResp{}, nil
@@ -78,9 +83,14 @@ func (o *adminServer) AddAdminAccount(ctx context.Context, req *admin.AddAdminAc
 		return nil, errs.ErrDuplicateKey.WrapMsg("the account is registered")
 	}
 
+	hashedPassword, err := pwdutil.EncryptPassword(req.Password)
+	if err != nil {
+		return nil, err
+	}
+
 	adm := &admindb.Admin{
 		Account:    req.Account,
-		Password:   req.Password,
+		Password:   hashedPassword,
 		FaceURL:    req.FaceURL,
 		Nickname:   req.Nickname,
 		UserID:     o.genUserID(),
@@ -180,7 +190,7 @@ func (o *adminServer) Login(ctx context.Context, req *admin.LoginReq) (*admin.Lo
 		}
 		return nil, err
 	}
-	if a.Password != req.Password {
+	if !pwdutil.VerifyPassword(req.Password, a.Password) {
 		return nil, eerrs.ErrPassword.Wrap()
 	}
 	adminToken, err := o.CreateToken(ctx, &admin.CreateTokenReq{UserID: a.UserID, UserType: constant.AdminUser})
@@ -206,7 +216,11 @@ func (o *adminServer) ChangePassword(ctx context.Context, req *admin.ChangePassw
 	if err != nil {
 		return nil, err
 	}
-	update, err := ToDBAdminUpdatePassword(req.Password)
+	hashedPassword, err := pwdutil.EncryptPassword(req.Password)
+	if err != nil {
+		return nil, err
+	}
+	update, err := ToDBAdminUpdatePassword(hashedPassword)
 	if err != nil {
 		return nil, err
 	}

@@ -16,10 +16,12 @@ package database
 
 import (
 	"context"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"time"
 
+	"go.mongodb.org/mongo-driver/bson/primitive"
+
 	"github.com/openimsdk/chat/pkg/common/db/cache"
+	"github.com/openimsdk/chat/pkg/common/mctx"
 	"github.com/openimsdk/protocol/constant"
 	"github.com/openimsdk/tools/db/mongoutil"
 	"github.com/openimsdk/tools/db/pagination"
@@ -46,6 +48,7 @@ type AdminDatabaseInterface interface {
 	FindOnShelf(ctx context.Context) ([]*admindb.Applet, error)
 	UpdateApplet(ctx context.Context, appletID string, update map[string]any) error
 	GetConfig(ctx context.Context) (map[string]string, error)
+	GetListClientConfig(ctx context.Context) ([]*admindb.ClientConfig, error)
 	SetConfig(ctx context.Context, cs map[string]string) error
 	DelConfig(ctx context.Context, keys []string) error
 	FindInvitationRegister(ctx context.Context, codes []string) ([]*admindb.InvitationRegister, error)
@@ -84,6 +87,14 @@ type AdminDatabaseInterface interface {
 	UpdateVersion(ctx context.Context, id primitive.ObjectID, update map[string]any) error
 	DeleteVersion(ctx context.Context, id []primitive.ObjectID) error
 	PageVersion(ctx context.Context, platforms []string, page pagination.Pagination) (int64, []*admindb.Application, error)
+
+	TakeAnnouncement(ctx context.Context, id string) (*admindb.Announcement, error)
+	SearchAnnouncement(ctx context.Context, keyword string, status int32, app_version string, pagination pagination.Pagination) (int64, []*admindb.Announcement, error)
+	LatestAnnouncement(ctx context.Context, app_version string, app_lang string) (*admindb.Announcement, error)
+	PublishAnnouncement(ctx context.Context, id string) error
+	UpdateAnnouncement(ctx context.Context, id string, data map[string]any) error
+	CreateAnnouncement(ctx context.Context, ans []*admindb.Announcement) error
+	DelAnnouncement(ctx context.Context, ids []string) (int64, error)
 }
 
 func NewAdminDatabase(cli *mongoutil.Client, rdb redis.UniversalClient) (AdminDatabaseInterface, error) {
@@ -127,6 +138,10 @@ func NewAdminDatabase(cli *mongoutil.Client, rdb redis.UniversalClient) (AdminDa
 	if err != nil {
 		return nil, err
 	}
+	announcement, err := admin.NewAnnouncement(cli.GetDB())
+	if err != nil {
+		return nil, err
+	}
 	return &AdminDatabase{
 		tx:                 cli.GetTx(),
 		admin:              a,
@@ -139,6 +154,7 @@ func NewAdminDatabase(cli *mongoutil.Client, rdb redis.UniversalClient) (AdminDa
 		applet:             applet,
 		clientConfig:       clientConfig,
 		application:        application,
+		announcement:       announcement,
 		cache:              cache.NewTokenInterface(rdb),
 	}, nil
 }
@@ -155,7 +171,76 @@ type AdminDatabase struct {
 	applet             admindb.AppletInterface
 	clientConfig       admindb.ClientConfigInterface
 	application        admindb.ApplicationInterface
+	announcement       admindb.AnnouncementInterface
 	cache              cache.TokenInterface
+}
+
+// CreateAnnouncement implements AdminDatabaseInterface.
+func (o *AdminDatabase) CreateAnnouncement(ctx context.Context, ans []*admindb.Announcement) error {
+	return o.announcement.Create(ctx, ans)
+}
+
+// DelAnnouncement implements AdminDatabaseInterface.
+func (o *AdminDatabase) DelAnnouncement(ctx context.Context, ids []string) (int64, error) {
+	return o.announcement.Del(ctx, ids)
+}
+
+// LatestAnnouncement implements AdminDatabaseInterface.
+func (o *AdminDatabase) LatestAnnouncement(ctx context.Context, app_version string, app_lang string) (*admindb.Announcement, error) {
+	return o.announcement.Latest(ctx, app_version, app_lang)
+}
+
+// SearchAnnouncement implements AdminDatabaseInterface.
+func (o *AdminDatabase) SearchAnnouncement(ctx context.Context, keyword string, status int32, app_version string, pagination pagination.Pagination) (int64, []*admindb.Announcement, error) {
+	return o.announcement.Search(ctx, keyword, status, app_version, pagination)
+}
+
+// TakeAnnouncement implements AdminDatabaseInterface.
+func (o *AdminDatabase) TakeAnnouncement(ctx context.Context, id string) (*admindb.Announcement, error) {
+	return o.announcement.Take(ctx, id)
+}
+
+// UpdateAnnouncement implements AdminDatabaseInterface.
+func (o *AdminDatabase) UpdateAnnouncement(ctx context.Context, id string, data map[string]any) error {
+	return o.announcement.Update(ctx, id, data)
+}
+
+func (o *AdminDatabase) PublishAnnouncement(ctx context.Context, id string) (err error) {
+	return o.tx.Transaction(ctx, func(ctx context.Context) error {
+
+		an, err := o.announcement.Take(ctx, id)
+		if err != nil {
+			return err
+		}
+		list, err := o.announcement.Find(ctx, an.AppVersion, an.AppLang)
+		if err != nil {
+			return err
+		}
+		ids := make([]string, len(list))
+		for _, an := range list {
+			ids = append(ids, an.AnnouncementID)
+		}
+		update2 := make(map[string]any)
+		update2["status"] = 2
+		update2["updated_at"] = time.Now()
+		if err = o.announcement.UpdateMany(ctx, ids, an.AppVersion, an.AppLang, update2); err != nil {
+			return err
+		}
+
+		userId, err := mctx.CheckAdmin(ctx)
+		if err != nil {
+			return err
+		}
+		update := make(map[string]any)
+		update["status"] = 1
+		update["published_at"] = time.Now()
+		update["publisher_id"] = userId
+		if err = o.announcement.Update(ctx, id, update); err != nil {
+			return err
+		}
+
+		return nil
+	})
 }
 
 func (o *AdminDatabase) GetAdmin(ctx context.Context, account string) (*admindb.Admin, error) {
@@ -212,6 +297,10 @@ func (o *AdminDatabase) FindOnShelf(ctx context.Context) ([]*admindb.Applet, err
 
 func (o *AdminDatabase) UpdateApplet(ctx context.Context, appletID string, update map[string]any) error {
 	return o.applet.Update(ctx, appletID, update)
+}
+
+func (o *AdminDatabase) GetListClientConfig(ctx context.Context) ([]*admindb.ClientConfig, error) {
+	return o.clientConfig.List(ctx)
 }
 
 func (o *AdminDatabase) GetConfig(ctx context.Context) (map[string]string, error) {

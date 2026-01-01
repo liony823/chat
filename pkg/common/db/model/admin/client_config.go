@@ -75,3 +75,11 @@ func (o *ClientConfig) Get(ctx context.Context) (map[string]string, error) {
 	}
 	return cm, nil
 }
+
+func (o *ClientConfig) List(ctx context.Context) ([]*admin.ClientConfig, error) {
+	cs, err := mongoutil.Find[*admin.ClientConfig](ctx, o.coll, bson.M{})
+	if err != nil {
+		return nil, err
+	}
+	return cs, nil
+}

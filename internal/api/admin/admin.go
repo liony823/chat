@@ -360,6 +360,10 @@ func (o *Api) GetClientConfig(c *gin.Context) {
 	a2r.Call(c, admin.AdminClient.GetClientConfig, o.adminClient)
 }
 
+func (o *Api) GetClientsConfig(c *gin.Context) {
+	a2r.Call(c, admin.AdminClient.GetListClientConfig, o.adminClient)
+}
+
 func (o *Api) AddApplet(c *gin.Context) {
 	a2r.Call(c, admin.AdminClient.AddApplet, o.adminClient)
 }
@@ -590,4 +594,24 @@ func (o *Api) UpdateApplicationVersion(c *gin.Context) {
 
 func (o *Api) DeleteApplicationVersion(c *gin.Context) {
 	a2r.Call(c, admin.AdminClient.DeleteApplicationVersion, o.adminClient)
+}
+
+func (o *Api) CreateAnnouncement(c *gin.Context) {
+	a2r.Call(c, admin.AdminClient.CreateAnnouncement, o.adminClient)
+}
+
+func (o *Api) UpdateAnnouncement(c *gin.Context) {
+	a2r.Call(c, admin.AdminClient.UpdateAnnouncement, o.adminClient)
+}
+
+func (o *Api) DeleteAnnouncement(c *gin.Context) {
+	a2r.Call(c, admin.AdminClient.DeleteAnnouncement, o.adminClient)
+}
+
+func (o *Api) SearchAnnouncement(c *gin.Context) {
+	a2r.Call(c, admin.AdminClient.SearchAnnouncement, o.adminClient)
+}
+
+func (o *Api) PublishAnnouncement(c *gin.Context) {
+	a2r.Call(c, admin.AdminClient.PublishAnnouncement, o.adminClient)
 }

@@ -39,7 +39,7 @@ type Config struct {
 }
 
 func Start(ctx context.Context, index int, config *Config) error {
-	config.RuntimeEnv = runtimeenv.PrintRuntimeEnvironment()
+	config.RuntimeEnv = runtimeenv.RuntimeEnvironment()
 
 	if len(config.Share.ChatAdmin) == 0 {
 		return errs.New("share chat admin not configured")
@@ -186,6 +186,7 @@ func SetAdminRoute(router gin.IRouter, admin *Api, mw *chatmw.MW, cfg *Config, c
 	initGroup.POST("/get", admin.GetClientConfig) // Get client initialization configuration
 	initGroup.POST("/set", admin.SetClientConfig) // Set client initialization configuration
 	initGroup.POST("/del", admin.DelClientConfig) // Delete client initialization configuration
+	initGroup.POST("/list",admin.GetClientsConfig)
 
 	statistic := router.Group("/statistic", mw.CheckAdmin)
 	statistic.POST("/new_user_count", admin.NewUserCount)
@@ -197,6 +198,13 @@ func SetAdminRoute(router gin.IRouter, admin *Api, mw *chatmw.MW, cfg *Config, c
 	applicationGroup.POST("/delete_version", mw.CheckAdmin, admin.DeleteApplicationVersion)
 	applicationGroup.POST("/latest_version", admin.LatestApplicationVersion)
 	applicationGroup.POST("/page_versions", admin.PageApplicationVersion)
+
+	announcementGroup := router.Group("/announcement", mw.CheckAdmin)
+	announcementGroup.POST("/create", admin.CreateAnnouncement)
+	announcementGroup.POST("/update", admin.UpdateAnnouncement)
+	announcementGroup.POST("/delete", admin.DeleteAnnouncement)
+	announcementGroup.POST("/search", admin.SearchAnnouncement)
+	announcementGroup.POST("/publish", admin.PublishAnnouncement)
 
 	var etcdClient *clientv3.Client
 	if cfg.Discovery.Enable == kdisc.ETCDCONST {

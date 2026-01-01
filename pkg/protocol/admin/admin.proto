@@ -446,6 +446,15 @@ message SearchAppletResp {
   repeated openim.chat.common.AppletInfo applets = 2;
 }
 
+message ClientConfig {
+  string key = 1;
+  string value = 2;
+  string label = 3;
+  string type = 4;
+  string desc = 5;
+}
+
+
 message SetClientConfigReq {
   map<string, string> config = 1;
 }
@@ -459,6 +468,12 @@ message DelClientConfigReq {
 message DelClientConfigResp {}
 
 message GetClientConfigReq {}
+
+message GetListClientConfigReq {}
+
+message GetListClientConfigResp {
+  repeated ClientConfig configs = 1;
+}
 
 message GetClientConfigResp {
   map<string, string> config = 1;
@@ -542,6 +557,108 @@ message PageApplicationVersionResp {
 }
 
 
+message ChatBackground {
+  string id = 1;
+  int64 type = 2;
+  string url = 3;
+}
+
+message GetChatBackgroundsReq {
+
+}
+
+message GetChatBackgroundsResp {
+
+}
+
+message AddChatBackgroundsReq {
+  repeated string urls = 1;
+}
+
+message AddChatBackgroundsResp {
+
+}
+
+message DeleteChatBackgroundsReq {
+ repeated string ids = 1;
+}
+
+message DeleteChatBackgroundResp {
+
+}
+
+message CreateAnnouncementReq {
+  string title = 1;
+  string content = 2;
+  string appVersion = 3;
+  string appLang = 4;
+}
+
+message Announcement {
+  string announcementID = 1;
+  string title = 2;
+  string content = 3;
+  string appVersion = 4;
+  string appLang = 5;
+  string publisherID = 6;
+  int32 status = 7;
+  int64 publishedAt = 8;
+  int64 createdAt = 9;
+  int64 updatedAt = 10;
+
+}
+
+message CreateAnnouncementResp {
+}
+
+message UpdateAnnouncementReq {
+  string announcementID = 1;
+  string title = 2;
+  string content = 3;
+  string appVersion = 4;
+  string appLang = 5;
+}
+
+message UpdateAnnouncementResp {
+}
+
+message DeleteAnnouncementReq {
+  repeated string ids = 1;
+}
+
+message DeleteAnnouncementResp {
+  int64 deletedCount = 1;
+}
+
+message SearchAnnouncementReq {
+  string keyword = 1;
+  string appVersion = 2;
+  string appLang = 3;
+  int32 status = 4;
+  openim.sdkws.RequestPagination pagination = 5;
+}
+
+message SearchAnnouncementResp {
+  int64 total = 1;
+  repeated Announcement announcements = 2;
+}
+
+message PublishAnnouncementReq {
+  string announcementID = 1;
+}
+
+message PublishAnnouncementResp {
+}
+
+message LatestAnnouncementReq {
+  string appVersion = 1;
+  string appLang = 2;
+}
+
+message LatestAnnouncementResp {
+  Announcement announcement = 1;
+}
+
 service admin {
   // Login
   rpc Login(LoginReq) returns (LoginResp);
@@ -607,6 +724,7 @@ service admin {
 
   // Client Configuration
   rpc GetClientConfig(GetClientConfigReq) returns (GetClientConfigResp);
+  rpc GetListClientConfig(GetListClientConfigReq) returns (GetListClientConfigResp);
   rpc SetClientConfig(SetClientConfigReq) returns (SetClientConfigResp);
   rpc DelClientConfig(DelClientConfigReq) returns (DelClientConfigResp);
 
@@ -620,4 +738,15 @@ service admin {
   rpc UpdateApplicationVersion(UpdateApplicationVersionReq) returns (UpdateApplicationVersionResp);
   rpc DeleteApplicationVersion(DeleteApplicationVersionReq) returns (DeleteApplicationVersionResp);
   rpc PageApplicationVersion(PageApplicationVersionReq) returns (PageApplicationVersionResp);
+
+  rpc GetChatBackgrounds(GetChatBackgroundsReq) returns (GetChatBackgroundsResp);
+  rpc AddChatBackgrounds(AddChatBackgroundsReq) returns (AddChatBackgroundsResp);
+  rpc DeleteChatBackgrounds(DeleteChatBackgroundsReq) returns (DeleteChatBackgroundResp);
+
+  rpc CreateAnnouncement(CreateAnnouncementReq) returns (CreateAnnouncementResp);
+  rpc UpdateAnnouncement(UpdateAnnouncementReq) returns (UpdateAnnouncementResp);
+  rpc DeleteAnnouncement(DeleteAnnouncementReq) returns (DeleteAnnouncementResp);
+  rpc SearchAnnouncement(SearchAnnouncementReq) returns (SearchAnnouncementResp);
+  rpc PublishAnnouncement(PublishAnnouncementReq) returns (PublishAnnouncementResp);
+  rpc LatestAnnouncement(LatestAnnouncementReq) returns (LatestAnnouncementResp);
 }

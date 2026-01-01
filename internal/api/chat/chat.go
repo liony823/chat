@@ -414,6 +414,10 @@ func (o *Api) PageApplicationVersion(c *gin.Context) {
 	a2r.Call(c, admin.AdminClient.PageApplicationVersion, o.adminClient)
 }
 
+func (o *Api) LatestAnnouncement(c *gin.Context) {
+	a2r.Call(c, admin.AdminClient.LatestAnnouncement, o.adminClient)
+}
+
 /* ################## OWL 新加接口 ################## */
 
 // ################## Post ##################

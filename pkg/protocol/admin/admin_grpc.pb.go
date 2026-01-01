@@ -62,6 +62,7 @@ const (
 	Admin_FindApplet_FullMethodName               = "/openim.admin.admin/FindApplet"
 	Admin_SearchApplet_FullMethodName             = "/openim.admin.admin/SearchApplet"
 	Admin_GetClientConfig_FullMethodName          = "/openim.admin.admin/GetClientConfig"
+	Admin_GetListClientConfig_FullMethodName      = "/openim.admin.admin/GetListClientConfig"
 	Admin_SetClientConfig_FullMethodName          = "/openim.admin.admin/SetClientConfig"
 	Admin_DelClientConfig_FullMethodName          = "/openim.admin.admin/DelClientConfig"
 	Admin_GetUserToken_FullMethodName             = "/openim.admin.admin/GetUserToken"
@@ -71,6 +72,15 @@ const (
 	Admin_UpdateApplicationVersion_FullMethodName = "/openim.admin.admin/UpdateApplicationVersion"
 	Admin_DeleteApplicationVersion_FullMethodName = "/openim.admin.admin/DeleteApplicationVersion"
 	Admin_PageApplicationVersion_FullMethodName   = "/openim.admin.admin/PageApplicationVersion"
+	Admin_GetChatBackgrounds_FullMethodName       = "/openim.admin.admin/GetChatBackgrounds"
+	Admin_AddChatBackgrounds_FullMethodName       = "/openim.admin.admin/AddChatBackgrounds"
+	Admin_DeleteChatBackgrounds_FullMethodName    = "/openim.admin.admin/DeleteChatBackgrounds"
+	Admin_CreateAnnouncement_FullMethodName       = "/openim.admin.admin/CreateAnnouncement"
+	Admin_UpdateAnnouncement_FullMethodName       = "/openim.admin.admin/UpdateAnnouncement"
+	Admin_DeleteAnnouncement_FullMethodName       = "/openim.admin.admin/DeleteAnnouncement"
+	Admin_SearchAnnouncement_FullMethodName       = "/openim.admin.admin/SearchAnnouncement"
+	Admin_PublishAnnouncement_FullMethodName      = "/openim.admin.admin/PublishAnnouncement"
+	Admin_LatestAnnouncement_FullMethodName       = "/openim.admin.admin/LatestAnnouncement"
 )
 
 // AdminClient is the client API for Admin service.
@@ -131,6 +141,7 @@ type AdminClient interface {
 	SearchApplet(ctx context.Context, in *SearchAppletReq, opts ...grpc.CallOption) (*SearchAppletResp, error)
 	// Client Configuration
 	GetClientConfig(ctx context.Context, in *GetClientConfigReq, opts ...grpc.CallOption) (*GetClientConfigResp, error)
+	GetListClientConfig(ctx context.Context, in *GetListClientConfigReq, opts ...grpc.CallOption) (*GetListClientConfigResp, error)
 	SetClientConfig(ctx context.Context, in *SetClientConfigReq, opts ...grpc.CallOption) (*SetClientConfigResp, error)
 	DelClientConfig(ctx context.Context, in *DelClientConfigReq, opts ...grpc.CallOption) (*DelClientConfigResp, error)
 	GetUserToken(ctx context.Context, in *GetUserTokenReq, opts ...grpc.CallOption) (*GetUserTokenResp, error)
@@ -141,6 +152,15 @@ type AdminClient interface {
 	UpdateApplicationVersion(ctx context.Context, in *UpdateApplicationVersionReq, opts ...grpc.CallOption) (*UpdateApplicationVersionResp, error)
 	DeleteApplicationVersion(ctx context.Context, in *DeleteApplicationVersionReq, opts ...grpc.CallOption) (*DeleteApplicationVersionResp, error)
 	PageApplicationVersion(ctx context.Context, in *PageApplicationVersionReq, opts ...grpc.CallOption) (*PageApplicationVersionResp, error)
+	GetChatBackgrounds(ctx context.Context, in *GetChatBackgroundsReq, opts ...grpc.CallOption) (*GetChatBackgroundsResp, error)
+	AddChatBackgrounds(ctx context.Context, in *AddChatBackgroundsReq, opts ...grpc.CallOption) (*AddChatBackgroundsResp, error)
+	DeleteChatBackgrounds(ctx context.Context, in *DeleteChatBackgroundsReq, opts ...grpc.CallOption) (*DeleteChatBackgroundResp, error)
+	CreateAnnouncement(ctx context.Context, in *CreateAnnouncementReq, opts ...grpc.CallOption) (*CreateAnnouncementResp, error)
+	UpdateAnnouncement(ctx context.Context, in *UpdateAnnouncementReq, opts ...grpc.CallOption) (*UpdateAnnouncementResp, error)
+	DeleteAnnouncement(ctx context.Context, in *DeleteAnnouncementReq, opts ...grpc.CallOption) (*DeleteAnnouncementResp, error)
+	SearchAnnouncement(ctx context.Context, in *SearchAnnouncementReq, opts ...grpc.CallOption) (*SearchAnnouncementResp, error)
+	PublishAnnouncement(ctx context.Context, in *PublishAnnouncementReq, opts ...grpc.CallOption) (*PublishAnnouncementResp, error)
+	LatestAnnouncement(ctx context.Context, in *LatestAnnouncementReq, opts ...grpc.CallOption) (*LatestAnnouncementResp, error)
 }
 
 type adminClient struct {
@@ -581,6 +601,16 @@ func (c *adminClient) GetClientConfig(ctx context.Context, in *GetClientConfigRe
 	return out, nil
 }
 
+func (c *adminClient) GetListClientConfig(ctx context.Context, in *GetListClientConfigReq, opts ...grpc.CallOption) (*GetListClientConfigResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetListClientConfigResp)
+	err := c.cc.Invoke(ctx, Admin_GetListClientConfig_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *adminClient) SetClientConfig(ctx context.Context, in *SetClientConfigReq, opts ...grpc.CallOption) (*SetClientConfigResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(SetClientConfigResp)
@@ -671,6 +701,96 @@ func (c *adminClient) PageApplicationVersion(ctx context.Context, in *PageApplic
 	return out, nil
 }
 
+func (c *adminClient) GetChatBackgrounds(ctx context.Context, in *GetChatBackgroundsReq, opts ...grpc.CallOption) (*GetChatBackgroundsResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetChatBackgroundsResp)
+	err := c.cc.Invoke(ctx, Admin_GetChatBackgrounds_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminClient) AddChatBackgrounds(ctx context.Context, in *AddChatBackgroundsReq, opts ...grpc.CallOption) (*AddChatBackgroundsResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddChatBackgroundsResp)
+	err := c.cc.Invoke(ctx, Admin_AddChatBackgrounds_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminClient) DeleteChatBackgrounds(ctx context.Context, in *DeleteChatBackgroundsReq, opts ...grpc.CallOption) (*DeleteChatBackgroundResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteChatBackgroundResp)
+	err := c.cc.Invoke(ctx, Admin_DeleteChatBackgrounds_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminClient) CreateAnnouncement(ctx context.Context, in *CreateAnnouncementReq, opts ...grpc.CallOption) (*CreateAnnouncementResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateAnnouncementResp)
+	err := c.cc.Invoke(ctx, Admin_CreateAnnouncement_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminClient) UpdateAnnouncement(ctx context.Context, in *UpdateAnnouncementReq, opts ...grpc.CallOption) (*UpdateAnnouncementResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateAnnouncementResp)
+	err := c.cc.Invoke(ctx, Admin_UpdateAnnouncement_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminClient) DeleteAnnouncement(ctx context.Context, in *DeleteAnnouncementReq, opts ...grpc.CallOption) (*DeleteAnnouncementResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteAnnouncementResp)
+	err := c.cc.Invoke(ctx, Admin_DeleteAnnouncement_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminClient) SearchAnnouncement(ctx context.Context, in *SearchAnnouncementReq, opts ...grpc.CallOption) (*SearchAnnouncementResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SearchAnnouncementResp)
+	err := c.cc.Invoke(ctx, Admin_SearchAnnouncement_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminClient) PublishAnnouncement(ctx context.Context, in *PublishAnnouncementReq, opts ...grpc.CallOption) (*PublishAnnouncementResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PublishAnnouncementResp)
+	err := c.cc.Invoke(ctx, Admin_PublishAnnouncement_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminClient) LatestAnnouncement(ctx context.Context, in *LatestAnnouncementReq, opts ...grpc.CallOption) (*LatestAnnouncementResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LatestAnnouncementResp)
+	err := c.cc.Invoke(ctx, Admin_LatestAnnouncement_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AdminServer is the server API for Admin service.
 // All implementations must embed UnimplementedAdminServer
 // for forward compatibility.
@@ -729,6 +849,7 @@ type AdminServer interface {
 	SearchApplet(context.Context, *SearchAppletReq) (*SearchAppletResp, error)
 	// Client Configuration
 	GetClientConfig(context.Context, *GetClientConfigReq) (*GetClientConfigResp, error)
+	GetListClientConfig(context.Context, *GetListClientConfigReq) (*GetListClientConfigResp, error)
 	SetClientConfig(context.Context, *SetClientConfigReq) (*SetClientConfigResp, error)
 	DelClientConfig(context.Context, *DelClientConfigReq) (*DelClientConfigResp, error)
 	GetUserToken(context.Context, *GetUserTokenReq) (*GetUserTokenResp, error)
@@ -739,6 +860,15 @@ type AdminServer interface {
 	UpdateApplicationVersion(context.Context, *UpdateApplicationVersionReq) (*UpdateApplicationVersionResp, error)
 	DeleteApplicationVersion(context.Context, *DeleteApplicationVersionReq) (*DeleteApplicationVersionResp, error)
 	PageApplicationVersion(context.Context, *PageApplicationVersionReq) (*PageApplicationVersionResp, error)
+	GetChatBackgrounds(context.Context, *GetChatBackgroundsReq) (*GetChatBackgroundsResp, error)
+	AddChatBackgrounds(context.Context, *AddChatBackgroundsReq) (*AddChatBackgroundsResp, error)
+	DeleteChatBackgrounds(context.Context, *DeleteChatBackgroundsReq) (*DeleteChatBackgroundResp, error)
+	CreateAnnouncement(context.Context, *CreateAnnouncementReq) (*CreateAnnouncementResp, error)
+	UpdateAnnouncement(context.Context, *UpdateAnnouncementReq) (*UpdateAnnouncementResp, error)
+	DeleteAnnouncement(context.Context, *DeleteAnnouncementReq) (*DeleteAnnouncementResp, error)
+	SearchAnnouncement(context.Context, *SearchAnnouncementReq) (*SearchAnnouncementResp, error)
+	PublishAnnouncement(context.Context, *PublishAnnouncementReq) (*PublishAnnouncementResp, error)
+	LatestAnnouncement(context.Context, *LatestAnnouncementReq) (*LatestAnnouncementResp, error)
 	mustEmbedUnimplementedAdminServer()
 }
 
@@ -878,6 +1008,9 @@ func (UnimplementedAdminServer) SearchApplet(context.Context, *SearchAppletReq) 
 func (UnimplementedAdminServer) GetClientConfig(context.Context, *GetClientConfigReq) (*GetClientConfigResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetClientConfig not implemented")
 }
+func (UnimplementedAdminServer) GetListClientConfig(context.Context, *GetListClientConfigReq) (*GetListClientConfigResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetListClientConfig not implemented")
+}
 func (UnimplementedAdminServer) SetClientConfig(context.Context, *SetClientConfigReq) (*SetClientConfigResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetClientConfig not implemented")
 }
@@ -904,6 +1037,33 @@ func (UnimplementedAdminServer) DeleteApplicationVersion(context.Context, *Delet
 }
 func (UnimplementedAdminServer) PageApplicationVersion(context.Context, *PageApplicationVersionReq) (*PageApplicationVersionResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PageApplicationVersion not implemented")
+}
+func (UnimplementedAdminServer) GetChatBackgrounds(context.Context, *GetChatBackgroundsReq) (*GetChatBackgroundsResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetChatBackgrounds not implemented")
+}
+func (UnimplementedAdminServer) AddChatBackgrounds(context.Context, *AddChatBackgroundsReq) (*AddChatBackgroundsResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddChatBackgrounds not implemented")
+}
+func (UnimplementedAdminServer) DeleteChatBackgrounds(context.Context, *DeleteChatBackgroundsReq) (*DeleteChatBackgroundResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteChatBackgrounds not implemented")
+}
+func (UnimplementedAdminServer) CreateAnnouncement(context.Context, *CreateAnnouncementReq) (*CreateAnnouncementResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateAnnouncement not implemented")
+}
+func (UnimplementedAdminServer) UpdateAnnouncement(context.Context, *UpdateAnnouncementReq) (*UpdateAnnouncementResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateAnnouncement not implemented")
+}
+func (UnimplementedAdminServer) DeleteAnnouncement(context.Context, *DeleteAnnouncementReq) (*DeleteAnnouncementResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteAnnouncement not implemented")
+}
+func (UnimplementedAdminServer) SearchAnnouncement(context.Context, *SearchAnnouncementReq) (*SearchAnnouncementResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchAnnouncement not implemented")
+}
+func (UnimplementedAdminServer) PublishAnnouncement(context.Context, *PublishAnnouncementReq) (*PublishAnnouncementResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PublishAnnouncement not implemented")
+}
+func (UnimplementedAdminServer) LatestAnnouncement(context.Context, *LatestAnnouncementReq) (*LatestAnnouncementResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LatestAnnouncement not implemented")
 }
 func (UnimplementedAdminServer) mustEmbedUnimplementedAdminServer() {}
 func (UnimplementedAdminServer) testEmbeddedByValue()               {}
@@ -1700,6 +1860,24 @@ func _Admin_GetClientConfig_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Admin_GetListClientConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetListClientConfigReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).GetListClientConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_GetListClientConfig_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).GetListClientConfig(ctx, req.(*GetListClientConfigReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Admin_SetClientConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SetClientConfigReq)
 	if err := dec(in); err != nil {
@@ -1858,6 +2036,168 @@ func _Admin_PageApplicationVersion_Handler(srv interface{}, ctx context.Context,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AdminServer).PageApplicationVersion(ctx, req.(*PageApplicationVersionReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Admin_GetChatBackgrounds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetChatBackgroundsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).GetChatBackgrounds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_GetChatBackgrounds_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).GetChatBackgrounds(ctx, req.(*GetChatBackgroundsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Admin_AddChatBackgrounds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddChatBackgroundsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).AddChatBackgrounds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_AddChatBackgrounds_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).AddChatBackgrounds(ctx, req.(*AddChatBackgroundsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Admin_DeleteChatBackgrounds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteChatBackgroundsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).DeleteChatBackgrounds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_DeleteChatBackgrounds_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).DeleteChatBackgrounds(ctx, req.(*DeleteChatBackgroundsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Admin_CreateAnnouncement_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateAnnouncementReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).CreateAnnouncement(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_CreateAnnouncement_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).CreateAnnouncement(ctx, req.(*CreateAnnouncementReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Admin_UpdateAnnouncement_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateAnnouncementReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).UpdateAnnouncement(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_UpdateAnnouncement_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).UpdateAnnouncement(ctx, req.(*UpdateAnnouncementReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Admin_DeleteAnnouncement_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteAnnouncementReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).DeleteAnnouncement(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_DeleteAnnouncement_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).DeleteAnnouncement(ctx, req.(*DeleteAnnouncementReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Admin_SearchAnnouncement_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchAnnouncementReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).SearchAnnouncement(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_SearchAnnouncement_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).SearchAnnouncement(ctx, req.(*SearchAnnouncementReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Admin_PublishAnnouncement_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PublishAnnouncementReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).PublishAnnouncement(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_PublishAnnouncement_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).PublishAnnouncement(ctx, req.(*PublishAnnouncementReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Admin_LatestAnnouncement_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LatestAnnouncementReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).LatestAnnouncement(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_LatestAnnouncement_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).LatestAnnouncement(ctx, req.(*LatestAnnouncementReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2042,6 +2382,10 @@ var Admin_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Admin_GetClientConfig_Handler,
 		},
 		{
+			MethodName: "GetListClientConfig",
+			Handler:    _Admin_GetListClientConfig_Handler,
+		},
+		{
 			MethodName: "SetClientConfig",
 			Handler:    _Admin_SetClientConfig_Handler,
 		},
@@ -2076,6 +2420,42 @@ var Admin_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PageApplicationVersion",
 			Handler:    _Admin_PageApplicationVersion_Handler,
+		},
+		{
+			MethodName: "GetChatBackgrounds",
+			Handler:    _Admin_GetChatBackgrounds_Handler,
+		},
+		{
+			MethodName: "AddChatBackgrounds",
+			Handler:    _Admin_AddChatBackgrounds_Handler,
+		},
+		{
+			MethodName: "DeleteChatBackgrounds",
+			Handler:    _Admin_DeleteChatBackgrounds_Handler,
+		},
+		{
+			MethodName: "CreateAnnouncement",
+			Handler:    _Admin_CreateAnnouncement_Handler,
+		},
+		{
+			MethodName: "UpdateAnnouncement",
+			Handler:    _Admin_UpdateAnnouncement_Handler,
+		},
+		{
+			MethodName: "DeleteAnnouncement",
+			Handler:    _Admin_DeleteAnnouncement_Handler,
+		},
+		{
+			MethodName: "SearchAnnouncement",
+			Handler:    _Admin_SearchAnnouncement_Handler,
+		},
+		{
+			MethodName: "PublishAnnouncement",
+			Handler:    _Admin_PublishAnnouncement_Handler,
+		},
+		{
+			MethodName: "LatestAnnouncement",
+			Handler:    _Admin_LatestAnnouncement_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

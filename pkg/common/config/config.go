@@ -2,6 +2,7 @@ package config
 
 import (
 	_ "embed"
+	"time"
 
 	"github.com/openimsdk/tools/db/mongoutil"
 	"github.com/openimsdk/tools/db/redisutil"
@@ -64,14 +65,37 @@ type APIBot struct {
 }
 
 type Mongo struct {
-	URI         string   `mapstructure:"uri"`
-	Address     []string `mapstructure:"address"`
-	Database    string   `mapstructure:"database"`
-	Username    string   `mapstructure:"username"`
-	Password    string   `mapstructure:"password"`
-	AuthSource  string   `mapstructure:"authSource"`
-	MaxPoolSize int      `mapstructure:"maxPoolSize"`
-	MaxRetry    int      `mapstructure:"maxRetry"`
+	URI            string   `yaml:"uri"`
+	Address        []string `yaml:"address"`
+	Database       string   `yaml:"database"`
+	Username       string   `yaml:"username"`
+	Password       string   `yaml:"password"`
+	AuthSource     string   `yaml:"authSource"`
+	MaxPoolSize    int      `yaml:"maxPoolSize"`
+	MaxRetry       int      `yaml:"maxRetry"`
+	MongoMode      string   `yaml:"mongoMode"`
+	ReplicaSet     ReplicaSetConfig
+	ReadPreference ReadPrefConfig
+	WriteConcern   WriteConcernConfig
+}
+
+type ReplicaSetConfig struct {
+	Name         string        `yaml:"name"`
+	Hosts        []string      `yaml:"hosts"`
+	ReadConcern  string        `yaml:"readConcern"`
+	MaxStaleness time.Duration `yaml:"maxStaleness"`
+}
+
+type ReadPrefConfig struct {
+	Mode         string              `yaml:"mode"`
+	TagSets      []map[string]string `yaml:"tagSets"`
+	MaxStaleness time.Duration       `yaml:"maxStaleness"`
+}
+
+type WriteConcernConfig struct {
+	W        any           `yaml:"w"`
+	J        bool          `yaml:"j"`
+	WTimeout time.Duration `yaml:"wtimeout"`
 }
 
 func (m *Mongo) Build() *mongoutil.Config {
@@ -84,27 +108,60 @@ func (m *Mongo) Build() *mongoutil.Config {
 		AuthSource:  m.AuthSource,
 		MaxPoolSize: m.MaxPoolSize,
 		MaxRetry:    m.MaxRetry,
+		MongoMode:   m.MongoMode,
+		ReplicaSet: &mongoutil.ReplicaSetConfig{
+			Name:         m.ReplicaSet.Name,
+			Hosts:        m.ReplicaSet.Hosts,
+			ReadConcern:  m.ReplicaSet.ReadConcern,
+			MaxStaleness: m.ReplicaSet.MaxStaleness,
+		},
+		ReadPreference: &mongoutil.ReadPrefConfig{
+			Mode:         m.ReadPreference.Mode,
+			TagSets:      m.ReadPreference.TagSets,
+			MaxStaleness: m.ReadPreference.MaxStaleness,
+		},
+		WriteConcern: &mongoutil.WriteConcernConfig{
+			W:        m.WriteConcern.W,
+			J:        m.WriteConcern.J,
+			WTimeout: m.WriteConcern.WTimeout,
+		},
 	}
 }
 
 type Redis struct {
-	Address        []string `mapstructure:"address"`
-	Username       string   `mapstructure:"username"`
-	Password       string   `mapstructure:"password"`
-	EnablePipeline bool     `mapstructure:"enablePipeline"`
-	ClusterMode    bool     `mapstructure:"clusterMode"`
-	DB             int      `mapstructure:"db"`
-	MaxRetry       int      `mapstructure:"MaxRetry"`
+	Disable      bool     `yaml:"-"`
+	Address      []string `yaml:"address"`
+	Username     string   `yaml:"username"`
+	Password     string   `yaml:"password"`
+	RedisMode    string   `yaml:"redisMode"`
+	DB           int      `yaml:"db"`
+	MaxRetry     int      `yaml:"maxRetry"`
+	PoolSize     int      `yaml:"poolSize"`
+	SentinelMode Sentinel `yaml:"sentinelMode"`
+}
+
+type Sentinel struct {
+	MasterName     string   `yaml:"masterName"`
+	SentinelAddrs  []string `yaml:"sentinelsAddrs"`
+	RouteByLatency bool     `yaml:"routeByLatency"`
+	RouteRandomly  bool     `yaml:"routeRandomly"`
 }
 
 func (r *Redis) Build() *redisutil.Config {
 	return &redisutil.Config{
-		ClusterMode: r.ClusterMode,
-		Address:     r.Address,
-		Username:    r.Username,
-		Password:    r.Password,
-		DB:          r.DB,
-		MaxRetry:    r.MaxRetry,
+		RedisMode: r.RedisMode,
+		Address:   r.Address,
+		Username:  r.Username,
+		Password:  r.Password,
+		DB:        r.DB,
+		MaxRetry:  r.MaxRetry,
+		PoolSize:  r.PoolSize,
+		Sentinel: &redisutil.Sentinel{
+			MasterName:     r.SentinelMode.MasterName,
+			SentinelAddrs:  r.SentinelMode.SentinelAddrs,
+			RouteByLatency: r.SentinelMode.RouteByLatency,
+			RouteRandomly:  r.SentinelMode.RouteRandomly,
+		},
 	}
 }
 
