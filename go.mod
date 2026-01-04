@@ -41,9 +41,9 @@ require (
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
 
-replace github.com/openimsdk/protocol => github.com/liony823/protocol v0.0.4-stealthx
+replace github.com/openimsdk/protocol => github.com/liony823/protocol v0.0.5-stealthx
 
-replace github.com/openimsdk/tools => github.com/liony823/tools v0.0.1-stealthx
+replace github.com/openimsdk/tools => github.com/liony823/tools v0.0.5-stealthx
 
 require (
 	github.com/alibabacloud-go/alibabacloud-gateway-spi v0.0.4 // indirect
